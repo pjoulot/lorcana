@@ -1,0 +1,8 @@
+services:
+  plugin.manager.lorcana_cards.card_data_importer:
+    class: Drupal\lorcana_cards\Importer\CardDataImporterManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
+
+  lorcana_cards.upserter:
+    class: Drupal\lorcana_cards\Importer\CardUpserter
+    arguments: ['@entity_type.manager', '@logger.factory']
