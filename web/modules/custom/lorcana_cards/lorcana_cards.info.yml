@@ -3,3 +3,13 @@ type: module
 description: 'Card content type, taxonomy, importer plugins, and encyclopedia integration for the Lorcana fan site.'
 package: 'Lorcana'
 core_version_requirement: ^11
+dependencies:
+  - drupal:node
+  - drupal:taxonomy
+  - drupal:field
+  - drupal:text
+  - drupal:image
+  - drupal:datetime
+  - drupal:options
+  - drupal:file
+  - drupal:path

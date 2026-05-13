@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_flavor_text
+    - node.type.card
+id: node.card.field_flavor_text
+field_name: field_flavor_text
+entity_type: node
+bundle: card
+label: 'Flavor text'
+description: 'Italicized flavor below the rules box.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  case_sensitive: false
+field_type: string_long

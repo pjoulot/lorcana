@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_inkable
+    - node.type.card
+id: node.card.field_inkable
+field_name: field_inkable
+entity_type: node
+bundle: card
+label: Inkable
+description: 'Whether the card can be placed face-down into the inkwell as a resource. Maps from Lorcast''s inkwell field.'
+required: true
+translatable: false
+default_value:
+  - value: 0
+default_value_callback: ''
+settings: {  }
+field_type: boolean

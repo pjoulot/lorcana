@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_legal_core
+    - node.type.card
+  module:
+    - options
+id: node.card.field_legal_core
+field_name: field_legal_core
+entity_type: node
+bundle: card
+label: 'Core format legality'
+description: 'legal, not_legal, or banned.'
+required: true
+translatable: false
+default_value:
+  - value: legal
+default_value_callback: ''
+settings: {  }
+field_type: list_string

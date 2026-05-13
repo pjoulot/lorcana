@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_card_count
+    - node.type.card_set
+id: node.card_set.field_card_count
+field_name: field_card_count
+entity_type: node
+bundle: card_set
+label: 'Card count'
+description: 'Denormalized count of imported cards in this set. Maintained by the importer.'
+required: false
+translatable: false
+default_value:
+  - value: 0
+default_value_callback: ''
+settings: {  }
+field_type: integer

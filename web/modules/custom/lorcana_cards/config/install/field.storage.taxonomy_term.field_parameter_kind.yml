@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - taxonomy
+id: taxonomy_term.field_parameter_kind
+field_name: field_parameter_kind
+entity_type: taxonomy_term
+type: list_string
+settings:
+  allowed_values:
+    - value: none
+      label: None
+    - value: integer
+      label: Integer
+    - value: card_name
+      label: 'Card name'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

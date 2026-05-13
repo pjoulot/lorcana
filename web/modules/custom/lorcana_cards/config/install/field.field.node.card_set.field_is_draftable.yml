@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_draftable
+    - node.type.card_set
+id: node.card_set.field_is_draftable
+field_name: field_is_draftable
+entity_type: node
+bundle: card_set
+label: 'Is draftable'
+description: 'Whether the draft simulator should offer this set.'
+required: true
+translatable: false
+default_value:
+  - value: 0
+default_value_callback: ''
+settings: {  }
+field_type: boolean

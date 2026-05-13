@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_willpower
+    - node.type.card
+id: node.card.field_willpower
+field_name: field_willpower
+entity_type: node
+bundle: card
+label: Willpower
+description: 'Characters and Locations.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

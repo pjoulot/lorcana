@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Card classification'
+vid: card_classification
+description: 'Sub-types beyond the primary card type: Hero, Villain, Princess, Floodborn, etc.'
+weight: 1
+new_revision: false

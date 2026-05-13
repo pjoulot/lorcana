@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Keyword ability'
+vid: keyword_ability
+description: 'Game keywords: Bodyguard, Challenger, Evasive, Resist, Shift, Singer, Support, Ward, Rush, etc. Per-term custom fields hold the machine name, parameter kind, and reminder text.'
+weight: 2
+new_revision: false

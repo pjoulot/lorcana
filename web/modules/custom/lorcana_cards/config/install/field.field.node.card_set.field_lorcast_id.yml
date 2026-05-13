@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lorcast_id
+    - node.type.card_set
+id: node.card_set.field_lorcast_id
+field_name: field_lorcast_id
+entity_type: node
+bundle: card_set
+label: 'Lorcast ID'
+description: 'Lorcast''s identifier for this set. Used by the importer for upsert.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

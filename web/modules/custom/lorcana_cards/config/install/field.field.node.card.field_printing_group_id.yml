@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_printing_group_id
+    - node.type.card
+id: node.card.field_printing_group_id
+field_name: field_printing_group_id
+entity_type: node
+bundle: card
+label: 'Printing group ID'
+description: 'Groups variant printings (standard, Enchanted, promo) across both languages. Same value = same logical card.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

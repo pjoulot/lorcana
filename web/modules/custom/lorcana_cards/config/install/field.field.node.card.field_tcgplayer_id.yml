@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tcgplayer_id
+    - node.type.card
+id: node.card.field_tcgplayer_id
+field_name: field_tcgplayer_id
+entity_type: node
+bundle: card
+label: 'TCGPlayer ID'
+description: 'For deep-linking to a price page on TCGPlayer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

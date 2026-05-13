@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ink
+    - node.type.card
+    - taxonomy.vocabulary.ink_color
+id: node.card.field_ink
+field_name: field_ink
+entity_type: node
+bundle: card
+label: Ink
+description: 'The card''s ink color. Null on inkless cards (promos, specials).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ink_color: ink_color
+    sort:
+      field: name
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

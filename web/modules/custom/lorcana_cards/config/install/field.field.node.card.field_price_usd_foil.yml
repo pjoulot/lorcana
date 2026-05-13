@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_price_usd_foil
+    - node.type.card
+id: node.card.field_price_usd_foil
+field_name: field_price_usd_foil
+entity_type: node
+bundle: card
+label: 'Foil price (USD)'
+description: 'Foil-variant market price from last import.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: '0'
+  max: ''
+  prefix: $
+  suffix: ''
+field_type: decimal

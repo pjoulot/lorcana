@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_rarity
+field_name: field_rarity
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    - value: common
+      label: Common
+    - value: uncommon
+      label: Uncommon
+    - value: rare
+      label: Rare
+    - value: super_rare
+      label: 'Super rare'
+    - value: legendary
+      label: Legendary
+    - value: enchanted
+      label: Enchanted
+    - value: promo
+      label: Promo
+    - value: special
+      label: Special
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

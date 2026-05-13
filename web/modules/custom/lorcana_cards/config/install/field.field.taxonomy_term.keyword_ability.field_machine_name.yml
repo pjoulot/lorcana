@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_machine_name
+    - taxonomy.vocabulary.keyword_ability
+id: taxonomy_term.keyword_ability.field_machine_name
+field_name: field_machine_name
+entity_type: taxonomy_term
+bundle: keyword_ability
+label: 'Machine name'
+description: 'Stable identifier used by the importer text parser (e.g., challenger, bodyguard).'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

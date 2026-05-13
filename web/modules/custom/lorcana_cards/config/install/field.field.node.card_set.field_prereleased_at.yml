@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_prereleased_at
+    - node.type.card_set
+  module:
+    - datetime
+id: node.card_set.field_prereleased_at
+field_name: field_prereleased_at
+entity_type: node
+bundle: card_set
+label: 'Prereleased at'
+description: 'Pre-release date (optional; typically a week before street date).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

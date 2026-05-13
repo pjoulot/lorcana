@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_import_source
+    - node.type.card
+id: node.card.field_import_source
+field_name: field_import_source
+entity_type: node
+bundle: card
+label: 'Import source'
+description: 'Which data importer wrote this row (lorcast, etc.).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Card set'
+type: card_set
+description: 'A Lorcana set (expansion). One node per set across all languages.'
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false
