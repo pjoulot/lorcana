@@ -1,0 +1,63 @@
+# Composer
+/vendor/
+
+# Drupal scaffolded files (managed by drupal/core-composer-scaffold)
+/web/.csslintrc
+/web/.editorconfig
+/web/.eslintignore
+/web/.eslintrc.json
+/web/.gitattributes
+/web/.htaccess
+/web/.ht.router.php
+/web/INSTALL.txt
+/web/README.md
+/web/autoload.php
+/web/example.gitignore
+/web/index.php
+/web/robots.txt
+/web/update.php
+/web/web.config
+
+# Drupal core + contrib (managed by composer)
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+
+# Drupal site config — local-only files
+/web/sites/*/files/
+/web/sites/*/private/
+/web/sites/*/settings.local.php
+/web/sites/*/services.local.yml
+/web/sites/default/settings.php
+
+# DDEV local state
+/.ddev/.dbimageBuild/
+/.ddev/.dbimageExtra/
+/.ddev/.ddev-docker-compose-base.yaml
+/.ddev/.ddev-docker-compose-full.yaml
+/.ddev/.global_commands/
+/.ddev/.homeadditions/
+/.ddev/.webimageBuild/
+/.ddev/.webimageExtra/
+/.ddev/apache/
+/.ddev/db_snapshots/
+/.ddev/import-db/
+/.ddev/import.yaml
+/.ddev/providers/
+/.ddev/traefik/
+/.ddev/xhprof/
+/.ddev/**/*.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.iml
+
+# Design bundle — large binary assets, kept out of git
+/specs/design/Lorcana-handoff.zip

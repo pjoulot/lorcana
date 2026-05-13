@@ -1,0 +1,214 @@
+/* Inkfolk — design tokens
+   ─────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Ink colors (Lorcana's six resource colors — used as ACCENTS only) */
+  --ink-amber:    #F4B042;
+  --ink-amethyst: #A56FCF;
+  --ink-emerald:  #3D9F6A;
+  --ink-ruby:     #D14B4B;
+  --ink-sapphire: #3B7BC4;
+  --ink-steel:    #8C9AA3;
+
+  /* Soft variants (10% tints for chips, backgrounds) */
+  --ink-amber-soft:    #FBEACB;
+  --ink-amethyst-soft: #ECDEF4;
+  --ink-emerald-soft:  #D5ECDF;
+  --ink-ruby-soft:     #F4D6D6;
+  --ink-sapphire-soft: #D4E2F1;
+  --ink-steel-soft:    #DEE3E6;
+
+  /* Brand accent (default = amber; tweakable) */
+  --accent:       var(--ink-amber);
+  --accent-soft:  var(--ink-amber-soft);
+  --accent-ink:   #5e3f10;        /* readable text on amber-soft */
+
+  /* Neutrals — warm off-white paper palette */
+  --paper:        #FAF6EF;        /* page bg */
+  --paper-2:      #F4EEE4;        /* subtle alt surface */
+  --surface:      #FFFFFF;        /* cards */
+  --surface-2:    #FBF8F2;
+  --line:         #E7DFD2;        /* hairlines */
+  --line-strong:  #D6CBB6;
+  --ink:          #1F1A12;        /* primary text */
+  --ink-2:        #4A4233;        /* secondary text */
+  --ink-3:        #7B7160;        /* tertiary text */
+  --ink-4:        #A89E89;        /* meta */
+
+  /* Rarity tints */
+  --rarity-common:     #B2A78F;
+  --rarity-uncommon:   #6B6B6B;
+  --rarity-rare:       #C9A24A;   /* burnished gold */
+  --rarity-super:      #B07AC4;
+  --rarity-legendary:  #C2843A;
+  --rarity-enchanted:  linear-gradient(120deg,#E6B85A,#C57BB8,#5BA0D4,#73C7A0);
+
+  /* Type */
+  --font-display: 'Newsreader', 'Iowan Old Style', 'Charter', Georgia, serif;
+  --font-ui:      'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Roboto Mono', ui-monospace, monospace;
+
+  /* Radii / shadow */
+  --r-1: 6px;
+  --r-2: 10px;
+  --r-3: 14px;
+  --r-4: 20px;
+  --shadow-1: 0 1px 2px rgba(35,25,10,.05), 0 1px 1px rgba(35,25,10,.03);
+  --shadow-2: 0 4px 14px rgba(35,25,10,.07), 0 1px 2px rgba(35,25,10,.04);
+  --shadow-3: 0 14px 40px rgba(35,25,10,.10), 0 2px 6px rgba(35,25,10,.05);
+}
+
+/* Dark mode overrides — deep neutral with restrained warmth */
+[data-theme="dark"] {
+  --paper:        #0E1014;        /* near-black, faint cool tilt */
+  --paper-2:      #161920;        /* alt panel */
+  --surface:      #1C2029;        /* card surfaces */
+  --surface-2:    #14171E;
+  --line:         #272B36;
+  --line-strong:  #383D4A;
+  --ink:          #ECE6D6;        /* warm off-white text */
+  --ink-2:        #B5AFA0;
+  --ink-3:        #7B7669;
+  --ink-4:        #54514A;
+
+  /* Ink accent tints — lower chroma so they read on dark surfaces */
+  --ink-amber-soft:    #2B2114;
+  --ink-amethyst-soft: #211A2D;
+  --ink-emerald-soft:  #112218;
+  --ink-ruby-soft:     #2A1717;
+  --ink-sapphire-soft: #122130;
+  --ink-steel-soft:    #1C2128;
+
+  --accent-ink: #F5D58B;
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.55);
+  --shadow-2: 0 6px 18px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.025);
+  --shadow-3: 0 22px 50px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03);
+}
+[data-theme="dark"] .if-btn:hover { background: #232733; }
+[data-theme="dark"] .if-btn--primary { background: var(--ink); color: #0E1014; border-color: var(--ink); }
+[data-theme="dark"] .if-btn--primary:hover { background: #fff; }
+
+/* Aesthetic variants ─────────────────────────────────────────── */
+[data-aesthetic="editorial"] {
+  /* "Scryfall-clean": tight, type-driven, almost no decoration */
+  --paper: #FBFAF7;
+  --paper-2: #F4F2EC;
+  --surface: #FFFFFF;
+}
+
+[data-aesthetic="storybook"] {
+  /* Warm paper + hint of storybook */
+  --paper: #F7EFE0;
+  --paper-2: #EFE4D0;
+  --surface: #FCF6EA;
+  --line: #DCCDA8;
+}
+
+[data-aesthetic="modern"] {
+  /* Crisp neutral grotesk */
+  --paper: #F2F2EF;
+  --paper-2: #E8E8E3;
+  --surface: #FFFFFF;
+  --line: #DCDCD5;
+  --font-display: 'Inter Tight', 'Inter', sans-serif;
+}
+
+/* Inkfolk artboard reset */
+.if-screen {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01','cv11';
+  line-height: 1.45;
+}
+.if-screen *, .if-screen *::before, .if-screen *::after { box-sizing: border-box; }
+
+.serif { font-family: var(--font-display); letter-spacing: -0.01em; }
+.mono  { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Generic utilities used by screen components */
+.if-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+}
+.hairline { background: var(--line); }
+.hairline-strong { background: var(--line-strong); }
+
+/* Tappy buttons */
+.if-btn {
+  font: 500 14px/1 var(--font-ui);
+  letter-spacing: -0.005em;
+  border-radius: 999px;
+  padding: 11px 16px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: background .12s, transform .06s, box-shadow .12s;
+}
+.if-btn:hover { background: var(--paper-2); }
+.if-btn:active { transform: translateY(0.5px); }
+.if-btn--primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.if-btn--primary:hover { background: #000; }
+.if-btn--accent {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* Chips */
+.if-chip {
+  font: 500 12px/1 var(--font-ui);
+  border-radius: 999px;
+  padding: 5px 10px 5px 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+/* Foil treatment — used on rare cards */
+.if-foil {
+  position: relative;
+  overflow: hidden;
+}
+.if-foil::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(115deg,
+      transparent 30%,
+      rgba(255,230,180,.22) 42%,
+      rgba(180,220,255,.28) 50%,
+      rgba(220,180,255,.22) 58%,
+      transparent 70%),
+    radial-gradient(120% 80% at 30% 20%, rgba(255,255,255,.18), transparent 60%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Card-frame treatments (tweakable) */
+.if-cardframe--none .if-card-image { border: 0 !important; }
+.if-cardframe--subtle .if-card-image { box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.08); }
+.if-cardframe--rarity .if-card-image { box-shadow: 0 0 0 2px var(--rarity-color, var(--line)), 0 6px 18px rgba(0,0,0,.10); }
+
+/* Mobile artboards have a soft outer rounded mask */
+.if-mobile-frame {
+  width: 100%; height: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Hide scrollbars inside artboards */
+.if-scroll::-webkit-scrollbar { display: none; }
+.if-scroll { scrollbar-width: none; }

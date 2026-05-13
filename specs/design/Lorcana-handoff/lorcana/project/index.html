@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Inkfolk — Design Canvas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="styles.css"/>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  body { margin: 0; background: #f0eee9; font-family: var(--font-ui); color: var(--ink); }
+  .if-screen { font-family: var(--font-ui); color: var(--ink); background: var(--paper); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="src/data.jsx"></script>
+<script type="text/babel" src="src/icons.jsx"></script>
+<script type="text/babel" src="src/card.jsx"></script>
+<script type="text/babel" src="src/chrome.jsx"></script>
+<script type="text/babel" src="src/home.jsx"></script>
+<script type="text/babel" src="src/encyclopedia.jsx"></script>
+<script type="text/babel" src="src/card-detail.jsx"></script>
+<script type="text/babel" src="src/news-sets.jsx"></script>
+<script type="text/babel" src="src/product.jsx"></script>
+<script type="text/babel" src="src/reference.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "mode": "light",
+  "accent": {
+    "value": "amber",
+    "color": "#F4B042"
+  },
+  "frame": "none",
+  "aesthetic": "editorial"
+}/*EDITMODE-END*/;
+
+const ACCENTS = {
+  amber:    { c: '#F4B042', soft: 'var(--ink-amber-soft)',    ink: '#5e3f10' },
+  amethyst: { c: '#A56FCF', soft: 'var(--ink-amethyst-soft)', ink: '#3F2563' },
+  emerald:  { c: '#3D9F6A', soft: 'var(--ink-emerald-soft)',  ink: '#194D33' },
+  ruby:     { c: '#D14B4B', soft: 'var(--ink-ruby-soft)',     ink: '#6E1F1F' },
+  sapphire: { c: '#3B7BC4', soft: 'var(--ink-sapphire-soft)', ink: '#1B3F70' },
+  steel:    { c: '#8C9AA3', soft: 'var(--ink-steel-soft)',    ink: '#2F3940' },
+  neutral:  { c: '#1F1A12', soft: '#F4EEE4',                  ink: '#1F1A12' },
+};
+function applyTokens(t) {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', t.mode === 'dark' ? 'dark' : 'light');
+  const aes = t.aesthetic === 'grotesk' ? 'modern' : t.aesthetic;
+  root.setAttribute('data-aesthetic', aes);
+  const a = ACCENTS[t.accent] || ACCENTS.amber;
+  root.style.setProperty('--accent', a.c);
+  root.style.setProperty('--accent-soft', a.soft);
+  if (t.mode !== 'dark') root.style.setProperty('--accent-ink', a.ink);
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(() => { applyTokens(t); }, [t.mode, t.accent, t.aesthetic]);
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection id="overview" title="Inkfolk · fan-made Lorcana"
+                   subtitle="A bilingual fan site — news, card encyclopedia, and (later) a draft simulator. Public-site screens shown here; tokens & components on the right.">
+          <DCArtboard id="tokens" label="Tokens" width={1200} height={1480}>
+            <TokensSheet/>
+          </DCArtboard>
+          <DCArtboard id="components" label="Components" width={1200} height={2080}>
+            <ComponentsSheet/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="home" title="Homepage"
+                   subtitle="The lobby. News + cards + 'start a draft' coexist without any one dominating.">
+          <DCArtboard id="home-d" label="Desktop · 1280" width={1280} height={2400}>
+            <HomeDesktop frame={t.frame}/>
+          </DCArtboard>
+          <DCArtboard id="home-m" label="Mobile · 375" width={375} height={812}>
+            <HomeMobile frame={t.frame}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="encyclopedia" title="Card encyclopedia"
+                   subtitle="Scryfall-style faceted search. Toggle grid/list, filter inks, browse 15k cards.">
+          <DCArtboard id="enc-d" label="Desktop · 1280" width={1280} height={1900}>
+            <EncyclopediaDesktop frame={t.frame}/>
+          </DCArtboard>
+          <DCArtboard id="enc-m" label="Mobile · 375" width={375} height={812}>
+            <EncyclopediaMobile frame={t.frame}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="card" title="Card detail"
+                   subtitle="One card, in depth. Rules text with inline iconography, variants with foil treatments, where to buy, related news.">
+          <DCArtboard id="card-d" label="Desktop · 1280" width={1280} height={2480}>
+            <CardDetailDesktop frame={t.frame}/>
+          </DCArtboard>
+          <DCArtboard id="card-m" label="Mobile · 375" width={375} height={812}>
+            <CardDetailMobile frame={t.frame}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="set" title="Set page"
+                   subtitle="One expansion, organized by rarity, filterable by ink. Each set gets its own colorway.">
+          <DCArtboard id="set-d" label="Desktop · 1280" width={1280} height={1900}>
+            <SetPageDesktop frame={t.frame}/>
+          </DCArtboard>
+          <DCArtboard id="set-m" label="Mobile · 375" width={375} height={812}>
+            <SetPageMobile frame={t.frame}/>
+          </DCArtboard>
+          <DCArtboard id="prod-d" label="Product · Desktop · 1280" width={1280} height={2200}>
+            <ProductDetailDesktop frame={t.frame}/>
+          </DCArtboard>
+          <DCArtboard id="prod-m" label="Product · Mobile · 375" width={375} height={812}>
+            <ProductDetailMobile frame={t.frame}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="news" title="News & journal"
+                   subtitle="Editorial coverage written by players — set spoilers, tournament reports, rules updates.">
+          <DCArtboard id="news-list-d" label="Listing · Desktop · 1280" width={1280} height={2000}>
+            <NewsListingDesktop/>
+          </DCArtboard>
+          <DCArtboard id="news-list-m" label="Listing · Mobile · 375" width={375} height={812}>
+            <NewsListingMobile/>
+          </DCArtboard>
+          <DCArtboard id="news-art-d" label="Article · Desktop · 1280" width={1280} height={2200}>
+            <NewsArticleDesktop/>
+          </DCArtboard>
+          <DCArtboard id="news-art-m" label="Article · Mobile · 375" width={375} height={812}>
+            <NewsArticleMobile/>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Mode">
+          <TweakRadio
+            value={t.mode}
+            onChange={v => setTweak('mode', v)}
+            options={[
+              { value: 'light', label: 'Light' },
+              { value: 'dark',  label: 'Dark'  },
+            ]}
+          />
+          <div style={{ fontSize: 11, color: 'var(--ink-3, #888)', marginTop: 6, lineHeight: 1.4 }}>
+            Recommended primary: <strong>Light</strong> — encyclopedia browsers on a bus.
+          </div>
+        </TweakSection>
+
+        <TweakSection label="Accent ink">
+          <TweakColor
+            value={t.accent}
+            onChange={v => setTweak('accent', v)}
+            options={[
+              { value: 'amber',    color: '#F4B042' },
+              { value: 'amethyst', color: '#A56FCF' },
+              { value: 'emerald',  color: '#3D9F6A' },
+              { value: 'ruby',     color: '#D14B4B' },
+              { value: 'sapphire', color: '#3B7BC4' },
+              { value: 'steel',    color: '#8C9AA3' },
+              { value: 'neutral',  color: '#1F1A12' },
+            ]}
+          />
+        </TweakSection>
+
+        <TweakSection label="Card frame treatment">
+          <TweakRadio
+            value={t.frame}
+            onChange={v => setTweak('frame', v)}
+            options={[
+              { value: 'none',   label: 'None'   },
+              { value: 'subtle', label: 'Subtle' },
+              { value: 'rarity', label: 'Rarity' },
+            ]}
+          />
+        </TweakSection>
+
+        <TweakSection label="Aesthetic">
+          <TweakSelect
+            value={t.aesthetic}
+            onChange={v => setTweak('aesthetic', v)}
+            options={[
+              { value: 'editorial', label: 'Editorial — Scryfall-clean, type-driven' },
+              { value: 'storybook', label: 'Storybook — warmer paper, softer shadows' },
+              { value: 'grotesk',   label: 'Modern Grotesk — crisp sans, more whitespace' },
+            ]}
+          />
+          <div style={{ fontSize: 11, color: 'var(--ink-3, #888)', marginTop: 6, lineHeight: 1.4 }}>
+            Swaps the display font + paper warmth + shadow weight.
+          </div>
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
