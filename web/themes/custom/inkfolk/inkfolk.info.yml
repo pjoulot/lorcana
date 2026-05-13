@@ -1,0 +1,26 @@
+name: Inkfolk
+type: theme
+'base theme': stable9
+version: 1.0.0
+libraries:
+  - inkfolk/base
+  - inkfolk/messages
+  - core/normalize
+libraries-extend:
+  user/drupal.user:
+    - inkfolk/user
+  core/drupal.dropbutton:
+    - inkfolk/dropbutton
+  core/drupal.dialog:
+    - inkfolk/dialog
+  file/drupal.file:
+    - inkfolk/file
+  core/drupal.item-list:
+    - inkfolk/item-list
+  core/drupal.progress:
+    - inkfolk/progress
+  core/drupal.tablesort:
+    - inkfolk/drupal.tablesort
+description: 'Inkfolk theme for the Lorcana fan site'
+core_version_requirement: ^11
+generator: 'starterkit_theme:11.3.9'

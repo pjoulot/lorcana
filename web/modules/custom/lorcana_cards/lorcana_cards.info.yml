@@ -1,0 +1,5 @@
+name: 'Lorcana Cards'
+type: module
+description: 'Card content type, taxonomy, importer plugins, and encyclopedia integration for the Lorcana fan site.'
+package: 'Lorcana'
+core_version_requirement: ^11

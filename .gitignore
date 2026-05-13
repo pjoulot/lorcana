@@ -61,3 +61,5 @@ Thumbs.db
 
 # Design bundle — large binary assets, kept out of git
 /specs/design/Lorcana-handoff.zip
+/.editorconfig
+/.gitattributes
