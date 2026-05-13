@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Drupal\lorcana_cards\Importer;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileExists;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
@@ -22,7 +25,9 @@ use Drupal\taxonomy\TermInterface;
  */
 final class CardUpserter {
 
-  private const STATS_KEYS = ['sets_created', 'sets_updated', 'cards_created', 'cards_updated', 'cards_failed'];
+  private const STATS_KEYS = ['sets_created', 'sets_updated', 'cards_created', 'cards_updated', 'cards_failed', 'images_attached', 'images_failed'];
+
+  private const IMAGE_SIZES = ['small', 'normal', 'large'];
 
   private array $stats;
 
@@ -31,6 +36,8 @@ final class CardUpserter {
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     LoggerChannelFactoryInterface $loggerFactory,
+    private readonly FileRepositoryInterface $fileRepository,
+    private readonly FileSystemInterface $fileSystem,
   ) {
     $this->logger = $loggerFactory->get('lorcana_cards');
     $this->resetStats();
@@ -78,7 +85,7 @@ final class CardUpserter {
     return $node;
   }
 
-  public function upsertCard(CardData $card): ?NodeInterface {
+  public function upsertCard(CardData $card, ?CardImageImporterInterface $imagePlugin = NULL): ?NodeInterface {
     try {
       $set = $this->resolveSetNode($card);
       $node = $this->resolveCardNode($card);
@@ -134,6 +141,11 @@ final class CardUpserter {
 
       $node->save();
       $this->stats[$created ? 'cards_created' : 'cards_updated']++;
+
+      if ($imagePlugin !== NULL && !$node->get('field_is_image_manual_override')->value && $imagePlugin->supports($card)) {
+        $this->attachImages($node, $card, $imagePlugin);
+      }
+
       return $node;
     }
     catch (\Throwable $e) {
@@ -143,6 +155,54 @@ final class CardUpserter {
         '@msg' => $e->getMessage(),
       ]);
       return NULL;
+    }
+  }
+
+  private function attachImages(NodeInterface $card, CardData $cardData, CardImageImporterInterface $imagePlugin): void {
+    $destDir = 'public://cards/' . $cardData->setCode . '/' . $cardData->language;
+    if (!$this->fileSystem->prepareDirectory($destDir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+      $this->logger->error('Cannot prepare image directory @dir for card @id.', [
+        '@dir' => $destDir,
+        '@id' => $cardData->lorcastId,
+      ]);
+      return;
+    }
+
+    $dirty = FALSE;
+    foreach (self::IMAGE_SIZES as $size) {
+      $localPath = $imagePlugin->fetchImage($cardData, $size);
+      if ($localPath === NULL) {
+        $this->stats['images_failed']++;
+        continue;
+      }
+      try {
+        $contents = file_get_contents($localPath);
+        $dest = $destDir . '/' . $cardData->collectorNumber . '-' . $size . '.jpg';
+        $file = $this->fileRepository->writeData((string) $contents, $dest, FileExists::Replace);
+        $card->set('field_image_' . $size, [
+          'target_id' => $file->id(),
+          'alt' => $card->getTitle(),
+        ]);
+        $card->set('field_image_source', $imagePlugin->getId());
+        $dirty = TRUE;
+        $this->stats['images_attached']++;
+      }
+      catch (\Throwable $e) {
+        $this->stats['images_failed']++;
+        $this->logger->error('Failed to attach @size image to card @id: @msg', [
+          '@size' => $size,
+          '@id' => $cardData->lorcastId,
+          '@msg' => $e->getMessage(),
+        ]);
+      }
+      finally {
+        if (file_exists($localPath)) {
+          @unlink($localPath);
+        }
+      }
+    }
+    if ($dirty) {
+      $card->save();
     }
   }
 

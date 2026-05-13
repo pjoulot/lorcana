@@ -3,6 +3,14 @@ services:
     class: Drupal\lorcana_cards\Importer\CardDataImporterManager
     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
 
+  plugin.manager.lorcana_cards.card_image_importer:
+    class: Drupal\lorcana_cards\Importer\CardImageImporterManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
+
+  lorcana_cards.image_converter:
+    class: Drupal\lorcana_cards\Service\ImageConverter
+    arguments: ['@logger.factory']
+
   lorcana_cards.upserter:
     class: Drupal\lorcana_cards\Importer\CardUpserter
-    arguments: ['@entity_type.manager', '@logger.factory']
+    arguments: ['@entity_type.manager', '@logger.factory', '@file.repository', '@file_system']
