@@ -2,15 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.card.field_card_art
     - field.field.node.card.field_card_types
     - field.field.node.card.field_classifications
     - field.field.node.card.field_collector_number
     - field.field.node.card.field_cost
     - field.field.node.card.field_flavor_text
     - field.field.node.card.field_illustrators
-    - field.field.node.card.field_image_large
-    - field.field.node.card.field_image_normal
-    - field.field.node.card.field_image_small
     - field.field.node.card.field_image_source
     - field.field.node.card.field_import_source
     - field.field.node.card.field_ink
@@ -35,11 +33,10 @@ dependencies:
     - field.field.node.card.field_text
     - field.field.node.card.field_version
     - field.field.node.card.field_willpower
-    - image.style.thumbnail
     - node.type.card
   module:
     - datetime
-    - image
+    - media_library
     - path
 id: node.card.default
 targetEntityType: node
@@ -51,6 +48,14 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_card_art:
+    type: media_library_widget
+    weight: 20
+    region: content
+    settings:
+      media_types:
+        - image
     third_party_settings: {  }
   field_card_types:
     type: options_select
@@ -98,30 +103,6 @@ content:
     settings:
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-  field_image_large:
-    type: image_image
-    weight: 22
-    region: content
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-    third_party_settings: {  }
-  field_image_normal:
-    type: image_image
-    weight: 21
-    region: content
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-    third_party_settings: {  }
-  field_image_small:
-    type: image_image
-    weight: 20
-    region: content
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
     third_party_settings: {  }
   field_image_source:
     type: string_textfield
@@ -333,6 +314,9 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_image_large: true
+  field_image_normal: true
+  field_image_small: true
   promote: true
   sticky: true
 

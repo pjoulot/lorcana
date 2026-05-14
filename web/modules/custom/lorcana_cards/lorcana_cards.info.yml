@@ -14,3 +14,5 @@ dependencies:
   - drupal:options
   - drupal:file
   - drupal:path
+  - drupal:media
+  - drupal:media_library

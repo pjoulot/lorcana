@@ -13,9 +13,12 @@ interface CardImageImporterInterface {
   public function supports(CardData $card): bool;
 
   /**
-   * @param 'small'|'normal'|'large' $size
+   * Fetch and convert the highest-fidelity image available for this card.
+   * Downstream resizing happens via Drupal image styles, so plugins should
+   * return the largest source they have access to.
+   *
    * @return string|null Local filesystem path to a JPG, or NULL if unavailable.
    */
-  public function fetchImage(CardData $card, string $size): ?string;
+  public function fetchImage(CardData $card): ?string;
 
 }

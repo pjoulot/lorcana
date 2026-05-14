@@ -27,8 +27,6 @@ final class CardUpserter {
 
   private const STATS_KEYS = ['sets_created', 'sets_updated', 'cards_created', 'cards_updated', 'cards_failed', 'images_attached', 'images_failed'];
 
-  private const IMAGE_SIZES = ['small', 'normal', 'large'];
-
   private array $stats;
 
   private LoggerChannelInterface $logger;
@@ -143,7 +141,7 @@ final class CardUpserter {
       $this->stats[$created ? 'cards_created' : 'cards_updated']++;
 
       if ($imagePlugin !== NULL && !$node->get('field_is_image_manual_override')->value && $imagePlugin->supports($card)) {
-        $this->attachImages($node, $card, $imagePlugin);
+        $this->attachCardArt($node, $card, $imagePlugin);
       }
 
       return $node;
@@ -158,7 +156,7 @@ final class CardUpserter {
     }
   }
 
-  private function attachImages(NodeInterface $card, CardData $cardData, CardImageImporterInterface $imagePlugin): void {
+  private function attachCardArt(NodeInterface $card, CardData $cardData, CardImageImporterInterface $imagePlugin): void {
     $destDir = 'public://cards/' . $cardData->setCode . '/' . $cardData->language;
     if (!$this->fileSystem->prepareDirectory($destDir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
       $this->logger->error('Cannot prepare image directory @dir for card @id.', [
@@ -168,41 +166,64 @@ final class CardUpserter {
       return;
     }
 
-    $dirty = FALSE;
-    foreach (self::IMAGE_SIZES as $size) {
-      $localPath = $imagePlugin->fetchImage($cardData, $size);
-      if ($localPath === NULL) {
-        $this->stats['images_failed']++;
-        continue;
-      }
-      try {
-        $contents = file_get_contents($localPath);
-        $dest = $destDir . '/' . $cardData->collectorNumber . '-' . $size . '.jpg';
-        $file = $this->fileRepository->writeData((string) $contents, $dest, FileExists::Replace);
-        $card->set('field_image_' . $size, [
-          'target_id' => $file->id(),
-          'alt' => $card->getTitle(),
-        ]);
-        $card->set('field_image_source', $imagePlugin->getId());
-        $dirty = TRUE;
-        $this->stats['images_attached']++;
-      }
-      catch (\Throwable $e) {
-        $this->stats['images_failed']++;
-        $this->logger->error('Failed to attach @size image to card @id: @msg', [
-          '@size' => $size,
-          '@id' => $cardData->lorcastId,
-          '@msg' => $e->getMessage(),
-        ]);
-      }
-      finally {
-        if (file_exists($localPath)) {
-          @unlink($localPath);
-        }
-      }
+    $localPath = $imagePlugin->fetchImage($cardData);
+    if ($localPath === NULL) {
+      $this->stats['images_failed']++;
+      return;
     }
-    if ($dirty) {
+
+    try {
+      $contents = file_get_contents($localPath);
+      $dest = $destDir . '/' . $cardData->collectorNumber . '.jpg';
+      $file = $this->fileRepository->writeData((string) $contents, $dest, FileExists::Replace);
+      $altText = $card->getTitle();
+
+      // Reuse an existing Media (bundle: image) if one already points at this
+      // file URI — keeps re-imports from accumulating duplicate Media entities.
+      $mediaStorage = $this->entityTypeManager->getStorage('media');
+      $existingMedia = $mediaStorage->loadByProperties([
+        'bundle' => 'image',
+        'field_media_image.target_id' => $file->id(),
+      ]);
+      if ($existingMedia) {
+        $media = reset($existingMedia);
+        $media->setName($card->getTitle());
+        $media->set('field_media_image', [
+          'target_id' => $file->id(),
+          'alt' => $altText,
+        ]);
+      }
+      else {
+        $media = $mediaStorage->create([
+          'bundle' => 'image',
+          'name' => $card->getTitle(),
+          'langcode' => $card->language()->getId(),
+          'uid' => 1,
+          'status' => TRUE,
+          'field_media_image' => [
+            'target_id' => $file->id(),
+            'alt' => $altText,
+          ],
+        ]);
+      }
+      $media->save();
+
+      $card->set('field_card_art', ['target_id' => $media->id()]);
+      $card->set('field_image_source', $imagePlugin->getId());
       $card->save();
+      $this->stats['images_attached']++;
+    }
+    catch (\Throwable $e) {
+      $this->stats['images_failed']++;
+      $this->logger->error('Failed to attach card art to @id: @msg', [
+        '@id' => $cardData->lorcastId,
+        '@msg' => $e->getMessage(),
+      ]);
+    }
+    finally {
+      if (file_exists($localPath)) {
+        @unlink($localPath);
+      }
     }
   }
 

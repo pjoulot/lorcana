@@ -2,15 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.card.field_card_art
     - field.field.node.card.field_card_types
     - field.field.node.card.field_classifications
     - field.field.node.card.field_collector_number
     - field.field.node.card.field_cost
     - field.field.node.card.field_flavor_text
     - field.field.node.card.field_illustrators
-    - field.field.node.card.field_image_large
-    - field.field.node.card.field_image_normal
-    - field.field.node.card.field_image_small
     - field.field.node.card.field_image_source
     - field.field.node.card.field_import_source
     - field.field.node.card.field_ink
@@ -38,7 +36,6 @@ dependencies:
     - node.type.card
   module:
     - datetime
-    - image
     - options
     - user
 id: node.card.default
@@ -46,6 +43,15 @@ targetEntityType: node
 bundle: card
 mode: default
 content:
+  field_card_art:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
   field_card_types:
     type: list_default
     label: inline
@@ -92,39 +98,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 19
-    region: content
-  field_image_large:
-    type: image
-    label: inline
-    settings:
-      image_link: ''
-      image_style: ''
-      image_loading:
-        attribute: lazy
-    third_party_settings: {  }
-    weight: 22
-    region: content
-  field_image_normal:
-    type: image
-    label: inline
-    settings:
-      image_link: ''
-      image_style: ''
-      image_loading:
-        attribute: lazy
-    third_party_settings: {  }
-    weight: 21
-    region: content
-  field_image_small:
-    type: image
-    label: inline
-    settings:
-      image_link: ''
-      image_style: ''
-      image_loading:
-        attribute: lazy
-    third_party_settings: {  }
-    weight: 20
     region: content
   field_image_source:
     type: string
@@ -348,5 +321,8 @@ content:
     third_party_settings: {  }
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  field_image_large: true
+  field_image_normal: true
+  field_image_small: true
 

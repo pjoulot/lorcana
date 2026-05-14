@@ -58,8 +58,8 @@ final class LorcastImageImporter extends PluginBase implements CardImageImporter
     return !empty($card->imageUris);
   }
 
-  public function fetchImage(CardData $card, string $size): ?string {
-    $url = $card->imageUris[$size] ?? NULL;
+  public function fetchImage(CardData $card): ?string {
+    $url = $card->imageUris['large'] ?? $card->imageUris['normal'] ?? $card->imageUris['small'] ?? NULL;
     if (!$url) {
       return NULL;
     }
