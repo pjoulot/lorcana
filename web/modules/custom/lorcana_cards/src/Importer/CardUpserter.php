@@ -112,6 +112,7 @@ final class CardUpserter {
       $node->set('field_ink', $this->resolveInkTerm($card->ink));
       $node->set('field_card_types', $card->cardTypes);
       $node->set('field_classifications', $this->resolveClassificationTerms($card->classifications));
+      $node->set('field_character', $this->resolveCharacterTerm($card));
       $node->set('field_strength', $card->strength);
       $node->set('field_willpower', $card->willpower);
       $node->set('field_lore', $card->lore);
@@ -272,6 +273,19 @@ final class CardUpserter {
       }
     }
     return NULL;
+  }
+
+  private function resolveCharacterTerm(CardData $card): ?array {
+    // Only Character cards depict a single named Disney character — Songs and
+    // Actions put song / action names in the `name` field and don't map 1:1.
+    if (!in_array('character', $card->cardTypes, TRUE)) {
+      return NULL;
+    }
+    if ($card->name === '') {
+      return NULL;
+    }
+    $term = $this->findOrCreateTerm('disney_character', $card->name);
+    return ['target_id' => $term->id()];
   }
 
   private function resolveInkTerm(?string $inkLabel): ?array {

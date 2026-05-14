@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace Drupal\lorcana_cards\Drush\Commands;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\lorcana_cards\Importer\CardDataImporterInterface;
 use Drupal\lorcana_cards\Importer\CardDataImporterManager;
 use Drupal\lorcana_cards\Importer\CardImageImporterInterface;
 use Drupal\lorcana_cards\Importer\CardImageImporterManager;
 use Drupal\lorcana_cards\Importer\CardUpserter;
+use Drupal\taxonomy\Entity\Term;
 use Drush\Attributes as CLI;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
+use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class LorcanaImportCommands extends DrushCommands {
 
   use AutowireTrait;
+
+  private const LORCANA_API_BULK_URL = 'https://api.lorcana-api.com/bulk/cards';
 
   public function __construct(
     #[Autowire(service: 'plugin.manager.lorcana_cards.card_data_importer')]
@@ -25,6 +30,10 @@ final class LorcanaImportCommands extends DrushCommands {
     private readonly CardImageImporterManager $imageManager,
     #[Autowire(service: 'lorcana_cards.upserter')]
     private readonly CardUpserter $upserter,
+    #[Autowire(service: 'entity_type.manager')]
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    #[Autowire(service: 'http_client')]
+    private readonly ClientInterface $httpClient,
   ) {
     parent::__construct();
   }
@@ -104,6 +113,79 @@ final class LorcanaImportCommands extends DrushCommands {
       }
     }
     $this->io()->success($this->summarize());
+    return self::EXIT_SUCCESS;
+  }
+
+  #[CLI\Command(name: 'lorcana:import:franchises', aliases: ['lci-fr'])]
+  #[CLI\Help(description: 'Populate field_franchise on existing card nodes from lorcana-api.com. Lorcast does not carry franchise data; this command is the gap-filler.')]
+  #[CLI\Option(name: 'force', description: 'Overwrite even cards that already have a franchise set')]
+  public function importFranchises(array $options = ['force' => FALSE]): int {
+    $this->io()->writeln('Fetching lorcana-api.com bulk card data...');
+    $response = $this->httpClient->request('GET', self::LORCANA_API_BULK_URL, ['timeout' => 60]);
+    $rows = json_decode((string) $response->getBody(), TRUE);
+    if (!is_array($rows)) {
+      $this->io()->error('Bulk endpoint did not return JSON array.');
+      return self::EXIT_FAILURE;
+    }
+    $this->io()->writeln(sprintf('Fetched %d rows; building franchise map.', count($rows)));
+
+    // Key: "<set_code>:<card_num>". lorcana-api uses int Set_Num + int Card_Num
+    // — coerce to strings to match our string-typed fields.
+    $map = [];
+    foreach ($rows as $row) {
+      if (empty($row['Franchise']) || empty($row['Set_Num']) || empty($row['Card_Num'])) {
+        continue;
+      }
+      $key = (string) $row['Set_Num'] . ':' . (string) $row['Card_Num'];
+      $map[$key] = (string) $row['Franchise'];
+    }
+    $this->io()->writeln(sprintf('Indexed %d (set, card) → franchise mappings.', count($map)));
+
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $termStorage = $this->entityTypeManager->getStorage('taxonomy_term');
+    $franchiseTermCache = [];
+
+    $cardIds = $nodeStorage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('type', 'card')
+      ->execute();
+
+    $matched = 0;
+    $skipped = 0;
+    $unmatched = 0;
+    foreach ($nodeStorage->loadMultiple($cardIds) as $card) {
+      if (!$options['force'] && !$card->get('field_franchise')->isEmpty()) {
+        $skipped++;
+        continue;
+      }
+      $set = $card->get('field_set')->entity;
+      if (!$set) {
+        $unmatched++;
+        continue;
+      }
+      $key = $set->get('field_set_code')->value . ':' . $card->get('field_collector_number')->value;
+      if (!isset($map[$key])) {
+        $unmatched++;
+        continue;
+      }
+      $label = $map[$key];
+      if (!isset($franchiseTermCache[$label])) {
+        $existing = $termStorage->loadByProperties(['vid' => 'franchise', 'name' => $label]);
+        if ($existing) {
+          $franchiseTermCache[$label] = reset($existing);
+        }
+        else {
+          $term = Term::create(['vid' => 'franchise', 'name' => $label, 'langcode' => 'en']);
+          $term->save();
+          $franchiseTermCache[$label] = $term;
+        }
+      }
+      $card->set('field_franchise', ['target_id' => $franchiseTermCache[$label]->id()]);
+      $card->save();
+      $matched++;
+    }
+
+    $this->io()->success(sprintf('matched %d · skipped %d (already set) · unmatched %d', $matched, $skipped, $unmatched));
     return self::EXIT_SUCCESS;
   }
 

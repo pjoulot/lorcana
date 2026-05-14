@@ -4,10 +4,12 @@ dependencies:
   config:
     - field.field.node.card.field_card_art
     - field.field.node.card.field_card_types
+    - field.field.node.card.field_character
     - field.field.node.card.field_classifications
     - field.field.node.card.field_collector_number
     - field.field.node.card.field_cost
     - field.field.node.card.field_flavor_text
+    - field.field.node.card.field_franchise
     - field.field.node.card.field_illustrators
     - field.field.node.card.field_image_source
     - field.field.node.card.field_import_source
@@ -59,6 +61,14 @@ content:
     third_party_settings: {  }
     weight: 10
     region: content
+  field_character:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
   field_classifications:
     type: entity_reference_label
     label: inline
@@ -90,6 +100,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 18
+    region: content
+  field_franchise:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 9
     region: content
   field_illustrators:
     type: string

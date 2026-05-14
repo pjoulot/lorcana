@@ -4,10 +4,12 @@ dependencies:
   config:
     - field.field.node.card.field_card_art
     - field.field.node.card.field_card_types
+    - field.field.node.card.field_character
     - field.field.node.card.field_classifications
     - field.field.node.card.field_collector_number
     - field.field.node.card.field_cost
     - field.field.node.card.field_flavor_text
+    - field.field.node.card.field_franchise
     - field.field.node.card.field_illustrators
     - field.field.node.card.field_image_source
     - field.field.node.card.field_import_source
@@ -63,6 +65,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_character:
+    type: entity_reference_autocomplete
+    weight: 8
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_classifications:
     type: entity_reference_autocomplete
     weight: 11
@@ -94,6 +106,16 @@ content:
     region: content
     settings:
       rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_franchise:
+    type: entity_reference_autocomplete
+    weight: 9
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_illustrators:
