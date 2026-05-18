@@ -3,22 +3,19 @@
  * @file
  * Inkfolk page layout — sticky topnav + main + design footer.
  *
- * The five-item primary IA (Cards / Sets / News / Draft / About)
- * is fixed by design, so it is hardcoded here rather than wired to
- * the editable Main menu block. Routes that don't exist yet will
- * 404 cleanly and get filled in by later phases.
+ * Primary navigation comes from the Main menu (`topnav_nav` region);
+ * footer link columns come from the Footer menu (`footer_menu`
+ * region, rendered as a 2-level hierarchy where depth-1 items become
+ * column headings). Both are wired via region template + menu
+ * template overrides so the Drupal menu block renders the design's
+ * exact markup.
+ *
+ * Search / language / "Start a draft" stay hardcoded — they're not
+ * navigation, and there's no editor benefit to making them blocks.
  *
  * Variables documented in the stock Drupal page.html.twig.
  */
 #}
-{% set nav_links = [
-  { id: 'cards', label: 'Cards'|t, href: '/cards' },
-  { id: 'sets',  label: 'Sets'|t,  href: '/sets' },
-  { id: 'news',  label: 'News'|t,  href: '/news' },
-  { id: 'draft', label: 'Draft'|t, href: '/draft' },
-  { id: 'about', label: 'About'|t, href: '/about' },
-] %}
-
 <div class="if-shell">
 
   <header class="if-topnav" role="banner">
@@ -32,12 +29,7 @@
           </svg>
           <span class="if-wordmark__text serif">inkfolk</span>
         </a>
-        <nav class="if-topnav__nav" aria-label="{{ 'Primary'|t }}">
-          {% for link in nav_links %}
-            <a href="{{ link.href }}"
-               class="{{ current_path starts with link.href ? 'is-active' : '' }}">{{ link.label }}</a>
-          {% endfor %}
-        </nav>
+        {{ page.topnav_nav }}
       </div>
 
       <form class="if-topnav__search" role="search" action="/cards" method="get">
@@ -87,28 +79,7 @@
           </a>
           <p>{{ 'A fan project by hobbyists. No ads, no analytics, no paywalls — ever.'|t }}</p>
         </div>
-        <div class="if-footer__col">
-          <h3>{{ 'Cards'|t }}</h3>
-          <ul>
-            <li><a href="/cards">{{ 'Encyclopedia'|t }}</a></li>
-            <li><a href="/cards?advanced=1">{{ 'Advanced search'|t }}</a></li>
-            <li><a href="/sets">{{ 'Browse by set'|t }}</a></li>
-          </ul>
-        </div>
-        <div class="if-footer__col">
-          <h3>{{ 'Draft'|t }}</h3>
-          <ul>
-            <li><a href="/draft">{{ 'Quick start'|t }}</a></li>
-            <li><a href="/draft/how-it-works">{{ 'How it works'|t }}</a></li>
-          </ul>
-        </div>
-        <div class="if-footer__col">
-          <h3>{{ 'About'|t }}</h3>
-          <ul>
-            <li><a href="/about">{{ 'Who we are'|t }}</a></li>
-            <li><a href="/legal">{{ 'Legal'|t }}</a></li>
-          </ul>
-        </div>
+        {{ page.footer_menu }}
       </div>
       <div class="if-footer__bottom">
         <p class="if-footer__disclaimer">

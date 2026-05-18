@@ -26,3 +26,16 @@ libraries-extend:
 description: 'Inkfolk theme for the Lorcana fan site'
 core_version_requirement: ^11
 generator: 'starterkit_theme:11.3.9'
+regions:
+  header: 'Header'
+  topnav_nav: 'Topnav: navigation'
+  primary_menu: 'Primary menu'
+  secondary_menu: 'Secondary menu'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content: 'Content'
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  breadcrumb: 'Breadcrumb'
+  footer_menu: 'Footer: menu columns'
+  footer: 'Footer'

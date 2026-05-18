@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Inkfolk main menu — flat horizontal list for the topnav.
+ *
+ * Renders depth-1 items only (any children are ignored). Active-link
+ * styling rides on Drupal's `in_active_trail` flag — no custom path
+ * comparison needed.
+ *
+ * Available variables documented in core's menu.html.twig.
+ */
+#}
+{% if items %}
+  <nav class="if-topnav__nav" aria-label="{{ 'Primary navigation'|t }}">
+    {% for item in items %}
+      {% set link_class = item.in_active_trail ? 'is-active' : '' %}
+      <a href="{{ item.url }}" class="{{ link_class }}">{{ item.title }}</a>
+    {% endfor %}
+  </nav>
+{% endif %}

@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Inkfolk footer menu — 2-level hierarchy.
+ *
+ * Each depth-1 item becomes a footer column: its label is the
+ * column heading (<h3>), and its children render as the column's
+ * link list. Depth-1 items without an explicit link should set
+ * link/uri to <nolink> so they render as inert headings; the menu
+ * link itself is intentionally NOT rendered as a clickable item.
+ *
+ * Depth >= 3 is ignored.
+ */
+#}
+{% for item in items %}
+  <div class="if-footer__col">
+    <h3>{{ item.title }}</h3>
+    {% if item.below %}
+      <ul>
+        {% for child in item.below %}
+          <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endfor %}
