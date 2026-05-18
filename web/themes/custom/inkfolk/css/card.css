@@ -1,0 +1,62 @@
+/* Inkfolk — Lorcana card component
+ *
+ * Renders a Lorcana card as a clickable, aspect-locked tile around
+ * its licensed art. The art image fills the tile (object-fit: cover)
+ * — the prototype's overlay UI (cost badge, ink swatch, name plate,
+ * stats row) is not ported because real card art already carries
+ * all of those.
+ *
+ * Foil overlay (.if-foil) is intentionally not styled here either —
+ * deferred to a final polish phase.
+ *
+ * Sizes are not hardcoded: the wrapper takes whatever width its
+ * parent grid/flex cell gives it, and the 5/7 aspect ratio locks
+ * the height. So the same component scales from a 110px thumb to a
+ * 440px hero with no CSS changes.
+ */
+
+/* The clickable wrapper. The frame modifier (.if-cardframe--subtle,
+ * --rarity, --none) is added via the template; defaults below. */
+.if-lcard {
+  display: block;
+  position: relative;
+  aspect-ratio: 5 / 7;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* The image container that the frame modifiers in utilities.css
+ * target. Clips the image, applies the corner radius, hosts the
+ * shadow from .if-cardframe--subtle. */
+.if-card-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+/* The licensed art itself. Drupal renders the image via the
+ * media_thumbnail formatter, so we target the <img> directly. */
+.if-card-image img,
+.if-card-image picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Empty-state: render a neutral ink-tinted card-back instead of a
+ * broken-image icon when a card has no field_card_art yet. */
+.if-card-image:empty::after,
+.if-lcard--no-art .if-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 30%, var(--accent-soft), transparent 60%),
+    var(--surface-2);
+}

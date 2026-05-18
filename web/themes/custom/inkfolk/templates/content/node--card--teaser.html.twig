@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * Card node — teaser view mode (encyclopedia grid + carousel cells).
+ *
+ * Renders a single Lorcana card as a clickable, aspect-locked tile
+ * wrapping its licensed art. The frame treatment defaults to
+ * "subtle" (per design); the encyclopedia or detail page can swap
+ * the modifier when needed.
+ *
+ * Available variables documented in core's node.html.twig.
+ */
+#}
+{% set has_art = content.field_card_art|render is not empty %}
+{% set classes = [
+  'if-lcard',
+  'if-cardframe--subtle',
+  not has_art ? 'if-lcard--no-art',
+] %}
+
+<a href="{{ url }}"
+   {{ attributes.addClass(classes) }}
+   aria-label="{{ node.label }}">
+  <div class="if-card-image">
+    {{ content.field_card_art }}
+  </div>
+</a>

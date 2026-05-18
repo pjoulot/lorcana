@@ -6,6 +6,7 @@ global:
       css/typography.css: { weight: -19 }
       css/utilities.css: { weight: -18 }
       css/chrome.css: { weight: -17 }
+      css/card.css: { weight: -16 }
 
 fonts:
   remote: https://fonts.google.com/
