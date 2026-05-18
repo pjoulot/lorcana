@@ -9,6 +9,7 @@ global:
       css/card.css: { weight: -16 }
       css/encyclopedia.css: { weight: -15 }
       css/facets.css: { weight: -14 }
+      css/card-detail.css: { weight: -13 }
   js:
     js/encyclopedia.js: { defer: true }
   dependencies:

@@ -1,0 +1,117 @@
+{#
+/**
+ * @file
+ * Card node — full view mode (the canonical /cards/<set>/<number>
+ * page).
+ *
+ * 2-column layout per the design:
+ *  - Left (sticky): the licensed card art + meta (illustrator, set,
+ *    released date).
+ *  - Right: rarity/set eyebrow, version subtitle, name H1,
+ *    type/classification row, stats grid, abilities block, flavor
+ *    text.
+ *
+ * Deferred for a later polish phase: "Where to buy", "Mentioned in
+ * news" (M2), "Other versions" multi-printing strip (M2).
+ *
+ * Available variables documented in core's node.html.twig.
+ */
+#}
+{% set version = node.field_version.value %}
+{% set version_suffix = version ? ' — ' ~ version : '' %}
+{% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
+{% set set_node = node.field_set.entity %}
+{% set rarity = content.field_rarity|render|striptags|trim %}
+{% set ink_term = node.field_ink.entity %}
+{% set ink_slug = ink_term ? ink_term.label|lower : '' %}
+
+{% set stats = [
+  { key: 'cost',      label: 'Cost'|t,      value: node.field_cost.value,      show: node.field_cost.value is not empty },
+  { key: 'strength',  label: 'Strength'|t,  value: node.field_strength.value,  show: node.field_strength.value is not empty },
+  { key: 'willpower', label: 'Willpower'|t, value: node.field_willpower.value, show: node.field_willpower.value is not empty },
+  { key: 'lore',      label: 'Lore'|t,      value: node.field_lore.value,      show: node.field_lore.value is not empty },
+  { key: 'move',      label: 'Move'|t,      value: node.field_move_cost.value, show: node.field_move_cost.value is not empty },
+] %}
+
+<article{{ attributes.addClass(['if-card-detail', ink_slug ? 'if-card-detail--ink-' ~ ink_slug]) }}>
+
+  <div class="if-card-detail__art">
+    <div class="if-lcard if-cardframe--subtle">
+      <div class="if-card-image">{{ content.field_card_art }}</div>
+    </div>
+    <dl class="if-card-detail__meta">
+      {% if node.field_illustrators.value %}
+        <div><dt>{{ 'Illustrator'|t }}</dt><dd>{{ content.field_illustrators }}</dd></div>
+      {% endif %}
+      {% if set_node %}
+        <div>
+          <dt>{{ 'Set'|t }}</dt>
+          <dd>
+            № {{ node.field_collector_number.value }}{% if set_node.field_card_count.value %} / {{ set_node.field_card_count.value }}{% endif %}
+            · <a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a>
+          </dd>
+        </div>
+      {% endif %}
+      {% if node.field_released_at.value %}
+        <div><dt>{{ 'Released'|t }}</dt><dd>{{ content.field_released_at }}</dd></div>
+      {% endif %}
+    </dl>
+  </div>
+
+  <div class="if-card-detail__info">
+
+    <div class="if-card-detail__eyebrow">
+      {% if rarity %}
+        <span class="if-card-detail__rarity if-card-detail__rarity--{{ rarity|lower|replace({' ': '-'}) }}">{{ rarity }}</span>
+      {% endif %}
+      {% if set_node %}
+        {% if rarity %}<span class="if-card-detail__eyebrow-sep">·</span>{% endif %}
+        <a class="if-card-detail__set" href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a>
+      {% endif %}
+    </div>
+
+    {% if version %}
+      <div class="if-card-detail__subtitle">{{ version }}</div>
+    {% endif %}
+
+    <h1 class="if-card-detail__title serif">{{ base_name }}</h1>
+
+    <div class="if-card-detail__type">
+      {% if node.field_card_types.value %}
+        <span class="if-card-detail__type-list">{{ content.field_card_types }}</span>
+      {% endif %}
+      {% if node.field_classifications.value %}
+        <span class="if-card-detail__type-sep">—</span>
+        <span class="if-card-detail__class-list">{{ content.field_classifications }}</span>
+      {% endif %}
+    </div>
+
+    <div class="if-card-detail__stats">
+      {% for stat in stats %}
+        {% if stat.show %}
+          <div class="if-stat if-stat--{{ stat.key }}">
+            <div class="if-stat__label">{{ stat.label }}</div>
+            <div class="if-stat__value serif">{{ stat.value }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if node.field_text.value %}
+      <section class="if-card-detail__abilities">
+        <h2 class="if-card-detail__h2">{{ 'Abilities'|t }}</h2>
+        <div class="if-card-detail__abilities-body">
+          {{ content.field_text }}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if node.field_flavor_text.value %}
+      <p class="if-card-detail__flavor serif">
+        {{ content.field_flavor_text }}
+      </p>
+    {% endif %}
+
+  </div>
+
+</article>

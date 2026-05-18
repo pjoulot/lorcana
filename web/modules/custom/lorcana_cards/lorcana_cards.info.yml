@@ -20,3 +20,4 @@ dependencies:
   - search_api:search_api
   - search_api:search_api_db
   - facets:facets
+  - pathauto:pathauto

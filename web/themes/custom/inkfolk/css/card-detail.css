@@ -1,0 +1,248 @@
+/* Inkfolk — card detail page
+ *
+ * Layout + typography for the /node/<card> "full" view mode. Pure
+ * CSS over the design-token palette; no card-image overlays — the
+ * licensed art carries cost/name/stats already.
+ *
+ * Polish items deferred to a later pass:
+ *  - "Where to buy" link list (no price feed wired yet)
+ *  - "Mentioned in" related-news strip (M2 — news content type)
+ *  - "Other versions" multi-printing carousel (M2 — printing groups)
+ *  - "Save to deck" / "Reverse" buttons under the art
+ */
+
+/* Hide the duplicate page-title block on card nodes — the design's
+ * H1 lives inside the right column, not above the layout. */
+.page-node-type-card .page-title {
+  display: none;
+}
+
+.if-card-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px 56px;
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Inside the detail, field render outputs come with default labels
+ * + wrappers that would re-introduce "Cost: 4" inline styling. We
+ * lay out our own labels and just want the values. */
+.if-card-detail .field__label { display: none; }
+.if-card-detail .field { margin: 0; }
+
+/* ───── Left column: art + meta ───────────────────────── */
+
+.if-card-detail__art {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  gap: 18px;
+}
+.if-card-detail__art .if-lcard {
+  width: 100%;
+  /* The shadow on .if-cardframe--subtle isn't enough at hero scale —
+   * lift the art a bit more. */
+  filter: drop-shadow(0 16px 30px rgba(35, 25, 10, .18));
+}
+
+.if-card-detail__meta {
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.if-card-detail__meta > div {
+  display: flex;
+  gap: 6px;
+}
+.if-card-detail__meta dt,
+.if-card-detail__meta dd {
+  margin: 0;
+  display: inline;
+}
+.if-card-detail__meta dt::after { content: ':'; }
+.if-card-detail__meta dd { color: var(--ink-2); }
+.if-card-detail__meta a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.if-card-detail__meta a:hover { color: var(--ink); }
+
+/* ───── Right column: info ────────────────────────────── */
+
+.if-card-detail__eyebrow {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.if-card-detail__rarity {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--rarity-rare);
+}
+.if-card-detail__rarity--common      { color: var(--rarity-common);      }
+.if-card-detail__rarity--uncommon    { color: var(--rarity-uncommon);    }
+.if-card-detail__rarity--rare        { color: var(--rarity-rare);        }
+.if-card-detail__rarity--super-rare  { color: var(--rarity-super);       }
+.if-card-detail__rarity--legendary   { color: var(--rarity-legendary);   }
+.if-card-detail__rarity--enchanted {
+  /* The enchanted "color" is a gradient — paint the text with it. */
+  background: var(--rarity-enchanted);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.if-card-detail__eyebrow-sep {
+  color: var(--ink-4);
+}
+.if-card-detail__set {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.if-card-detail__set:hover { color: var(--ink-2); }
+
+.if-card-detail__subtitle {
+  font-size: 14px;
+  color: var(--ink-3);
+  letter-spacing: .02em;
+  margin-bottom: 4px;
+}
+
+.if-card-detail__title {
+  font-size: 52px;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+
+.if-card-detail__type {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.if-card-detail__type-sep { color: var(--ink-4); }
+.if-card-detail__type-list,
+.if-card-detail__class-list {
+  /* Override field-default block display so multiple values flow inline. */
+}
+.if-card-detail__type-list .field__item,
+.if-card-detail__class-list .field__item,
+.if-card-detail__type-list .field--label-inline .field__items,
+.if-card-detail__class-list .field--label-inline .field__items {
+  display: inline;
+}
+.if-card-detail__type-list .field__item + .field__item::before,
+.if-card-detail__class-list .field__item + .field__item::before {
+  content: ' · ';
+  color: var(--ink-4);
+}
+.if-card-detail__type-list .field__label,
+.if-card-detail__class-list .field__label {
+  display: none;
+}
+
+/* ───── Stats grid ───────────────────────────────────── */
+
+.if-card-detail__stats {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 1px;
+  margin-top: 20px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.if-stat {
+  background: var(--surface);
+  padding: 16px 18px;
+}
+.if-stat__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.if-stat__value {
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.if-stat__value .field__item { display: inline; }
+
+/* ───── Abilities block ──────────────────────────────── */
+
+.if-card-detail__h2 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 28px 0 12px;
+  font-family: var(--font-ui);
+}
+
+.if-card-detail__abilities-body {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.if-card-detail__abilities-body .field__label { display: none; }
+.if-card-detail__abilities-body p { margin: 0 0 10px; }
+.if-card-detail__abilities-body p:last-child { margin-bottom: 0; }
+
+/* ───── Flavor text ──────────────────────────────────── */
+
+.if-card-detail__flavor {
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  margin: 18px 0 0;
+  padding: 0 4px;
+}
+.if-card-detail__flavor .field__label { display: none; }
+
+/* ───── Responsive ──────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .if-card-detail {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 16px 16px 40px;
+  }
+  .if-card-detail__art {
+    position: static;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .if-card-detail__title { font-size: 36px; }
+  .if-stat__value { font-size: 28px; }
+}

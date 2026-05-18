@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.card
+  module:
+    - node
+id: card_node
+label: 'Card node'
+type: 'canonical_entities:node'
+pattern: '/cards/[node:field_set:entity:field_set_code]/[node:field_collector_number]'
+selection_criteria:
+  node_type:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      card: card
+selection_logic: and
+weight: -10
+relationships: {  }
+

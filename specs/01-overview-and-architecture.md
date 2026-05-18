@@ -140,6 +140,10 @@ We operate under [Ravensburger's Community Code Policy](https://cdn.ravensburger
 - Keep card images at reasonable display resolution (no print-ready archives, no bulk-download endpoints).
 - Provide `/about` (states fan/non-commercial status, who runs the site) and `/legal` (longer-form version of the footer) pages, both linked from the footer. `/privacy` page added when accounts arrive.
 
+### Brand assets sourcing
+
+When the project needs official Ravensburger / Disney Lorcana visual assets (e.g. ink symbols for the encyclopedia facet sidebar), the authoritative source is Ravensburger's brand portal: **https://brand.ravensburger-group.com/d/e1vhRSQ7WeNy/downloads**. Anything we use from there is subject to the licence terms the portal states at download time — not to the Community Code Policy. Re-host downloaded assets locally; do not hotlink. Until specific assets are sourced and licensed, the encyclopedia substitutes our own design-token colors (plain CSS-rendered swatches), not stylised reproductions of the licensed marks.
+
 ### Footer disclaimer text (English)
 
 ```
