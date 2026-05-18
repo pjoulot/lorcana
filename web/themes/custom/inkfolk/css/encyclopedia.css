@@ -1,0 +1,193 @@
+/* Inkfolk — encyclopedia (/cards) layout
+ *
+ * Wraps the Views output for the cards encyclopedia. The view renders
+ * each card via the teaser template (Phase 3); this stylesheet
+ * provides the header strip, the 5-column grid that contains the
+ * teasers, an exposed-form pill, and the pager treatment.
+ *
+ * Facet sidebar is a separate concern — lands in a follow-up commit
+ * with the Facets blocks.
+ */
+
+/* Outer page shell — provides side padding and a max-width gutter. */
+.view-cards {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 32px 56px;
+}
+
+/* The "Home" breadcrumb on the encyclopedia is visual noise.
+ * Card detail / set pages get their own breadcrumb trail later. */
+.path-cards nav[aria-labelledby*="breadcrumbs"] {
+  display: none;
+}
+
+/* Page title strip — moves the standard page-title block above the
+ * view. Lives in the content region so the view header doesn't have
+ * to know about it. */
+.path-cards .page-title {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 32px 0;
+}
+.path-cards .page-title h1 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0;
+}
+
+/* Title strip: H1 + result hint + sort/view toggle on the right.
+ * The default Views page title comes from page.title_block; we just
+ * style whatever is there. */
+.path-cards h1.page-title {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0 0 4px;
+}
+
+/* Exposed filter form — kept functional (?q= still filters) but
+ * hidden from view; the topnav search is the visible entry point. */
+.view-cards .views-exposed-form {
+  display: none;
+}
+.view-cards .views-exposed-form-visible {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.view-cards .views-exposed-form .form-item-q {
+  flex: 1;
+  max-width: 520px;
+}
+.view-cards .views-exposed-form input[type="text"] {
+  width: 100%;
+  font: 14px var(--font-ui);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 16px;
+  color: var(--ink);
+}
+.view-cards .views-exposed-form input[type="text"]:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.view-cards .views-exposed-form .form-actions {
+  display: flex;
+  gap: 6px;
+}
+.view-cards .views-exposed-form input[type="submit"] {
+  font: 500 14px/1 var(--font-ui);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 11px 16px;
+  cursor: pointer;
+}
+.view-cards .views-exposed-form input[type="submit"][value="Search"] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* Hide the redundant "Search" label — the placeholder text is enough. */
+.view-cards .views-exposed-form label[for*="edit-q"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The grid. Wraps the unformatted-list rows directly. */
+.view-cards .view-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+@media (max-width: 1080px) {
+  .view-cards .view-content { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 800px) {
+  .view-cards .view-content { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 480px) {
+  .view-cards .view-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Each row from the default Views style — we set a class on it so the
+ * grid lays it out as a cell, but we don't need any other decoration. */
+.view-cards .if-encyclopedia__cell {
+  display: contents;
+}
+
+/* Empty state. */
+.view-cards .view-empty {
+  padding: 80px 0;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 16px;
+}
+
+/* Pager — overrides core's tablesy default with the design's
+ * pill-shaped chip layout. */
+.view-cards .pager {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.view-cards .pager__items {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.view-cards .pager__item a,
+.view-cards .pager__item.is-active a,
+.view-cards .pager__item--current {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  border: 1px solid transparent;
+  background: transparent;
+}
+.view-cards .pager__item--current,
+.view-cards .pager__item.is-active a {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.view-cards .pager__item a:hover {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+.view-cards .pager__item--first a,
+.view-cards .pager__item--last a,
+.view-cards .pager__item--previous a,
+.view-cards .pager__item--next a {
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+}

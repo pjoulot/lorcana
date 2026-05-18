@@ -1,0 +1,150 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.cards
+  module:
+    - search_api
+    - user
+id: cards
+label: 'Cards (encyclopedia)'
+module: views
+description: 'The /cards encyclopedia. Backed by the Search API "cards" index; renders each result as a teaser-mode card node so the designed grid-cell template ships through Views.'
+tag: lorcana
+base_table: search_api_index_cards
+base_field: search_api_id
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Cards
+      fields: {  }
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 33
+          total_pages: null
+          id: 0
+          tags:
+            next: ›
+            previous: ‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+          quantity: 5
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Search
+          reset_button: true
+          reset_button_label: Reset
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: search_api_none
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No cards match those filters.'
+            format: plain_text
+      sorts:
+        title:
+          id: title
+          table: search_api_index_cards
+          field: title
+          plugin_id: search_api
+          order: ASC
+      filters:
+        search_api_fulltext:
+          id: search_api_fulltext
+          table: search_api_index_cards
+          field: search_api_fulltext
+          plugin_id: search_api_fulltext
+          operator: AND
+          value: ''
+          exposed: true
+          expose:
+            operator_id: search_api_fulltext_op
+            label: Search
+            description: ''
+            identifier: search
+            required: false
+            placeholder: 'Search cards…'
+          parse_mode: terms
+          fields:
+            - title
+        status:
+          id: status
+          table: search_api_index_cards
+          field: status
+          plugin_id: search_api_boolean
+          value: '1'
+      style:
+        type: default
+        options:
+          row_class: if-encyclopedia__cell
+          default_row_class: false
+      row:
+        type: search_api
+        options:
+          view_modes:
+            'entity:node':
+              card: teaser
+      query:
+        type: search_api_query
+        options: {  }
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:search_api.index.cards'
+        - 'search_api_list:cards'
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: cards
+      menu:
+        type: none
+        title: ''
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:search_api.index.cards'
+        - 'search_api_list:cards'
+

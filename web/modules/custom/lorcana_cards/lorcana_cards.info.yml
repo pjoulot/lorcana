@@ -16,3 +16,7 @@ dependencies:
   - drupal:path
   - drupal:media
   - drupal:media_library
+  - drupal:views
+  - search_api:search_api
+  - search_api:search_api_db
+  - facets:facets
