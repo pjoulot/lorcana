@@ -1,0 +1,86 @@
+/* Inkfolk — utility classes
+ *
+ * Reusable presentational helpers ported from the design handoff.
+ * Foil overlay (.if-foil) is intentionally omitted — deferred to a
+ * final polish phase. Designer-tool affordances (.if-mobile-frame,
+ * .if-scroll) are not ported.
+ */
+
+.if-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+}
+
+.hairline { background: var(--line); }
+.hairline-strong { background: var(--line-strong); }
+
+/* Buttons. */
+.if-btn {
+  font: 500 14px/1 var(--font-ui);
+  letter-spacing: -0.005em;
+  border-radius: 999px;
+  padding: 11px 16px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .12s, transform .06s, box-shadow .12s;
+}
+.if-btn:hover { background: var(--paper-2); }
+.if-btn:active { transform: translateY(0.5px); }
+
+.if-btn--primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.if-btn--primary:hover { background: #000; }
+
+.if-btn--accent {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .if-btn:hover { background: #232733; }
+[data-theme="dark"] .if-btn--primary {
+  background: var(--ink);
+  color: #0E1014;
+  border-color: var(--ink);
+}
+[data-theme="dark"] .if-btn--primary:hover { background: #fff; }
+
+/* Chips. */
+.if-chip {
+  font: 500 12px/1 var(--font-ui);
+  border-radius: 999px;
+  padding: 5px 10px 5px 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Card-frame treatments — production default is "subtle". The element
+ * carrying the card image gets .if-card-image; the wrapper picks one
+ * of these modifier classes. */
+.if-cardframe--none .if-card-image {
+  border: 0 !important;
+}
+.if-cardframe--subtle .if-card-image {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, .06),
+    0 6px 18px rgba(0, 0, 0, .08);
+}
+.if-cardframe--rarity .if-card-image {
+  box-shadow:
+    0 0 0 2px var(--rarity-color, var(--line)),
+    0 6px 18px rgba(0, 0, 0, .10);
+}

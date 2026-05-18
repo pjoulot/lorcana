@@ -1,3 +1,21 @@
+global:
+  version: VERSION
+  css:
+    base:
+      css/tokens.css: { weight: -20 }
+      css/typography.css: { weight: -19 }
+      css/utilities.css: { weight: -18 }
+
+fonts:
+  remote: https://fonts.google.com/
+  license:
+    name: Open Font License
+    url: https://openfontlicense.org/
+    gpl-compatible: true
+  css:
+    base:
+      //fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap: { type: external, minified: true }
+
 base:
   version: VERSION
   css:

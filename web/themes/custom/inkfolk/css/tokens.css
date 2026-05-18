@@ -1,0 +1,97 @@
+/* Inkfolk — design tokens
+ *
+ * Port of the design handoff (specs/design/.../project/styles.css).
+ * Light is the production baseline; dark overrides are scaffolded
+ * here so the toggle UI can land later without a token refactor.
+ *
+ * The handoff also defined three "aesthetic" variants
+ * (editorial / storybook / modern) as designer-tweak knobs — we
+ * picked Editorial for production, so its values are baked into
+ * :root and the data-aesthetic attribute is gone.
+ */
+
+:root {
+  /* Ink colors — Lorcana's six resource colors, used as ACCENTS only. */
+  --ink-amber:    #F4B042;
+  --ink-amethyst: #A56FCF;
+  --ink-emerald:  #3D9F6A;
+  --ink-ruby:     #D14B4B;
+  --ink-sapphire: #3B7BC4;
+  --ink-steel:    #8C9AA3;
+
+  /* Soft tints — for chips, backgrounds, hover states. */
+  --ink-amber-soft:    #FBEACB;
+  --ink-amethyst-soft: #ECDEF4;
+  --ink-emerald-soft:  #D5ECDF;
+  --ink-ruby-soft:     #F4D6D6;
+  --ink-sapphire-soft: #D4E2F1;
+  --ink-steel-soft:    #DEE3E6;
+
+  /* Brand accent (default = amber). */
+  --accent:       var(--ink-amber);
+  --accent-soft:  var(--ink-amber-soft);
+  --accent-ink:   #5e3f10;
+
+  /* Neutrals — warm off-white paper palette (Editorial values). */
+  --paper:        #FBFAF7;
+  --paper-2:      #F4F2EC;
+  --surface:      #FFFFFF;
+  --surface-2:    #FBF8F2;
+  --line:         #E7DFD2;
+  --line-strong:  #D6CBB6;
+  --ink:          #1F1A12;
+  --ink-2:        #4A4233;
+  --ink-3:        #7B7160;
+  --ink-4:        #A89E89;
+
+  /* Rarity tints. */
+  --rarity-common:     #B2A78F;
+  --rarity-uncommon:   #6B6B6B;
+  --rarity-rare:       #C9A24A;
+  --rarity-super:      #B07AC4;
+  --rarity-legendary:  #C2843A;
+  --rarity-enchanted:  linear-gradient(120deg, #E6B85A, #C57BB8, #5BA0D4, #73C7A0);
+
+  /* Type stacks. */
+  --font-display: 'Newsreader', 'Iowan Old Style', 'Charter', Georgia, serif;
+  --font-ui:      'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Roboto Mono', ui-monospace, monospace;
+
+  /* Radii. */
+  --r-1: 6px;
+  --r-2: 10px;
+  --r-3: 14px;
+  --r-4: 20px;
+
+  /* Shadows. */
+  --shadow-1: 0 1px 2px rgba(35, 25, 10, .05), 0 1px 1px rgba(35, 25, 10, .03);
+  --shadow-2: 0 4px 14px rgba(35, 25, 10, .07), 0 1px 2px rgba(35, 25, 10, .04);
+  --shadow-3: 0 14px 40px rgba(35, 25, 10, .10), 0 2px 6px rgba(35, 25, 10, .05);
+}
+
+/* Dark mode — scaffolded; activated by setting data-theme="dark" on <html>. */
+[data-theme="dark"] {
+  --paper:        #0E1014;
+  --paper-2:      #161920;
+  --surface:      #1C2029;
+  --surface-2:    #14171E;
+  --line:         #272B36;
+  --line-strong:  #383D4A;
+  --ink:          #ECE6D6;
+  --ink-2:        #B5AFA0;
+  --ink-3:        #7B7669;
+  --ink-4:        #54514A;
+
+  --ink-amber-soft:    #2B2114;
+  --ink-amethyst-soft: #211A2D;
+  --ink-emerald-soft:  #112218;
+  --ink-ruby-soft:     #2A1717;
+  --ink-sapphire-soft: #122130;
+  --ink-steel-soft:    #1C2128;
+
+  --accent-ink: #F5D58B;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .55);
+  --shadow-2: 0 6px 18px rgba(0, 0, 0, .5), 0 0 0 1px rgba(255, 255, 255, .025);
+  --shadow-3: 0 22px 50px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .03);
+}

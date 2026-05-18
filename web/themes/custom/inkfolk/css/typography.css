@@ -1,0 +1,31 @@
+/* Inkfolk — typography base
+ *
+ * Body & heading defaults that consume the tokens.css custom properties.
+ * Generic helpers (.serif, .mono) for opting individual elements into
+ * non-default stacks (e.g. tabular numerals on a stats row).
+ */
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01', 'cv11';
+  line-height: 1.45;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.serif {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}

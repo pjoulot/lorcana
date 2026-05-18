@@ -3,6 +3,8 @@ type: theme
 'base theme': stable9
 version: 1.0.0
 libraries:
+  - inkfolk/global
+  - inkfolk/fonts
   - inkfolk/base
   - inkfolk/messages
   - core/normalize
