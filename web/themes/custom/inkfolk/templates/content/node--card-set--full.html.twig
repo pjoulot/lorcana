@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Card set — full view mode (the canonical /sets/{code} page).
+ *
+ * Hero band (set name + meta) followed by the encyclopedia teaser
+ * grid filtered to this set, via the cards view's block_set
+ * display. The set's chase cards / products / sourced cover image
+ * are polish items deferred to a later pass.
+ */
+#}
+<article{{ attributes.addClass('if-set-page') }}>
+
+  <header class="if-set-page__hero">
+    <div class="if-set-page__chip">{{ 'Set № '|t }}{{ node.field_set_code.value }}</div>
+    <h1 class="if-set-page__title serif">{{ node.label }}</h1>
+    <dl class="if-set-page__meta">
+      {% if node.field_released_at.value %}
+        <div>
+          <dt>{{ 'Released'|t }}</dt>
+          <dd>{{ node.field_released_at.0.value|date('j F Y') }}</dd>
+        </div>
+      {% endif %}
+      {% if node.field_set_code.value %}
+        <div>
+          <dt>{{ 'Code'|t }}</dt>
+          <dd>{{ node.field_set_code.value }}</dd>
+        </div>
+      {% endif %}
+      <div>
+        <dt>{{ 'Browse'|t }}</dt>
+        <dd><a href="/cards?f%5B0%5D=set%3A{{ node.id }}">{{ 'Open in encyclopedia →'|t }}</a></dd>
+      </div>
+    </dl>
+  </header>
+
+  <section class="if-set-page__cards">
+    {{ cards_in_set }}
+  </section>
+
+</article>

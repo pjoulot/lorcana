@@ -6,6 +6,24 @@
  */
 
 /**
+ * Implements hook_preprocess_node().
+ *
+ * On the full card_set page, embed the cards-in-set block view as a
+ * variable so node--card-set--full.html.twig can render the grid
+ * without going through twig_tweak.
+ */
+function inkfolk_preprocess_node(array &$variables): void {
+  $node = $variables['node'] ?? NULL;
+  if (!$node || $node->bundle() !== 'card_set') {
+    return;
+  }
+  if (($variables['view_mode'] ?? '') !== 'full') {
+    return;
+  }
+  $variables['cards_in_set'] = views_embed_view('cards', 'block_set', $node->id());
+}
+
+/**
  * Implements hook_preprocess_facets_result_item().
  *
  * Computes a slug from the displayed facet value so the template

@@ -1,0 +1,160 @@
+/* Inkfolk — sets listing + single set page
+ *
+ * Bones-only styling for /sets (grid of set tiles) and the canonical
+ * /sets/{code} page. Hero band, meta strip, and the encyclopedia
+ * teaser grid embedded as a Views block.
+ *
+ * Polish items deferred to a later pass:
+ *  - Cover image in the hero (need sourced assets).
+ *  - "Chase cards" + "Products" sections from the prototype.
+ *  - Stylised stacked-cards visual on the "Open in encyclopedia" CTA.
+ */
+
+/* ───── /sets listing ─────────────────────────────────── */
+
+.view-sets {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px 56px;
+}
+.view-sets .view-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 900px) { .view-sets .view-content { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .view-sets .view-content { grid-template-columns: 1fr; } }
+.view-sets .if-sets__cell { display: contents; }
+
+/* ───── Set tile (card_set teaser) ──────────────────── */
+
+.if-set-tile {
+  display: grid;
+  gap: 8px;
+  padding: 22px 22px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color .12s, box-shadow .12s, transform .06s;
+}
+.if-set-tile:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+.if-set-tile__chip {
+  display: inline-flex;
+  align-self: start;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--paper-2);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.if-set-tile__title {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.if-set-tile__meta {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* ───── /sets/{code} single set page ────────────────── */
+
+/* Hide the duplicate page-title block + breadcrumb on the canonical
+ * set page — the hero band below provides the title and meta. */
+.page-node-type-card-set .page-title,
+.page-node-type-card-set .breadcrumb,
+.path-sets .breadcrumb {
+  display: none;
+}
+
+.if-set-page {
+  /* Hero spans the full content width; the cards grid below it
+   * keeps the standard encyclopedia gutter (handled by the cards
+   * view's own padding via .view-cards). */
+}
+.if-set-page__hero {
+  background:
+    radial-gradient(60% 60% at 85% 0%, var(--ink-amber-soft) 0%, transparent 60%),
+    radial-gradient(50% 60% at 0% 100%, var(--ink-amethyst-soft) 0%, transparent 60%),
+    var(--paper);
+  border-bottom: 1px solid var(--line);
+  padding: 56px 32px 40px;
+}
+.if-set-page__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px;
+  margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.if-set-page__chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.if-set-page__title {
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  color: var(--ink);
+  margin: 0 0 12px;
+  line-height: 1.02;
+  max-width: 720px;
+}
+.if-set-page__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin: 22px 0 0;
+  padding: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.if-set-page__meta > div { display: flex; gap: 6px; }
+.if-set-page__meta dt, .if-set-page__meta dd { margin: 0; display: inline; }
+.if-set-page__meta dt { color: var(--ink-3); }
+.if-set-page__meta dt::after { content: ' ·'; }
+.if-set-page__meta dd { font-weight: 600; }
+.if-set-page__meta a {
+  color: var(--accent-ink);
+  text-decoration: none;
+  font-weight: 600;
+}
+.if-set-page__meta a:hover { text-decoration: underline; }
+
+@media (max-width: 700px) {
+  .if-set-page__hero { padding: 36px 16px 28px; }
+  .if-set-page__title { font-size: 36px; }
+  .if-set-page__meta { gap: 16px; }
+}
+
+/* The embedded cards view inside .if-set-page reuses .view-cards
+ * styles from encyclopedia.css — grid + teasers — so no rules
+ * needed here beyond toning the outer padding. */
+.if-set-page__cards .view-cards {
+  padding-top: 32px;
+}

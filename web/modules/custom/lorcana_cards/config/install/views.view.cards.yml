@@ -120,6 +120,43 @@ display:
       tags:
         - 'config:search_api.index.cards'
         - 'search_api_list:cards'
+  block_set:
+    id: block_set
+    display_title: 'Cards in set (block)'
+    display_plugin: block
+    position: 2
+    display_options:
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 100
+      arguments:
+        field_set_target_id:
+          id: field_set_target_id
+          table: search_api_index_cards
+          field: field_set_target_id
+          plugin_id: search_api
+          default_action: empty
+          default_argument_type: fixed
+          default_argument_options:
+            argument: ''
+      defaults:
+        pager: false
+        arguments: false
+      display_extenders: {  }
+      block_description: 'Cards in set (contextual)'
+      block_category: Lorcana
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:search_api.index.cards'
+        - 'search_api_list:cards'
   page_1:
     id: page_1
     display_title: Page

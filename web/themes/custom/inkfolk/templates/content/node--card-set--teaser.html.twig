@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Card set — teaser view mode (the /sets listing tile).
+ *
+ * Bones-only tile for now: set name, set code chip, release date.
+ * Cover art lands as a polish item once we have a sourced image set
+ * (deferred — see specs/01-overview-and-architecture.md #Brand
+ * assets sourcing).
+ */
+#}
+<a href="{{ url }}" {{ attributes.addClass(['if-set-tile']) }} aria-label="{{ node.label }}">
+  <div class="if-set-tile__chip">{{ 'Set № '|t }}{{ node.field_set_code.value }}</div>
+  <h3 class="if-set-tile__title serif">{{ node.label }}</h3>
+  {% if node.field_released_at.value %}
+    <div class="if-set-tile__meta">{{ node.field_released_at.0.value|date('M Y') }}</div>
+  {% endif %}
+</a>
