@@ -60,9 +60,15 @@
   {{ page.highlighted }}
   {{ page.help }}
 
-  <main role="main" class="if-main">
-    <a id="main-content" tabindex="-1"></a>
-    {{ page.content }}
+  <main role="main" class="if-main{% if page.sidebar_first %} if-main--with-sidebar{% endif %}">
+    {% if page.sidebar_first %}
+      <aside class="if-sidebar" aria-label="{{ 'Filters'|t }}">
+        {{ page.sidebar_first }}
+      </aside>
+    {% endif %}
+    <div id="main-content" tabindex="-1" class="if-main__content">
+      {{ page.content }}
+    </div>
   </main>
 
   <footer class="if-footer" role="contentinfo">

@@ -1,0 +1,142 @@
+/* Inkfolk — facet sidebar
+ *
+ * Styles the Facets module's default `links` widget output to match
+ * the prototype's encyclopedia sidebar (FacetGroup / FacetCheck).
+ * The block label becomes the group heading; the <ul.facet-inactive>
+ * list becomes the checked-checkbox list.
+ *
+ * Active-state filter chips above the grid are a polish item — not
+ * here yet.
+ */
+
+/* Two-column main-content layout when the sidebar is populated. */
+.if-main--with-sidebar {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.if-sidebar {
+  padding: 24px 22px 32px;
+  border-right: 1px solid var(--line);
+  background: var(--paper);
+  position: sticky;
+  top: 64px;
+  align-self: start;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+@media (max-width: 900px) {
+  .if-main--with-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .if-sidebar {
+    position: static;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* Each facet block becomes a "group" (matching the prototype's
+ * FacetGroup component): label up top, item list below, hairline
+ * separator above. */
+.if-sidebar .block {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+.if-sidebar .block:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.if-sidebar h2 {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+  font-family: var(--font-ui);
+}
+
+/* The facet item list — Facets emits a plain <ul>. */
+.if-sidebar .facet-item-list,
+.if-sidebar ul.facets-widget-links,
+.if-sidebar ul[data-drupal-facet-id] {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.if-sidebar .facet-item {
+  list-style: none;
+}
+
+/* Each facet item is an <a> wrapping a label + " (count)". We turn
+ * it into the design's row with a faux checkbox swatch. */
+.if-sidebar .facet-item a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0 5px 24px;
+  font-size: 13px;
+  color: var(--ink-2);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+.if-sidebar .facet-item a:hover { color: var(--ink); }
+.if-sidebar .facet-item a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+.if-sidebar .facet-item a.is-active {
+  color: var(--ink);
+  font-weight: 500;
+}
+.if-sidebar .facet-item a.is-active::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.if-sidebar .facet-item a.is-active::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-65%) rotate(-45deg);
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+/* Facets prepends "(-)" to active items. We replace it with a faux
+ * checkbox via ::before, so hide the textual indicator. */
+.if-sidebar .facet-item__status { display: none; }
+
+/* Value + count layout. */
+.if-sidebar .facet-item__value { flex: 1; }
+.if-sidebar .facet-item__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hide the empty-state ".facets-soft-limit" link until we wire a
+ * "show more" feature. */
+.if-sidebar .facets-soft-limit-link { display: none; }

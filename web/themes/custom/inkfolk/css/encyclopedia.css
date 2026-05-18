@@ -18,7 +18,7 @@
 
 /* The "Home" breadcrumb on the encyclopedia is visual noise.
  * Card detail / set pages get their own breadcrumb trail later. */
-.path-cards nav[aria-labelledby*="breadcrumbs"] {
+.path-cards .breadcrumb {
   display: none;
 }
 
