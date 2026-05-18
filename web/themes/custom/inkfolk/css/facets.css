@@ -137,6 +137,37 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ───── Ink / rarity swatches ─────────────────────────
+ *
+ * Small colored circles next to ink + rarity facet items so the
+ * sidebar is scannable by color. Each variant just paints a design-
+ * token onto a CSS circle — no artwork, no glyphs. If/when the
+ * project wants licensed ink symbols, drop assets under
+ * web/themes/custom/inkfolk/images/inks/ and swap to background-
+ * image on these classes.
+ */
+.if-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .08) inset;
+}
+.if-swatch--amber    { background: var(--ink-amber);    }
+.if-swatch--amethyst { background: var(--ink-amethyst); }
+.if-swatch--emerald  { background: var(--ink-emerald);  }
+.if-swatch--ruby     { background: var(--ink-ruby);     }
+.if-swatch--sapphire { background: var(--ink-sapphire); }
+.if-swatch--steel    { background: var(--ink-steel);    }
+
+.if-swatch--common     { background: var(--rarity-common);     }
+.if-swatch--uncommon   { background: var(--rarity-uncommon);   }
+.if-swatch--rare       { background: var(--rarity-rare);       }
+.if-swatch--super-rare { background: var(--rarity-super);      }
+.if-swatch--legendary  { background: var(--rarity-legendary);  }
+.if-swatch--enchanted  { background: var(--rarity-enchanted);  }
+
 /* Hide the empty-state ".facets-soft-limit" link until we wire a
  * "show more" feature. */
 .if-sidebar .facets-soft-limit-link { display: none; }

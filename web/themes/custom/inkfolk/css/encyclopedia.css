@@ -140,6 +140,80 @@
   font-size: 16px;
 }
 
+/* ───── Loading state on navigation ─────────────────────
+ *
+ * Facets module's `links` widget doesn't support AJAX views — facet
+ * clicks always do a full page reload. Two mechanisms below to make
+ * that feel smooth:
+ *
+ *  1. @view-transition (cross-document) — modern Chromium browsers
+ *     fade between the outgoing and incoming page automatically.
+ *     Zero JS; safely ignored where unsupported.
+ *  2. .is-navigating fallback — a tiny inkfolk_encyclopedia.js sets
+ *     this on <html> while a same-tab navigation is in flight, so
+ *     non-Chromium browsers also get the dim + throbber.
+ *
+ * Drupal's view AJAX (still enabled on the view's pager + exposed
+ * form) also lights up these styles via the .ajax-progress class.
+ */
+@view-transition { navigation: auto; }
+
+.view-cards .view-content {
+  transition: opacity .18s ease;
+}
+.view-cards {
+  position: relative;
+}
+html.is-navigating .view-cards .view-content,
+.view-cards.is-loading .view-content {
+  opacity: .4;
+  pointer-events: none;
+}
+
+/* Centered spinner overlay — shown both during Drupal AJAX
+ * (.ajax-progress is injected by Drupal) and during our
+ * .is-navigating fallback (we render an .if-loader manually). */
+.view-cards .ajax-progress--fullscreen,
+.view-cards .ajax-progress,
+.if-loader {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-2);
+  font-size: 12px;
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.view-cards .ajax-progress__throbber,
+.if-loader::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  animation: if-spin .7s linear infinite;
+  background: transparent;
+}
+
+/* The fallback .if-loader is hidden by default; .is-navigating shows
+ * it. The Drupal AJAX progress is shown only when Drupal injects it. */
+.if-loader { display: none; }
+html.is-navigating .if-loader { display: inline-flex; }
+
+@keyframes if-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Pager — overrides core's tablesy default with the design's
  * pill-shaped chip layout. */
 .view-cards .pager {

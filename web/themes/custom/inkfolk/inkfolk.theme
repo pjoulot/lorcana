@@ -6,6 +6,22 @@
  */
 
 /**
+ * Implements hook_preprocess_facets_result_item().
+ *
+ * Computes a slug from the displayed facet value so the template
+ * can render a colored swatch next to ink + rarity items.
+ */
+function inkfolk_preprocess_facets_result_item(array &$variables): void {
+  $rendered = is_array($variables['value'])
+    ? (string) \Drupal::service('renderer')->render($variables['value'])
+    : (string) $variables['value'];
+  $text = trim(str_replace('(-)', '', strip_tags($rendered)));
+  $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '-', $text));
+  $slug = trim($slug, '-');
+  $variables['value_slug'] = $slug;
+}
+
+/**
  * Implements hook_preprocess_image_widget().
  */
 function inkfolk_preprocess_image_widget(array &$variables): void {

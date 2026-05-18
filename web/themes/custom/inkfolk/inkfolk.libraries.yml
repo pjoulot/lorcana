@@ -9,6 +9,11 @@ global:
       css/card.css: { weight: -16 }
       css/encyclopedia.css: { weight: -15 }
       css/facets.css: { weight: -14 }
+  js:
+    js/encyclopedia.js: { defer: true }
+  dependencies:
+    - core/drupal
+    - core/once
 
 fonts:
   remote: https://fonts.google.com/

@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Inkfolk facet result item.
+ *
+ * Adds a small colored swatch next to ink + rarity facet values so
+ * the sidebar is scannable by color the way the design intends.
+ *
+ * The swatch is a CSS-rendered circle in the corresponding design-
+ * token color (var(--ink-amber), --rarity-legendary, etc.) — no
+ * copyrighted artwork. value_slug is computed by
+ * inkfolk_preprocess_facets_result_item().
+ *
+ * Available variables documented in core's
+ * facets-result-item.html.twig.
+ */
+#}
+{% set ink_slugs = ['amber', 'amethyst', 'emerald', 'ruby', 'sapphire', 'steel'] %}
+{% set rarity_slugs = ['common', 'uncommon', 'rare', 'super-rare', 'legendary', 'enchanted'] %}
+{% set facet_id = facet.id() %}
+{% if (facet_id == 'ink' and value_slug in ink_slugs) or (facet_id == 'rarity' and value_slug in rarity_slugs) %}
+  <span class="if-swatch if-swatch--{{ value_slug }}" aria-hidden="true"></span>
+{% endif %}
+{% if is_active %}
+  <span class="facet-item__status js-facet-deactivate">(-)</span>
+{% endif %}
+<span class="facet-item__value">{{ value }}</span>
+{% if show_count %}
+  <span class="facet-item__count">({{ count }})</span>
+{% endif %}

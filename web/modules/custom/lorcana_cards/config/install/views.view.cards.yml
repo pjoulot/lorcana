@@ -105,6 +105,7 @@ display:
       query:
         type: search_api_query
         options: {  }
+      use_ajax: true
       header: {  }
       footer: {  }
       display_extenders: {  }
