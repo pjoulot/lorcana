@@ -63,3 +63,7 @@ Thumbs.db
 /specs/design/Lorcana-handoff.zip
 /.editorconfig
 /.gitattributes
+
+# Playwright MCP / ad-hoc screenshot artifacts
+/.playwright-mcp/
+/phase*.png

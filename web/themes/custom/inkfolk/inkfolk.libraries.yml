@@ -5,6 +5,7 @@ global:
       css/tokens.css: { weight: -20 }
       css/typography.css: { weight: -19 }
       css/utilities.css: { weight: -18 }
+      css/chrome.css: { weight: -17 }
 
 fonts:
   remote: https://fonts.google.com/

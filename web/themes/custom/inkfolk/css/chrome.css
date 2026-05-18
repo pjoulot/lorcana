@@ -1,0 +1,211 @@
+/* Inkfolk — page chrome (sticky topnav + footer)
+ *
+ * Port of chrome.jsx (TopNavDesktop, Footer) from the design handoff.
+ * Mobile topnav/tabbar are intentionally not ported yet — Phase 2's
+ * goal is "every page has matching chrome." The desktop layout
+ * collapses gracefully on small viewports via media queries here;
+ * a dedicated mobile bar can land in a later phase if needed.
+ */
+
+/* ───── Topnav ─────────────────────────────────────────── */
+
+.if-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: 64px;
+  background: color-mix(in oklab, var(--paper) 86%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  border-bottom: 1px solid var(--line);
+}
+
+.if-topnav__inner {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 0 32px;
+}
+
+.if-topnav__left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Wordmark (inkwell + 'inkfolk'). */
+.if-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+}
+.if-wordmark__text {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Nav links. */
+.if-topnav__nav {
+  display: flex;
+  gap: 4px;
+}
+.if-topnav__nav a {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-3);
+  padding: 7px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.if-topnav__nav a:hover { color: var(--ink-2); }
+.if-topnav__nav a.is-active {
+  color: var(--ink);
+  background: var(--paper-2);
+}
+.if-topnav__nav a.is-active::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Search pill. */
+.if-topnav__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 14px;
+  max-width: 520px;
+  width: 100%;
+  justify-self: center;
+  color: var(--ink-3);
+  box-shadow: var(--shadow-1);
+}
+.if-topnav__search input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  flex: 1;
+  font: 14px var(--font-ui);
+  color: var(--ink);
+  min-width: 0;
+}
+.if-topnav__search input::placeholder { color: var(--ink-3); }
+.if-topnav__search svg { flex-shrink: 0; }
+.if-topnav__search .if-kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  background: var(--paper-2);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* Right-hand actions. */
+.if-topnav__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.if-topnav__actions .if-btn { padding: 8px 12px; }
+.if-topnav__actions .if-btn--primary { padding: 8px 14px; }
+
+/* Responsive: drop nav + search on small viewports for now. */
+@media (max-width: 900px) {
+  .if-topnav__inner { padding: 0 16px; }
+  .if-topnav__nav,
+  .if-topnav__search { display: none; }
+}
+
+/* ───── Main content area ─────────────────────────────── */
+
+.if-main {
+  min-height: 60vh;
+}
+
+/* ───── Footer ────────────────────────────────────────── */
+
+.if-footer {
+  background: var(--paper-2);
+  border-top: 1px solid var(--line);
+  padding: 40px 32px 28px;
+  color: var(--ink-3);
+}
+.if-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.if-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+.if-footer__brand p {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 240px;
+}
+.if-footer__col h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+  font-family: var(--font-ui);
+}
+.if-footer__col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.if-footer__col a {
+  font-size: 13px;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.if-footer__col a:hover { color: var(--ink); }
+
+.if-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.if-footer__disclaimer {
+  margin: 0;
+  flex: 1 1 320px;
+  max-width: 720px;
+}
+.if-footer__meta {
+  display: flex;
+  gap: 18px;
+}
+
+@media (max-width: 700px) {
+  .if-footer__cols { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .if-footer__cols { grid-template-columns: 1fr; }
+}
