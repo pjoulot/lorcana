@@ -1,0 +1,120 @@
+{#
+/**
+ * @file
+ * Inkfolk homepage — port of home.jsx::HomeDesktop.
+ *
+ * Sections shipped now:
+ *  - Hero band: live-status chip (latest set + card count), big H1
+ *    with accent-italic word, copy paragraph, big search box that
+ *    submits to /cards, "Try:" mono example chips, and a 5-card fan
+ *    spread on the right.
+ *  - Popular cards: 6-col grid of teaser-rendered cards.
+ *  - Sets: 4-col grid of recent sets with gradient headers.
+ *
+ * The "Recent news + Draft CTA" two-column strip from the design is
+ * deferred — the news content type lands in M2, and the draft CTA
+ * pairs with it visually. Topnav already exposes "Start a draft" as
+ * a primary button, so discovery isn't lost.
+ *
+ * Variables provided by HomeController::page():
+ *  - latest_set, latest_set_card_count
+ *  - spread_cards   (array of render arrays, 5 teasers)
+ *  - popular_cards  (array of render arrays, 6 teasers)
+ *  - sets           (array of { title, url, code, card_count, released })
+ */
+#}
+<div class="if-home">
+
+  <section class="if-home-hero">
+    <div class="if-home-hero__inner">
+      <div class="if-home-hero__text">
+        {% if latest_set and latest_set_card_count > 0 %}
+          <div class="if-home-hero__chip">
+            <span class="if-home-hero__chip-dot" aria-hidden="true"></span>
+            {{ latest_set.label }} live · {{ latest_set_card_count }} {{ 'cards indexed'|t }}
+          </div>
+        {% endif %}
+        <h1 class="if-home-hero__title serif">
+          {{ 'Every Lorcana card,'|t }}
+          <span class="if-home-hero__title-accent">{{ 'at a glance.'|t }}</span>
+        </h1>
+        <p class="if-home-hero__copy">
+          {{ 'A fan-made, ad-free database for searching cards, planning decks, and drafting with friends. EN · FR.'|t }}
+        </p>
+        <form class="if-home-hero__search" role="search" action="/cards" method="get">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input name="search" type="search"
+                 placeholder="{{ 'Search cards, abilities, sets…'|t }}"
+                 aria-label="{{ 'Search'|t }}"/>
+          <span class="if-home-hero__kbd mono" aria-hidden="true">⌘ K</span>
+        </form>
+        <div class="if-home-hero__examples">
+          <span class="if-home-hero__examples-label">{{ 'Try'|t }}:</span>
+          {% for q in ['ink:ruby cost<=3', 'keyword:singer', 't:song rare', 'set:azurite ink:sapphire+steel'] %}
+            <a class="if-home-hero__example mono" href="/cards?search={{ q|url_encode }}">{{ q }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% if spread_cards|length >= 5 %}
+        <div class="if-home-hero__spread" aria-hidden="true">
+          {% for c in spread_cards|slice(0, 5) %}
+            <div class="if-home-spread-card if-home-spread-card--{{ loop.index }}">
+              {{ c }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if popular_cards|length > 0 %}
+    <section class="if-home-section if-home-popular">
+      <header class="if-home-section__header">
+        <div>
+          <div class="if-home-section__eyebrow">{{ 'Trending this week'|t }}</div>
+          <h2 class="if-home-section__title serif">{{ 'Popular cards'|t }}</h2>
+        </div>
+        <a class="if-home-section__link" href="/cards">{{ 'See all cards'|t }} →</a>
+      </header>
+      <div class="if-home-popular__grid">
+        {% for c in popular_cards %}
+          {{ c }}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if sets|length > 0 %}
+    <section class="if-home-section if-home-sets">
+      <header class="if-home-section__header">
+        <div>
+          <div class="if-home-section__eyebrow">{{ 'By release'|t }}</div>
+          <h2 class="if-home-section__title serif">{{ 'Browse sets'|t }}</h2>
+        </div>
+        <a class="if-home-section__link" href="/sets">{{ 'All sets'|t }} →</a>
+      </header>
+      <div class="if-home-sets__grid">
+        {% for s in sets %}
+          <a class="if-home-set-tile" href="{{ s.url }}">
+            <div class="if-home-set-tile__head if-home-set-tile__head--{{ loop.index0 % 6 }}">
+              <div class="if-home-set-tile__numeral serif">№</div>
+              <span class="if-home-set-tile__code">{{ s.code }}</span>
+            </div>
+            <div class="if-home-set-tile__body">
+              <div class="if-home-set-tile__title serif">{{ s.title }}</div>
+              <div class="if-home-set-tile__meta">
+                {% if s.card_count %}{{ s.card_count }} {{ 'cards'|t }}{% endif %}
+                {% if s.card_count and s.released %} · {% endif %}
+                {{ s.released }}
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+</div>

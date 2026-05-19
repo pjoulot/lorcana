@@ -1,0 +1,289 @@
+/* Inkfolk — homepage
+ *
+ * Port of home.jsx::HomeDesktop. Hero band, Popular cards strip,
+ * Sets grid. The Recent-News + Draft-CTA two-column strip is
+ * deferred until M2 (news content type lands then); discovery of
+ * the draft simulator stays in the topnav's "Start a draft" CTA.
+ */
+
+/* Hide the duplicate page-title block on the front page — the hero
+ * H1 serves as the page title. */
+.path-frontpage .page-title { display: none; }
+
+.if-home {
+  /* Hero owns its own background; the rest stays on --paper inherited
+   * from the global body. */
+}
+
+/* ───── Hero band ─────────────────────────────────────── */
+
+.if-home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 64px 32px 56px;
+  background:
+    radial-gradient(60% 50% at 80% 0%, var(--ink-amber-soft) 0%, transparent 60%),
+    radial-gradient(50% 60% at 0% 100%, var(--ink-amethyst-soft) 0%, transparent 60%),
+    var(--paper);
+}
+.if-home-hero__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 540px;
+  gap: 48px;
+  align-items: center;
+}
+.if-home-hero__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px;
+  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.if-home-hero__chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ink-emerald);
+}
+.if-home-hero__title {
+  font-size: 60px;
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  margin: 0 0 16px;
+  color: var(--ink);
+  text-wrap: balance;
+  max-width: 540px;
+}
+.if-home-hero__title-accent {
+  font-style: italic;
+  color: var(--accent);
+}
+.if-home-hero__copy {
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 28px;
+  max-width: 460px;
+}
+.if-home-hero__search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-2);
+  max-width: 480px;
+  color: var(--ink-3);
+}
+.if-home-hero__search input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  flex: 1;
+  font: 16px var(--font-ui);
+  color: var(--ink);
+  min-width: 0;
+}
+.if-home-hero__kbd {
+  font-size: 11px;
+  color: var(--ink-4);
+  background: var(--paper-2);
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+.if-home-hero__examples {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.if-home-hero__examples-label {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-right: 4px;
+}
+.if-home-hero__example {
+  font-size: 12px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  text-decoration: none;
+}
+.if-home-hero__example:hover {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+/* Card spread fan — 5 absolute-positioned cards rotated around the
+ * center of a 540×320 visual box. */
+.if-home-hero__spread {
+  position: relative;
+  width: 540px;
+  height: 320px;
+  pointer-events: none;
+  justify-self: center;
+}
+.if-home-spread-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  /* drop-shadows decrease toward outer cards to give visual depth. */
+}
+.if-home-spread-card--1 { transform: translate(-50%, -50%) translate(-180px,  30px) rotate(-16deg); z-index: 1; filter: drop-shadow(0 16px 24px rgba(35, 25, 10, .14)); }
+.if-home-spread-card--2 { transform: translate(-50%, -50%) translate( -90px, -10px) rotate( -8deg); z-index: 2; filter: drop-shadow(0 14px 22px rgba(35, 25, 10, .16)); }
+.if-home-spread-card--3 { transform: translate(-50%, -50%) translate(   0px, -22px) rotate(  0deg); z-index: 3; filter: drop-shadow(0 12px 20px rgba(35, 25, 10, .18)); }
+.if-home-spread-card--4 { transform: translate(-50%, -50%) translate(  90px, -10px) rotate(  8deg); z-index: 2; filter: drop-shadow(0 10px 18px rgba(35, 25, 10, .16)); }
+.if-home-spread-card--5 { transform: translate(-50%, -50%) translate( 180px,  30px) rotate( 16deg); z-index: 1; filter: drop-shadow(0  8px 16px rgba(35, 25, 10, .14)); }
+/* Inside each spread card, the teaser wrapper has aspect-ratio 5/7;
+ * cap its width so the hero fan stays compact. */
+.if-home-spread-card .if-lcard {
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .if-home-hero__inner { grid-template-columns: 1fr; gap: 32px; }
+  .if-home-hero__spread { display: none; }
+  .if-home-hero__title { font-size: 42px; }
+}
+@media (max-width: 600px) {
+  .if-home-hero { padding: 36px 16px 28px; }
+  .if-home-hero__title { font-size: 32px; }
+}
+
+/* ───── Section header (shared) ──────────────────────── */
+
+.if-home-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+.if-home-section__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.if-home-section__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.if-home-section__title {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.if-home-section__link {
+  font-size: 14px;
+  color: var(--ink-2);
+  text-decoration: none;
+  font-weight: 500;
+}
+.if-home-section__link:hover { color: var(--ink); }
+
+/* ───── Popular cards ────────────────────────────────── */
+
+.if-home-popular__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1100px) { .if-home-popular__grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 800px)  { .if-home-popular__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 500px)  { .if-home-popular__grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ───── Sets grid ────────────────────────────────────── */
+
+.if-home-sets__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+@media (max-width: 900px) { .if-home-sets__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .if-home-sets__grid { grid-template-columns: 1fr; } }
+
+.if-home-set-tile {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .12s, box-shadow .12s, transform .06s;
+}
+.if-home-set-tile:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+.if-home-set-tile__head {
+  height: 120px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+/* Six gradient variants cycled by loop index — we don't ship a per-set
+ * mapping yet, so this rotates through the ink palette for variety. */
+.if-home-set-tile__head--0 { background: linear-gradient(135deg, #F4B042, #A56FCF); }
+.if-home-set-tile__head--1 { background: linear-gradient(135deg, #3B7BC4, #3D9F6A); }
+.if-home-set-tile__head--2 { background: linear-gradient(135deg, #3D9F6A, #8C9AA3); }
+.if-home-set-tile__head--3 { background: linear-gradient(135deg, #A56FCF, #3B7BC4); }
+.if-home-set-tile__head--4 { background: linear-gradient(135deg, #3B7BC4, #F4B042); }
+.if-home-set-tile__head--5 { background: linear-gradient(135deg, #D14B4B, #F4B042); }
+.if-home-set-tile__numeral {
+  font-size: 48px;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: -.04em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  line-height: 1;
+}
+.if-home-set-tile__code {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .1em;
+  background: rgba(0, 0, 0, .25);
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+.if-home-set-tile__body { padding: 12px 14px; }
+.if-home-set-tile__title {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.if-home-set-tile__meta {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 2px;
+}

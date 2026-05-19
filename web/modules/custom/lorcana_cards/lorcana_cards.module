@@ -4,3 +4,22 @@
  * @file
  * Module file for the Lorcana Cards module.
  */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_theme().
+ */
+function lorcana_cards_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'inkfolk_home' => [
+      'variables' => [
+        'latest_set' => NULL,
+        'latest_set_card_count' => 0,
+        'spread_cards' => [],
+        'popular_cards' => [],
+        'sets' => [],
+      ],
+    ],
+  ];
+}

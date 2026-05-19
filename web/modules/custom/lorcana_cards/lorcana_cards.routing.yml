@@ -1,0 +1,7 @@
+lorcana_cards.home:
+  path: '/home'
+  defaults:
+    _controller: '\Drupal\lorcana_cards\Controller\HomeController::page'
+    _title: 'Inkfolk'
+  requirements:
+    _access: 'TRUE'
