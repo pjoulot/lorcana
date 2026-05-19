@@ -77,6 +77,68 @@
     },
   };
 
+  /**
+   * Mobile filter drawer — turns the encyclopedia sidebar into a
+   * bottom-sheet drawer on small viewports. The drawer is the
+   * same .if-sidebar DOM, just CSS-transformed off-screen until
+   * <body class="if-drawer-open"> is set by the trigger button.
+   * Backdrop, escape-key, and a footer "Show results" button all
+   * close it. Body scroll locks while open.
+   */
+  Drupal.behaviors.inkfolkFilterDrawer = {
+    attach(context) {
+      once('if-filter-drawer', '.if-sidebar', context).forEach((sidebar) => {
+        // Trigger button — visible only on mobile via CSS.
+        const trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'if-sidebar-trigger';
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          ${Drupal.t('Filters')}
+        `;
+
+        const top = document.querySelector('.if-main__content-top');
+        if (top) {
+          top.prepend(trigger);
+        }
+
+        // Backdrop.
+        const backdrop = document.createElement('div');
+        backdrop.className = 'if-sidebar-backdrop';
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(backdrop);
+
+        // "Show results" footer inside the sidebar (drawer mode only).
+        const showResults = document.createElement('button');
+        showResults.type = 'button';
+        showResults.className = 'if-btn if-btn--primary if-sidebar-close';
+        showResults.textContent = Drupal.t('Show results');
+        sidebar.appendChild(showResults);
+
+        const open = () => {
+          document.body.classList.add('if-drawer-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        };
+        const close = () => {
+          document.body.classList.remove('if-drawer-open');
+          trigger.setAttribute('aria-expanded', 'false');
+        };
+
+        trigger.addEventListener('click', open);
+        backdrop.addEventListener('click', close);
+        showResults.addEventListener('click', close);
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && document.body.classList.contains('if-drawer-open')) {
+            close();
+          }
+        });
+      });
+    },
+  };
+
   Drupal.behaviors.inkfolkEncyclopediaLoader = {
     attach(context) {
       // Inject the spinner overlay into the view container exactly once.
