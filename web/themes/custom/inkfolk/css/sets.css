@@ -327,10 +327,27 @@
     radial-gradient(70% 100% at 100% 50%, var(--ink-amber-soft) 0%, transparent 60%),
     radial-gradient(60% 100% at 0% 50%, var(--ink-amethyst-soft) 0%, transparent 60%),
     var(--surface);
-  text-decoration: none;
   color: inherit;
 }
 .if-set-cta__body { max-width: 560px; }
+
+/* Stretched-link: the primary button's ::after expands to cover the
+ * whole .if-set-cta so a click anywhere on the card navigates. The
+ * chase visual sits at z-index: 2 above that hit-target layer so its
+ * inner <a>'s (one per stacked card) stay individually clickable.
+ *
+ * .if-set-cta__primary stays position: static — the ::after needs
+ * .if-set-cta to be its positioned ancestor, not the button itself,
+ * so inset: 0 maps to the whole card. */
+.if-set-cta__primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.if-set-cta__visual {
+  z-index: 2;
+}
 .if-set-cta__eyebrow {
   display: inline-flex;
   align-items: center;

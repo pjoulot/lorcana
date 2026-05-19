@@ -141,7 +141,7 @@
     </section>
 
     <section class="if-set-page__cta">
-      <a class="if-set-cta" href="/cards?f%5B0%5D=set%3A{{ node.id }}">
+      <div class="if-set-cta">
         <div class="if-set-cta__body">
           <div class="if-set-cta__eyebrow">
             <span class="if-set-cta__bar" aria-hidden="true"></span>
@@ -159,7 +159,10 @@
             <strong>{{ set_code }}</strong>
             {{ 'pre-filtered. Layer on ink, cost, keyword — narrow to the cards you actually want.'|t }}
           </p>
-          <span class="if-btn if-btn--primary">{{ 'Open encyclopedia'|t }} →</span>
+          <a class="if-btn if-btn--primary if-set-cta__primary"
+             href="/cards?f%5B0%5D=set%3A{{ node.id }}">
+            {{ 'Open encyclopedia'|t }} →
+          </a>
         </div>
         {% if chase_cards|length >= 3 %}
           <div class="if-set-cta__visual" aria-hidden="true">
@@ -170,7 +173,7 @@
             {% endfor %}
           </div>
         {% endif %}
-      </a>
+      </div>
     </section>
 
   </div>
