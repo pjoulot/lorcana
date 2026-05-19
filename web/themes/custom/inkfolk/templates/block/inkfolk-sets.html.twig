@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Inkfolk "Recent sets" homepage strip — section header + tile grid.
+ *
+ * Provided by lorcana_cards_theme():
+ *  - eyebrow, title, see_all_label, see_all_url
+ *  - sets (array of { title, url, code, card_count, released })
+ */
+#}
+{% if sets|length > 0 %}
+  <section class="if-home-section if-home-sets">
+    <header class="if-home-section__header">
+      <div>
+        {% if eyebrow %}
+          <div class="if-home-section__eyebrow">{{ eyebrow }}</div>
+        {% endif %}
+        <h2 class="if-home-section__title serif">{{ title }}</h2>
+      </div>
+      {% if see_all_label and see_all_url %}
+        <a class="if-home-section__link" href="{{ see_all_url }}">{{ see_all_label }}</a>
+      {% endif %}
+    </header>
+    <div class="if-home-sets__grid">
+      {% for s in sets %}
+        <a class="if-home-set-tile" href="{{ s.url }}">
+          <div class="if-home-set-tile__head if-home-set-tile__head--{{ loop.index0 % 6 }}">
+            <div class="if-home-set-tile__numeral serif">№</div>
+            <span class="if-home-set-tile__code">{{ s.code }}</span>
+          </div>
+          <div class="if-home-set-tile__body">
+            <div class="if-home-set-tile__title serif">{{ s.title }}</div>
+            <div class="if-home-set-tile__meta">
+              {% if s.card_count %}{{ s.card_count }} {{ 'cards'|t }}{% endif %}
+              {% if s.card_count and s.released %} · {% endif %}
+              {{ s.released }}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

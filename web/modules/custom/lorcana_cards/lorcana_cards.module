@@ -12,12 +12,33 @@ declare(strict_types=1);
  */
 function lorcana_cards_theme(array $existing, string $type, string $theme, string $path): array {
   return [
-    'inkfolk_home' => [
+    'inkfolk_hero' => [
       'variables' => [
+        'title' => '',
+        'title_accent' => '',
+        'copy' => '',
+        'search_placeholder' => '',
+        'try_examples' => [],
         'latest_set' => NULL,
         'latest_set_card_count' => 0,
         'spread_cards' => [],
-        'popular_cards' => [],
+      ],
+    ],
+    'inkfolk_popular' => [
+      'variables' => [
+        'eyebrow' => '',
+        'title' => '',
+        'see_all_label' => '',
+        'see_all_url' => '',
+        'cards' => [],
+      ],
+    ],
+    'inkfolk_sets' => [
+      'variables' => [
+        'eyebrow' => '',
+        'title' => '',
+        'see_all_label' => '',
+        'see_all_url' => '',
         'sets' => [],
       ],
     ],

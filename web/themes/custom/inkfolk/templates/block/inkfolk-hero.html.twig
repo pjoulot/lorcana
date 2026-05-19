@@ -1,0 +1,64 @@
+{#
+/**
+ * @file
+ * Inkfolk hero band — admin-configurable copy + dynamic widgets.
+ *
+ * Static text comes from the InkfolkHeroBlock block plugin's
+ * configuration (title / title_accent / copy / search_placeholder /
+ * try_examples). The "latest set" chip and the 5-card spread are
+ * computed at render time inside the block plugin's build().
+ *
+ * Variables provided by lorcana_cards_theme():
+ *  - title (string), title_accent (string)
+ *  - copy (string), search_placeholder (string)
+ *  - try_examples (array of strings)
+ *  - latest_set (node or NULL), latest_set_card_count (int)
+ *  - spread_cards (array of render arrays, 0 or 5)
+ */
+#}
+<section class="if-home-hero">
+  <div class="if-home-hero__inner">
+    <div class="if-home-hero__text">
+      {% if latest_set and latest_set_card_count > 0 %}
+        <div class="if-home-hero__chip">
+          <span class="if-home-hero__chip-dot" aria-hidden="true"></span>
+          {{ latest_set.label }} live · {{ latest_set_card_count }} {{ 'cards indexed'|t }}
+        </div>
+      {% endif %}
+      <h1 class="if-home-hero__title serif">
+        {{ title }}
+        {% if title_accent %}
+          <span class="if-home-hero__title-accent">{{ title_accent }}</span>
+        {% endif %}
+      </h1>
+      {% if copy %}
+        <p class="if-home-hero__copy">{{ copy }}</p>
+      {% endif %}
+      <form class="if-home-hero__search" role="search" action="/cards" method="get">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+          <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input name="search" type="search"
+               placeholder="{{ search_placeholder }}"
+               aria-label="{{ 'Search'|t }}"/>
+        <span class="if-home-hero__kbd mono" aria-hidden="true">⌘ K</span>
+      </form>
+      {% if try_examples is not empty %}
+        <div class="if-home-hero__examples">
+          <span class="if-home-hero__examples-label">{{ 'Try'|t }}:</span>
+          {% for q in try_examples %}
+            <a class="if-home-hero__example mono" href="/cards?search={{ q|url_encode }}">{{ q }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% if spread_cards|length >= 5 %}
+      <div class="if-home-hero__spread" aria-hidden="true">
+        {% for c in spread_cards|slice(0, 5) %}
+          <div class="if-home-spread-card if-home-spread-card--{{ loop.index }}">{{ c }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>

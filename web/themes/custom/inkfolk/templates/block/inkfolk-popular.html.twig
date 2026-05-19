@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Inkfolk "Popular cards" homepage strip — section header + grid of
+ * teaser-mode card nodes.
+ *
+ * Provided by lorcana_cards_theme():
+ *  - eyebrow, title, see_all_label, see_all_url
+ *  - cards (array of render arrays)
+ */
+#}
+{% if cards|length > 0 %}
+  <section class="if-home-section if-home-popular">
+    <header class="if-home-section__header">
+      <div>
+        {% if eyebrow %}
+          <div class="if-home-section__eyebrow">{{ eyebrow }}</div>
+        {% endif %}
+        <h2 class="if-home-section__title serif">{{ title }}</h2>
+      </div>
+      {% if see_all_label and see_all_url %}
+        <a class="if-home-section__link" href="{{ see_all_url }}">{{ see_all_label }}</a>
+      {% endif %}
+    </header>
+    <div class="if-home-popular__grid">
+      {% for c in cards %}
+        {{ c }}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

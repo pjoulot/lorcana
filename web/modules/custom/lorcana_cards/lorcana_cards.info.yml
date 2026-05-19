@@ -17,6 +17,8 @@ dependencies:
   - drupal:media
   - drupal:media_library
   - drupal:views
+  - drupal:layout_builder
+  - drupal:layout_discovery
   - search_api:search_api
   - search_api:search_api_db
   - facets:facets
