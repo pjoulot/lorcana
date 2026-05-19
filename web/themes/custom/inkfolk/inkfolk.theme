@@ -8,19 +8,57 @@
 /**
  * Implements hook_preprocess_node().
  *
- * On the full card_set page, embed the cards-in-set block view as a
- * variable so node--card-set--full.html.twig can render the grid
- * without going through twig_tweak.
+ * Two bundle-specific things:
+ *  - card_set:full — embeds the cards-in-set views block.
+ *  - card:full     — computes prev/next siblings (cards in the same
+ *    set ordered by collector_number) so the detail-page breadcrumb
+ *    can paginate within the set.
  */
 function inkfolk_preprocess_node(array &$variables): void {
   $node = $variables['node'] ?? NULL;
-  if (!$node || $node->bundle() !== 'card_set') {
+  if (!$node || ($variables['view_mode'] ?? '') !== 'full') {
     return;
   }
-  if (($variables['view_mode'] ?? '') !== 'full') {
+
+  if ($node->bundle() === 'card_set') {
+    $variables['cards_in_set'] = views_embed_view('cards', 'block_set', $node->id());
     return;
   }
-  $variables['cards_in_set'] = views_embed_view('cards', 'block_set', $node->id());
+
+  if ($node->bundle() !== 'card' || $node->get('field_set')->isEmpty()) {
+    return;
+  }
+
+  $set_id = $node->get('field_set')->target_id;
+  $current_number = $node->get('field_collector_number')->value;
+  $langcode = $node->language()->getId();
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  // Same-set siblings ordered alphanumerically by collector_number.
+  // The field is a string ("1", "2", ..., "204a"), so we sort
+  // lexicographically and pad-shorter-numbers via a single query.
+  $sibling_ids = $node_storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('type', 'card')
+    ->condition('field_set', $set_id)
+    ->condition('langcode', $langcode)
+    ->sort('field_collector_number', 'ASC')
+    ->execute();
+  $sibling_ids = array_values($sibling_ids);
+  $position = array_search($node->id(), $sibling_ids, TRUE);
+
+  $variables['card_prev'] = NULL;
+  $variables['card_next'] = NULL;
+  if ($position !== FALSE) {
+    if ($position > 0) {
+      $variables['card_prev'] = $node_storage->load($sibling_ids[$position - 1]);
+    }
+    if ($position < count($sibling_ids) - 1) {
+      $variables['card_next'] = $node_storage->load($sibling_ids[$position + 1]);
+    }
+  }
+  $variables['card_position'] = $position + 1;
+  $variables['card_set_total'] = count($sibling_ids);
 }
 
 /**

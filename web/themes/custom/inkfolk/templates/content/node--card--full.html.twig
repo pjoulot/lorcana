@@ -1,115 +1,220 @@
 {#
 /**
  * @file
- * Card node — full view mode (the canonical /cards/<set>/<number>
- * page).
+ * Card node — full view mode (canonical /cards/{set}/{number} page).
  *
- * 2-column layout per the design:
- *  - Left (sticky): the licensed card art + meta (illustrator, set,
- *    released date).
- *  - Right: rarity/set eyebrow, version subtitle, name H1,
- *    type/classification row, stats grid, abilities block, flavor
- *    text.
+ * Port of card-detail.jsx (specs/design/.../project/src/). Bones-
+ * version of the design — items wired through the data we have:
+ *  - breadcrumb + prev/next (siblings by collector_number)
+ *  - chips strip (ink/type/rarity/classifications)
+ *  - title H1 + italic subtitle
+ *  - icon stats strip (inline SVG icons)
+ *  - rules text + flavor in a serif surface box
+ *  - 2-col "Printing details" + "Credits" grid
+ *  - "From the set" amber-tinted callout
  *
- * Deferred for a later polish phase: "Where to buy", "Mentioned in
- * news" (M2), "Other versions" multi-printing strip (M2).
+ * Sections from the design intentionally NOT rendered yet, with the
+ * reason for each:
+ *  - Save to collection      — requires accounts (M5).
+ *  - Where to buy            — requires a price feed (not in M1).
+ *  - Variants picker         — requires printing-group model (M2).
+ *  - {ink}/{lore}/{exert}    — rules-text token replacement (polish).
+ *  - "Mentioned in news"     — requires news content type (M2).
  *
- * Available variables documented in core's node.html.twig.
+ * Available variables documented in core's node.html.twig, plus
+ * card_prev / card_next / card_position / card_set_total injected by
+ * inkfolk_preprocess_node().
  */
 #}
 {% set version = node.field_version.value %}
 {% set version_suffix = version ? ' — ' ~ version : '' %}
 {% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
 {% set set_node = node.field_set.entity %}
-{% set rarity = content.field_rarity|render|striptags|trim %}
 {% set ink_term = node.field_ink.entity %}
 {% set ink_slug = ink_term ? ink_term.label|lower : '' %}
+{% set rarity = content.field_rarity|render|striptags|trim %}
+{% set rarity_slug = rarity|lower|replace({' ': '-'}) %}
 
 {% set stats = [
   { key: 'cost',      label: 'Cost'|t,      value: node.field_cost.value,      show: node.field_cost.value is not empty },
   { key: 'strength',  label: 'Strength'|t,  value: node.field_strength.value,  show: node.field_strength.value is not empty },
   { key: 'willpower', label: 'Willpower'|t, value: node.field_willpower.value, show: node.field_willpower.value is not empty },
   { key: 'lore',      label: 'Lore'|t,      value: node.field_lore.value,      show: node.field_lore.value is not empty },
-  { key: 'move',      label: 'Move'|t,      value: node.field_move_cost.value, show: node.field_move_cost.value is not empty },
 ] %}
+
+<nav class="if-card-breadcrumb" aria-label="{{ 'Card breadcrumb'|t }}">
+  <div class="if-card-breadcrumb__inner">
+    <ol class="if-card-breadcrumb__trail">
+      <li><a href="/cards">{{ 'Cards'|t }}</a></li>
+      {% if set_node %}
+        <li><a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a></li>
+      {% endif %}
+      <li>{{ node.label }}</li>
+    </ol>
+    <div class="if-card-breadcrumb__pager">
+      {% if card_prev %}
+        <a class="if-btn" href="{{ path('entity.node.canonical', {'node': card_prev.id}) }}">‹ {{ 'Prev'|t }}</a>
+      {% else %}
+        <span class="if-btn if-btn--disabled">‹ {{ 'Prev'|t }}</span>
+      {% endif %}
+      {% if card_next %}
+        <a class="if-btn" href="{{ path('entity.node.canonical', {'node': card_next.id}) }}">{{ 'Next'|t }} ›</a>
+      {% else %}
+        <span class="if-btn if-btn--disabled">{{ 'Next'|t }} ›</span>
+      {% endif %}
+    </div>
+  </div>
+</nav>
 
 <article{{ attributes.addClass(['if-card-detail', ink_slug ? 'if-card-detail--ink-' ~ ink_slug]) }}>
 
-  <div class="if-card-detail__art">
+  <aside class="if-card-detail__art">
     <div class="if-lcard if-cardframe--subtle">
       <div class="if-card-image">{{ content.field_card_art }}</div>
     </div>
-    <dl class="if-card-detail__meta">
-      {% if node.field_illustrators.value %}
-        <div><dt>{{ 'Illustrator'|t }}</dt><dd>{{ content.field_illustrators }}</dd></div>
-      {% endif %}
-      {% if set_node %}
-        <div>
-          <dt>{{ 'Set'|t }}</dt>
-          <dd>
-            № {{ node.field_collector_number.value }}{% if set_node.field_card_count.value %} / {{ set_node.field_card_count.value }}{% endif %}
-            · <a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a>
-          </dd>
-        </div>
-      {% endif %}
-      {% if node.field_released_at.value %}
-        <div><dt>{{ 'Released'|t }}</dt><dd>{{ content.field_released_at }}</dd></div>
-      {% endif %}
-    </dl>
-  </div>
+  </aside>
 
   <div class="if-card-detail__info">
 
-    <div class="if-card-detail__eyebrow">
+    <div class="if-card-detail__chips">
+      {% if ink_term %}
+        <span class="if-chip if-chip--ink">
+          <span class="if-swatch if-swatch--{{ ink_slug }}" aria-hidden="true"></span>
+          {{ ink_term.label }}
+        </span>
+      {% endif %}
+      {% for type_item in node.field_card_types %}
+        <span class="if-chip">{{ type_item.value|capitalize }}</span>
+      {% endfor %}
       {% if rarity %}
-        <span class="if-card-detail__rarity if-card-detail__rarity--{{ rarity|lower|replace({' ': '-'}) }}">{{ rarity }}</span>
+        <span class="if-chip if-chip--rarity">
+          <span class="if-swatch if-swatch--{{ rarity_slug }}" aria-hidden="true"></span>
+          {{ rarity }}
+        </span>
       {% endif %}
-      {% if set_node %}
-        {% if rarity %}<span class="if-card-detail__eyebrow-sep">·</span>{% endif %}
-        <a class="if-card-detail__set" href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a>
-      {% endif %}
+      {% for cls_item in node.field_classifications %}
+        {% if cls_item.entity %}
+          <span class="if-chip if-chip--ghost">{{ cls_item.entity.label }}</span>
+        {% endif %}
+      {% endfor %}
     </div>
-
-    {% if version %}
-      <div class="if-card-detail__subtitle">{{ version }}</div>
-    {% endif %}
 
     <h1 class="if-card-detail__title serif">{{ base_name }}</h1>
-
-    <div class="if-card-detail__type">
-      {% if node.field_card_types.value %}
-        <span class="if-card-detail__type-list">{{ content.field_card_types }}</span>
-      {% endif %}
-      {% if node.field_classifications.value %}
-        <span class="if-card-detail__type-sep">—</span>
-        <span class="if-card-detail__class-list">{{ content.field_classifications }}</span>
-      {% endif %}
-    </div>
+    {% if version %}
+      <h2 class="if-card-detail__subtitle serif">{{ version }}</h2>
+    {% endif %}
 
     <div class="if-card-detail__stats">
       {% for stat in stats %}
         {% if stat.show %}
           <div class="if-stat if-stat--{{ stat.key }}">
-            <div class="if-stat__label">{{ stat.label }}</div>
-            <div class="if-stat__value serif">{{ stat.value }}</div>
+            <span class="if-stat__icon" aria-hidden="true">
+              {% if stat.key == 'cost' %}
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+                  <path d="M12 1.5C10 5 5 10.5 5 15a7 7 0 0 0 14 0c0-4.5-5-10-7-13.5Z"
+                        fill="currentColor"/>
+                </svg>
+              {% elseif stat.key == 'strength' %}
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <path d="M4 4l9 9M4 20l6-6M20 4l-7 7M20 20l-6-6"/>
+                  <circle cx="13" cy="11" r="2.4" fill="currentColor" stroke="none"/>
+                </svg>
+              {% elseif stat.key == 'willpower' %}
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+                  <path d="M12 3 4 6v6c0 4.5 3.5 8 8 9 4.5-1 8-4.5 8-9V6l-8-3Z"/>
+                </svg>
+              {% elseif stat.key == 'lore' %}
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+                  <path d="M12 3 15 9 21 12 15 15 12 21 9 15 3 12 9 9Z"
+                        fill="currentColor"/>
+                </svg>
+              {% endif %}
+            </span>
+            <span class="if-stat__value mono">{{ stat.value }}</span>
+            <span class="if-stat__label">{{ stat.label }}</span>
           </div>
         {% endif %}
       {% endfor %}
     </div>
 
-    {% if node.field_text.value %}
-      <section class="if-card-detail__abilities">
-        <h2 class="if-card-detail__h2">{{ 'Abilities'|t }}</h2>
-        <div class="if-card-detail__abilities-body">
-          {{ content.field_text }}
+    {% if node.field_text.value or node.field_flavor_text.value %}
+      <section class="if-card-detail__rules">
+        <div class="if-card-detail__eyebrow">{{ 'Rules text'|t }}</div>
+        <div class="if-card-detail__rules-body serif">
+          {% if node.field_text.value %}{{ content.field_text }}{% endif %}
+          {% if node.field_flavor_text.value %}
+            <div class="if-card-detail__flavor">{{ content.field_flavor_text }}</div>
+          {% endif %}
         </div>
       </section>
     {% endif %}
 
-    {% if node.field_flavor_text.value %}
-      <p class="if-card-detail__flavor serif">
-        {{ content.field_flavor_text }}
-      </p>
+    <section class="if-card-detail__meta-grid">
+      <div class="if-card-detail__meta-box">
+        <div class="if-card-detail__eyebrow">{{ 'Printing details'|t }}</div>
+        <dl class="if-card-detail__dl">
+          {% if set_node %}
+            <div>
+              <dt>{{ 'Set'|t }}</dt>
+              <dd><a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a></dd>
+            </div>
+          {% endif %}
+          {% if node.field_collector_number.value %}
+            <div>
+              <dt>{{ 'Collector №'|t }}</dt>
+              <dd>{{ node.field_collector_number.value }}{% if set_node and set_node.field_card_count.value %} / {{ set_node.field_card_count.value }}{% endif %}</dd>
+            </div>
+          {% endif %}
+          {% if node.field_released_at.value %}
+            <div>
+              <dt>{{ 'Released'|t }}</dt>
+              <dd>{{ node.field_released_at.0.value|date('M j, Y') }}</dd>
+            </div>
+          {% endif %}
+          <div>
+            <dt>{{ 'Languages'|t }}</dt>
+            <dd>{{ node.langcode.value|upper }}</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="if-card-detail__meta-box">
+        <div class="if-card-detail__eyebrow">{{ 'Credits'|t }}</div>
+        <dl class="if-card-detail__dl">
+          {% if node.field_illustrators.value %}
+            <div>
+              <dt>{{ 'Illustrator'|t }}</dt>
+              <dd>{{ node.field_illustrators.value }}</dd>
+            </div>
+          {% endif %}
+          <div>
+            <dt>{{ 'Inkable'|t }}</dt>
+            <dd>{{ node.field_inkable.value ? 'Yes'|t : 'No'|t }}</dd>
+          </div>
+          {% if node.field_legal_core.value is not empty %}
+            <div>
+              <dt>{{ 'Format'|t }}</dt>
+              <dd>{{ node.field_legal_core.value|capitalize }}</dd>
+            </div>
+          {% endif %}
+        </dl>
+      </div>
+    </section>
+
+    {% if set_node %}
+      <section class="if-card-detail__from-set">
+        <a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}" class="if-from-set">
+          <div class="if-from-set__numeral serif">№</div>
+          <div class="if-from-set__body">
+            <div class="if-from-set__eyebrow">{{ 'From the set'|t }}</div>
+            <h3 class="if-from-set__title serif">{{ set_node.label }}</h3>
+            <div class="if-from-set__meta">
+              {% if set_node.field_card_count.value %}{{ set_node.field_card_count.value }} {{ 'cards'|t }} · {% endif %}
+              {% if set_node.field_released_at.value %}{{ set_node.field_released_at.0.value|date('M Y') }}{% endif %}
+            </div>
+          </div>
+          <span class="if-btn if-btn--primary">{{ 'Browse set'|t }} →</span>
+        </a>
+      </section>
     {% endif %}
 
   </div>

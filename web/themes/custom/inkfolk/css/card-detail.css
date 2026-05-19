@@ -1,248 +1,351 @@
 /* Inkfolk — card detail page
  *
- * Layout + typography for the /node/<card> "full" view mode. Pure
- * CSS over the design-token palette; no card-image overlays — the
- * licensed art carries cost/name/stats already.
- *
- * Polish items deferred to a later pass:
- *  - "Where to buy" link list (no price feed wired yet)
- *  - "Mentioned in" related-news strip (M2 — news content type)
- *  - "Other versions" multi-printing carousel (M2 — printing groups)
- *  - "Save to deck" / "Reverse" buttons under the art
+ * Port of card-detail.jsx (specs/design/.../project/src/). Layout
+ * mirrors the design's 380 + 1fr grid with a separate full-width
+ * breadcrumb bar above. Sections that need data we don't have yet
+ * (where-to-buy, save, variants) are simply not rendered — the
+ * surrounding grid still balances with what remains.
  */
 
-/* Hide the duplicate page-title block on card nodes — the design's
- * H1 lives inside the right column, not above the layout. */
-.page-node-type-card .page-title {
+/* Hide the page-title block AND the default Drupal breadcrumb on
+ * card nodes — the design's title lives in the right column, and
+ * the card-detail breadcrumb below ships with its own bar. */
+.page-node-type-card .page-title,
+.page-node-type-card .breadcrumb {
   display: none;
 }
+
+/* ───── Breadcrumb bar (full width) ───────────────────── */
+
+.if-card-breadcrumb {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line);
+}
+.if-card-breadcrumb__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.if-card-breadcrumb__trail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.if-card-breadcrumb__trail li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.if-card-breadcrumb__trail li + li::before {
+  content: '›';
+  color: var(--ink-4);
+}
+.if-card-breadcrumb__trail a {
+  color: inherit;
+  text-decoration: none;
+}
+.if-card-breadcrumb__trail a:hover { color: var(--ink-2); }
+.if-card-breadcrumb__trail li:last-child {
+  color: var(--ink-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.if-card-breadcrumb__pager {
+  display: flex;
+  gap: 6px;
+}
+.if-card-breadcrumb__pager .if-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+.if-card-breadcrumb__pager .if-btn--disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+/* ───── Main grid ─────────────────────────────────────── */
 
 .if-card-detail {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px 56px;
+  padding: 40px 32px 48px;
   display: grid;
-  grid-template-columns: 440px 1fr;
-  gap: 48px;
-  align-items: start;
+  grid-template-columns: 380px 1fr;
+  gap: 56px;
+  align-items: flex-start;
 }
-
-/* Inside the detail, field render outputs come with default labels
- * + wrappers that would re-introduce "Cost: 4" inline styling. We
- * lay out our own labels and just want the values. */
 .if-card-detail .field__label { display: none; }
 .if-card-detail .field { margin: 0; }
 
-/* ───── Left column: art + meta ───────────────────────── */
+/* ───── Left column: art ──────────────────────────────── */
 
 .if-card-detail__art {
   position: sticky;
   top: 88px;
-  display: grid;
-  gap: 18px;
 }
 .if-card-detail__art .if-lcard {
   width: 100%;
-  /* The shadow on .if-cardframe--subtle isn't enough at hero scale —
-   * lift the art a bit more. */
   filter: drop-shadow(0 16px 30px rgba(35, 25, 10, .18));
 }
 
-.if-card-detail__meta {
-  font-size: 12px;
-  color: var(--ink-3);
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 4px;
-}
-.if-card-detail__meta > div {
-  display: flex;
-  gap: 6px;
-}
-.if-card-detail__meta dt,
-.if-card-detail__meta dd {
-  margin: 0;
-  display: inline;
-}
-.if-card-detail__meta dt::after { content: ':'; }
-.if-card-detail__meta dd { color: var(--ink-2); }
-.if-card-detail__meta a {
-  color: var(--ink-2);
-  text-decoration: none;
-}
-.if-card-detail__meta a:hover { color: var(--ink); }
-
 /* ───── Right column: info ────────────────────────────── */
 
-.if-card-detail__eyebrow {
+.if-card-detail__chips {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  align-items: baseline;
-  margin-bottom: 6px;
+  margin-bottom: 14px;
 }
-.if-card-detail__rarity {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--rarity-rare);
+.if-card-detail__chips .if-chip {
+  font-size: 12px;
 }
-.if-card-detail__rarity--common      { color: var(--rarity-common);      }
-.if-card-detail__rarity--uncommon    { color: var(--rarity-uncommon);    }
-.if-card-detail__rarity--rare        { color: var(--rarity-rare);        }
-.if-card-detail__rarity--super-rare  { color: var(--rarity-super);       }
-.if-card-detail__rarity--legendary   { color: var(--rarity-legendary);   }
-.if-card-detail__rarity--enchanted {
-  /* The enchanted "color" is a gradient — paint the text with it. */
-  background: var(--rarity-enchanted);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.if-card-detail__eyebrow-sep {
-  color: var(--ink-4);
-}
-.if-card-detail__set {
-  font-size: 11px;
+.if-card-detail__chips .if-chip--ink {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-ink);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--ink-3);
-  text-decoration: none;
 }
-.if-card-detail__set:hover { color: var(--ink-2); }
-
-.if-card-detail__subtitle {
-  font-size: 14px;
-  color: var(--ink-3);
-  letter-spacing: .02em;
-  margin-bottom: 4px;
+.if-card-detail__chips .if-chip--ghost {
+  background: transparent;
 }
 
 .if-card-detail__title {
   font-size: 52px;
   font-weight: 500;
   letter-spacing: -.025em;
-  line-height: 1;
+  margin: 0 0 4px;
+  line-height: 1.02;
   color: var(--ink);
-  margin: 0 0 18px;
+}
+.if-card-detail__subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-3);
+  margin: 0;
+  letter-spacing: -.005em;
 }
 
-.if-card-detail__type {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: baseline;
-  font-size: 14px;
-  color: var(--ink-2);
-}
-.if-card-detail__type-sep { color: var(--ink-4); }
-.if-card-detail__type-list,
-.if-card-detail__class-list {
-  /* Override field-default block display so multiple values flow inline. */
-}
-.if-card-detail__type-list .field__item,
-.if-card-detail__class-list .field__item,
-.if-card-detail__type-list .field--label-inline .field__items,
-.if-card-detail__class-list .field--label-inline .field__items {
-  display: inline;
-}
-.if-card-detail__type-list .field__item + .field__item::before,
-.if-card-detail__class-list .field__item + .field__item::before {
-  content: ' · ';
-  color: var(--ink-4);
-}
-.if-card-detail__type-list .field__label,
-.if-card-detail__class-list .field__label {
-  display: none;
-}
-
-/* ───── Stats grid ───────────────────────────────────── */
+/* ───── Stats strip ───────────────────────────────────── */
 
 .if-card-detail__stats {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  gap: 1px;
-  margin-top: 20px;
-  background: var(--line);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 28px;
+  padding: 0 24px;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 14px;
-  overflow: hidden;
 }
 .if-stat {
-  background: var(--surface);
-  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  grid-template-rows: auto auto;
+  gap: 2px 12px;
+  align-items: center;
+  padding: 14px 0;
+}
+.if-stat + .if-stat {
+  border-left: 1px solid var(--line);
+  padding-left: 18px;
+  margin-left: -6px;
+}
+.if-stat__icon {
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  color: var(--ink-2);
+}
+.if-stat--cost .if-stat__icon { color: var(--ink-amber); }
+.if-card-detail--ink-amber    .if-stat--cost .if-stat__icon { color: var(--ink-amber); }
+.if-card-detail--ink-amethyst .if-stat--cost .if-stat__icon { color: var(--ink-amethyst); }
+.if-card-detail--ink-emerald  .if-stat--cost .if-stat__icon { color: var(--ink-emerald); }
+.if-card-detail--ink-ruby     .if-stat--cost .if-stat__icon { color: var(--ink-ruby); }
+.if-card-detail--ink-sapphire .if-stat--cost .if-stat__icon { color: var(--ink-sapphire); }
+.if-card-detail--ink-steel    .if-stat--cost .if-stat__icon { color: var(--ink-steel); }
+.if-stat--lore .if-stat__icon { color: var(--accent); }
+
+.if-stat__value {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1;
+  color: var(--ink);
 }
 .if-stat__label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-bottom: 6px;
-}
-.if-stat__value {
-  font-size: 36px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 1;
-  letter-spacing: -.02em;
-}
-.if-stat__value .field__item { display: inline; }
-
-/* ───── Abilities block ──────────────────────────────── */
-
-.if-card-detail__h2 {
   font-size: 11px;
-  font-weight: 700;
-  color: var(--ink-2);
+  color: var(--ink-3);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ───── Eyebrow header (Rules text / Printing details / Credits) ── */
+
+.if-card-detail__eyebrow {
+  font-size: 11px;
+  color: var(--ink-3);
   letter-spacing: .1em;
   text-transform: uppercase;
-  margin: 28px 0 12px;
-  font-family: var(--font-ui);
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-.if-card-detail__abilities-body {
+/* ───── Rules + flavor box ────────────────────────────── */
+
+.if-card-detail__rules {
+  margin-top: 32px;
+}
+.if-card-detail__rules-body {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 26px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.if-card-detail__rules-body p { margin: 0 0 12px; }
+.if-card-detail__rules-body p:last-child { margin-bottom: 0; }
+.if-card-detail__flavor {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  font-style: italic;
+  color: var(--ink-3);
+  font-size: 15px;
+}
+
+/* ───── Printing details + Credits 2-col grid ────────── */
+
+.if-card-detail__meta-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.if-card-detail__meta-box {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 18px 20px;
-  font-size: 15px;
-  line-height: 1.55;
+  padding: 14px 18px;
+}
+.if-card-detail__meta-box .if-card-detail__eyebrow {
+  margin-bottom: 6px;
+}
+.if-card-detail__dl {
+  margin: 0;
+  padding: 0;
+}
+.if-card-detail__dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+.if-card-detail__dl dt {
+  color: var(--ink-3);
+  margin: 0;
+}
+.if-card-detail__dl dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: right;
+  min-width: 0;
+}
+.if-card-detail__dl dd a {
+  color: inherit;
+  text-decoration: none;
+}
+.if-card-detail__dl dd a:hover { text-decoration: underline; }
+
+/* ───── From the set callout ──────────────────────────── */
+
+.if-card-detail__from-set {
+  margin-top: 36px;
+}
+.if-from-set {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(135deg, var(--ink-amber-soft), var(--ink-amethyst-soft));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+}
+.if-from-set__numeral {
+  font-size: 72px;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: -.04em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+}
+.if-from-set__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: 4px;
+}
+.if-from-set__title {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0 0 6px;
+  line-height: 1.1;
   color: var(--ink);
 }
-.if-card-detail__abilities-body .field__label { display: none; }
-.if-card-detail__abilities-body p { margin: 0 0 10px; }
-.if-card-detail__abilities-body p:last-child { margin-bottom: 0; }
-
-/* ───── Flavor text ──────────────────────────────────── */
-
-.if-card-detail__flavor {
-  font-style: italic;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--ink-3);
-  margin: 18px 0 0;
-  padding: 0 4px;
+.if-from-set__meta {
+  font-size: 14px;
+  color: var(--ink-2);
 }
-.if-card-detail__flavor .field__label { display: none; }
 
 /* ───── Responsive ──────────────────────────────────── */
 
 @media (max-width: 900px) {
+  .if-card-breadcrumb__inner {
+    padding: 10px 16px;
+    gap: 8px;
+  }
+  .if-card-breadcrumb__trail li:not(:last-child) { display: none; }
   .if-card-detail {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 16px 16px 40px;
+    gap: 28px;
+    padding: 24px 16px 40px;
   }
   .if-card-detail__art {
     position: static;
-    max-width: 340px;
+    max-width: 320px;
     margin: 0 auto;
   }
   .if-card-detail__title { font-size: 36px; }
-  .if-stat__value { font-size: 28px; }
+  .if-card-detail__subtitle { font-size: 18px; }
+  .if-card-detail__stats { padding: 0 12px; }
+  .if-card-detail__meta-grid { grid-template-columns: 1fr; }
+  .if-from-set { grid-template-columns: 1fr; text-align: left; gap: 12px; }
+  .if-from-set__numeral { display: none; }
 }
