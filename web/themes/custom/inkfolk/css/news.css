@@ -12,32 +12,128 @@
  */
 
 /* Hide the duplicate page-title block + breadcrumb on news pages —
- * each template renders its own title. */
+ * the article template renders its own title, and the listing has
+ * its own editorial masthead. */
 .page-node-type-news .page-title,
 .page-node-type-news .breadcrumb,
+.path-news .page-title,
 .path-news .breadcrumb {
   display: none;
 }
 
-/* ───── /news listing ─────────────────────────────────── */
+/* ───── /news listing — editorial masthead ─────────── */
+
+.if-news-masthead {
+  padding: 52px 32px 40px;
+  background: linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%);
+  border-bottom: 1px solid var(--line);
+}
+.if-news-masthead__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.if-news-masthead__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.if-news-masthead__title {
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  margin: 8px 0 12px;
+  line-height: 1.02;
+  max-width: 900px;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.if-news-masthead__lede {
+  font-size: 17px;
+  color: var(--ink-2);
+  max-width: 640px;
+  margin: 0;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .if-news-masthead { padding: 32px 16px 24px; }
+  .if-news-masthead__title { font-size: 32px; }
+  .if-news-masthead__lede { font-size: 14.5px; }
+}
+
+/* ───── /news listing — grid ─────────────────────────── */
 
 .view-news {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px 56px;
-}
-.path-news h1.page-title,
-.view-news > .views-element-container > h2 {
-  /* The page title is in the header region; nothing extra needed. */
+  padding: 40px 32px 48px;
 }
 .view-news .view-content {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 28px;
 }
 @media (max-width: 900px) { .view-news .view-content { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .view-news .view-content { grid-template-columns: 1fr; } }
-.view-news .if-news__cell { display: contents; }
+/* .if-news__cell is the views-row wrapper; it stays in the flow so
+ * :first-of-type targeting works for the feature variant below. */
+
+/* Feature variant: first card spans all columns and lays cover +
+ * content side-by-side. */
+.view-news .if-news__cell:first-of-type {
+  grid-column: 1 / -1;
+  margin-bottom: 20px;
+}
+.view-news .if-news__cell:first-of-type .if-news-card {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  grid-template-rows: auto;
+  gap: 32px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  padding: 0;
+  align-items: center;
+}
+.view-news .if-news__cell:first-of-type .if-news-card:hover {
+  box-shadow: none;
+  transform: none;
+}
+.view-news .if-news__cell:first-of-type .if-news-card__cover {
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.view-news .if-news__cell:first-of-type .if-news-card__body {
+  padding: 0;
+  gap: 14px;
+}
+.view-news .if-news__cell:first-of-type .if-news-card__title {
+  font-size: 38px;
+  letter-spacing: -.025em;
+  line-height: 1.08;
+}
+.view-news .if-news__cell:first-of-type .if-news-card__excerpt {
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-line-clamp: 4;
+}
+.view-news .if-news__cell:first-of-type .if-news-card__cat {
+  /* The design uses an uppercase "Featured · <category>" treatment;
+   * approximate it by upcasing the regular cat chip. */
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 5px 11px;
+}
+@media (max-width: 700px) {
+  .view-news .if-news__cell:first-of-type .if-news-card {
+    grid-template-columns: 1fr;
+  }
+  .view-news .if-news__cell:first-of-type .if-news-card__title { font-size: 26px; }
+}
 
 /* ───── News card ────────────────────────────────────── */
 

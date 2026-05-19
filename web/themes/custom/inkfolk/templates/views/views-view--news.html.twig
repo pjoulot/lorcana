@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Views render override for the news listing — wraps the default
+ * markup in the editorial masthead from NewsListingDesktop. The
+ * masthead text is currently hardcoded; a follow-up could move it
+ * to a Views header area or a "site_settings" config so editors
+ * can change the eyebrow / title / blurb without code.
+ */
+#}
+{%
+  set classes = [
+    'view',
+    'view-' ~ id|clean_class,
+    'view-id-' ~ id,
+    'view-display-id-' ~ display_id,
+    dom_id ? 'js-view-dom-id-' ~ dom_id,
+  ]
+%}
+<div{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}{{ title }}{{ title_suffix }}
+
+  <header class="if-news-masthead">
+    <div class="if-news-masthead__inner">
+      <div class="if-news-masthead__eyebrow">{{ 'The Inkfolk Journal'|t }}</div>
+      <h1 class="if-news-masthead__title serif">
+        {{ 'News, spoilers and tournament reports — written by players.'|t }}
+      </h1>
+      <p class="if-news-masthead__lede">
+        {{ 'Coverage of the meta, set releases, ruling updates, and the community around the table.'|t }}
+      </p>
+    </div>
+  </header>
+
+  {% if header %}<div class="view-header">{{ header }}</div>{% endif %}
+  {% if exposed %}<div class="view-filters">{{ exposed }}</div>{% endif %}
+  {% if attachment_before %}<div class="attachment attachment-before">{{ attachment_before }}</div>{% endif %}
+  {% if rows %}
+    <div class="view-content">{{ rows }}</div>
+  {% elseif empty %}
+    <div class="view-empty">{{ empty }}</div>
+  {% endif %}
+  {% if pager %}{{ pager }}{% endif %}
+  {% if attachment_after %}<div class="attachment attachment-after">{{ attachment_after }}</div>{% endif %}
+  {% if more %}{{ more }}{% endif %}
+  {% if footer %}<div class="view-footer">{{ footer }}</div>{% endif %}
+  {% if feed_icons %}<div class="feed-icons">{{ feed_icons }}</div>{% endif %}
+</div>
