@@ -17,20 +17,23 @@
     dom_id ? 'js-view-dom-id-' ~ dom_id,
   ]
 %}
+{# Masthead lives OUTSIDE the .view wrapper so its gradient can span
+   the full viewport width and butt right up against the topnav. The
+   .view wrapper carries its own max-width for the article grid. #}
+<header class="if-news-masthead">
+  <div class="if-news-masthead__inner">
+    <div class="if-news-masthead__eyebrow">{{ 'The Inkfolk Journal'|t }}</div>
+    <h1 class="if-news-masthead__title serif">
+      {{ 'News, spoilers and tournament reports — written by players.'|t }}
+    </h1>
+    <p class="if-news-masthead__lede">
+      {{ 'Coverage of the meta, set releases, ruling updates, and the community around the table.'|t }}
+    </p>
+  </div>
+</header>
+
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}{{ title }}{{ title_suffix }}
-
-  <header class="if-news-masthead">
-    <div class="if-news-masthead__inner">
-      <div class="if-news-masthead__eyebrow">{{ 'The Inkfolk Journal'|t }}</div>
-      <h1 class="if-news-masthead__title serif">
-        {{ 'News, spoilers and tournament reports — written by players.'|t }}
-      </h1>
-      <p class="if-news-masthead__lede">
-        {{ 'Coverage of the meta, set releases, ruling updates, and the community around the table.'|t }}
-      </p>
-    </div>
-  </header>
 
   {% if header %}<div class="view-header">{{ header }}</div>{% endif %}
   {% if exposed %}<div class="view-filters">{{ exposed }}</div>{% endif %}

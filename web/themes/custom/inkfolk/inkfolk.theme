@@ -75,6 +75,63 @@ function inkfolk_preprocess_node(array &$variables): void {
     return;
   }
 
+  if ($node->bundle() === 'news') {
+    // Related news: up to 3 other recently-published news articles,
+    // excluding the current one. Prefer same-category matches; fall
+    // back to most-recent overall if too few matches.
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $category_id = $node->get('field_category')->target_id;
+
+    $related_ids = [];
+    if ($category_id) {
+      $related_ids = $node_storage->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('type', 'news')
+        ->condition('status', 1)
+        ->condition('field_category', $category_id)
+        ->condition('nid', $node->id(), '<>')
+        ->sort('field_published_at', 'DESC')
+        ->range(0, 3)
+        ->execute();
+    }
+    if (count($related_ids) < 3) {
+      $extra_ids = $node_storage->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('type', 'news')
+        ->condition('status', 1)
+        ->condition('nid', array_merge([$node->id()], array_values($related_ids)), 'NOT IN')
+        ->sort('field_published_at', 'DESC')
+        ->range(0, 3 - count($related_ids))
+        ->execute();
+      $related_ids = array_merge(array_values($related_ids), array_values($extra_ids));
+    }
+
+    $variables['related_news'] = [];
+    foreach ($node_storage->loadMultiple($related_ids) as $related) {
+      $body_value = $related->get('body')->value ?? '';
+      $excerpt = $related->get('body')->summary ?: trim(strip_tags($body_value));
+      if (mb_strlen($excerpt) > 160) {
+        $excerpt = mb_substr($excerpt, 0, 160) . '…';
+      }
+      $cover_media = $related->get('field_cover')->entity;
+      $cover_render = $cover_media
+        ? \Drupal::entityTypeManager()->getViewBuilder('media')->view($cover_media, 'default')
+        : NULL;
+      $variables['related_news'][] = [
+        'title' => $related->label(),
+        'url' => $related->toUrl(),
+        'author' => $related->get('field_author')->value,
+        'published' => $related->get('field_published_at')->value,
+        'category' => $related->get('field_category')->entity
+          ? $related->get('field_category')->entity->label()
+          : '',
+        'excerpt' => $excerpt,
+        'cover' => $cover_render,
+      ];
+    }
+    return;
+  }
+
   if ($node->bundle() !== 'card' || $node->get('field_set')->isEmpty()) {
     return;
   }

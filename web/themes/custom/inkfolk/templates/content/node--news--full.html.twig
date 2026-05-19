@@ -42,4 +42,42 @@
 
   </div>
 
+  {% if related_news is defined and related_news|length > 0 %}
+    <aside class="if-news-related">
+      <div class="if-news-related__inner">
+        <header class="if-news-related__header">
+          <div class="if-home-section__eyebrow">{{ 'Keep reading'|t }}</div>
+          <h2 class="if-home-section__title serif">{{ 'Related articles'|t }}</h2>
+        </header>
+        <div class="if-news-related__grid">
+          {% for a in related_news %}
+            <a class="if-news-card if-news-related__card" href="{{ a.url }}">
+              <div class="if-news-card__cover">
+                {% if a.cover %}
+                  {{ a.cover }}
+                {% else %}
+                  <div class="if-news-card__cover-placeholder if-news-card__cover-placeholder--{{ loop.index0 % 6 }}" aria-hidden="true"></div>
+                {% endif %}
+                {% if a.category %}
+                  <span class="if-news-card__cat">{{ a.category }}</span>
+                {% endif %}
+              </div>
+              <div class="if-news-card__body">
+                <div class="if-news-card__meta">
+                  {% if a.author %}<span>{{ a.author }}</span>{% endif %}
+                  {% if a.author and a.published %}<span class="if-news-card__meta-sep">·</span>{% endif %}
+                  {% if a.published %}<span>{{ a.published|date('M j') }}</span>{% endif %}
+                </div>
+                <h3 class="if-news-card__title serif">{{ a.title }}</h3>
+                {% if a.excerpt %}
+                  <p class="if-news-card__excerpt">{{ a.excerpt }}</p>
+                {% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
+  {% endif %}
+
 </article>
