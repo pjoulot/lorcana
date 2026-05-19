@@ -21,7 +21,57 @@ function inkfolk_preprocess_node(array &$variables): void {
   }
 
   if ($node->bundle() === 'card_set') {
-    $variables['cards_in_set'] = views_embed_view('cards', 'block_set', $node->id());
+    $set_id = $node->id();
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+
+    // Counts shown in the hero band + chase-cards header.
+    $variables['cards_total'] = (int) $node_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'card')
+      ->condition('field_set', $set_id)
+      ->count()
+      ->execute();
+    $variables['enchanted_count'] = (int) $node_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'card')
+      ->condition('field_set', $set_id)
+      ->condition('field_rarity', 'enchanted')
+      ->count()
+      ->execute();
+    $variables['legendary_count'] = (int) $node_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'card')
+      ->condition('field_set', $set_id)
+      ->condition('field_rarity', 'legendary')
+      ->count()
+      ->execute();
+
+    // Chase cards: up to 5, enchanted first (alphabetically before
+    // 'legendary'), then legendary; deterministic via secondary sort
+    // on collector_number. Skip cards without art so the section
+    // never renders a half-painted card-back.
+    $chase_ids = $node_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'card')
+      ->condition('field_set', $set_id)
+      ->condition('field_rarity', ['enchanted', 'legendary'], 'IN')
+      ->exists('field_card_art')
+      ->sort('field_rarity', 'ASC')
+      ->sort('field_collector_number', 'ASC')
+      ->range(0, 5)
+      ->execute();
+    $variables['chase_cards'] = [];
+    if ($chase_ids) {
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+      foreach ($node_storage->loadMultiple($chase_ids) as $card_node) {
+        $variables['chase_cards'][] = [
+          'rarity' => $card_node->get('field_rarity')->value,
+          'rarity_label' => ucwords(str_replace('_', ' ', $card_node->get('field_rarity')->value)),
+          'render' => $view_builder->view($card_node, 'teaser'),
+        ];
+      }
+    }
+
     return;
   }
 

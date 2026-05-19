@@ -67,3 +67,8 @@ Thumbs.db
 # Playwright MCP / ad-hoc screenshot artifacts
 /.playwright-mcp/
 /phase*.png
+/verify-*.png
+/debug-*.png
+/post-fix-*.png
+/review-*.png
+/set-rebuild.png

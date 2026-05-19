@@ -1,14 +1,26 @@
 /* Inkfolk — sets listing + single set page
  *
- * Bones-only styling for /sets (grid of set tiles) and the canonical
- * /sets/{code} page. Hero band, meta strip, and the encyclopedia
- * teaser grid embedded as a Views block.
+ * /sets is a grid of card_set tiles. /sets/{code} is a port of
+ * news-sets.jsx::SetPageDesktop: hero with chip/H1/meta(+cover slot),
+ * a chase-cards section, a fixed-list Products section, and an
+ * "Explore the set" CTA.
  *
- * Polish items deferred to a later pass:
- *  - Cover image in the hero (need sourced assets).
- *  - "Chase cards" + "Products" sections from the prototype.
- *  - Stylised stacked-cards visual on the "Open in encyclopedia" CTA.
+ * Things deferred to a polish/data pass:
+ *  - The hero description copy (needs field_description on card_set).
+ *  - The set cover image (needs sourced asset per spec 01).
+ *  - Per-set Products data (right now we render the standard 4
+ *    products which apply to every main set — promo sets get a
+ *    visual that doesn't strictly match their distribution).
  */
+
+/* Hide the duplicate page-title block + breadcrumb on the canonical
+ * set page and on the /sets listing — the hero band has its own
+ * title, and the listing has its own h1 inside .view-sets. */
+.page-node-type-card-set .page-title,
+.page-node-type-card-set .breadcrumb,
+.path-sets .breadcrumb {
+  display: none;
+}
 
 /* ───── /sets listing ─────────────────────────────────── */
 
@@ -71,28 +83,25 @@
   color: var(--ink-3);
 }
 
-/* ───── /sets/{code} single set page ────────────────── */
+/* ───── /sets/{code} — Hero band ─────────────────────── */
 
-/* Hide the duplicate page-title block + breadcrumb on the canonical
- * set page — the hero band below provides the title and meta. */
-.page-node-type-card-set .page-title,
-.page-node-type-card-set .breadcrumb,
-.path-sets .breadcrumb {
-  display: none;
-}
-
-.if-set-page {
-  /* Hero spans the full content width; the cards grid below it
-   * keeps the standard encyclopedia gutter (handled by the cards
-   * view's own padding via .view-cards). */
-}
 .if-set-page__hero {
+  position: relative;
+  overflow: hidden;
+  padding: 56px 32px 48px;
   background:
     radial-gradient(60% 60% at 85% 0%, var(--ink-amber-soft) 0%, transparent 60%),
     radial-gradient(50% 60% at 0% 100%, var(--ink-amethyst-soft) 0%, transparent 60%),
     var(--paper);
   border-bottom: 1px solid var(--line);
-  padding: 56px 32px 40px;
+}
+.if-set-page__hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: center;
 }
 .if-set-page__chip {
   display: inline-flex;
@@ -109,8 +118,7 @@
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.if-set-page__chip::before {
-  content: '';
+.if-set-page__chip-dot {
   width: 6px;
   height: 6px;
   border-radius: 999px;
@@ -123,7 +131,14 @@
   color: var(--ink);
   margin: 0 0 12px;
   line-height: 1.02;
-  max-width: 720px;
+  max-width: 540px;
+}
+.if-set-page__description {
+  font-size: 16px;
+  margin: 0 0 4px;
+  color: var(--ink-2);
+  max-width: 480px;
+  line-height: 1.5;
 }
 .if-set-page__meta {
   display: flex;
@@ -139,22 +154,233 @@
 .if-set-page__meta dt { color: var(--ink-3); }
 .if-set-page__meta dt::after { content: ' ·'; }
 .if-set-page__meta dd { font-weight: 600; }
-.if-set-page__meta a {
-  color: var(--accent-ink);
-  text-decoration: none;
-  font-weight: 600;
-}
-.if-set-page__meta a:hover { text-decoration: underline; }
 
-@media (max-width: 700px) {
+/* Cover image slot — empty until an asset is sourced. Renders as a
+ * subtle dashed placeholder so the layout balance from the design
+ * survives. */
+.if-set-page__hero-cover {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  border: 1px dashed var(--line-strong);
+  background:
+    repeating-linear-gradient(135deg,
+      transparent 0 14px,
+      color-mix(in oklab, var(--line) 50%, transparent) 14px 15px),
+    var(--surface);
+  transform: rotate(2deg);
+  box-shadow: var(--shadow-3);
+}
+
+@media (max-width: 900px) {
   .if-set-page__hero { padding: 36px 16px 28px; }
+  .if-set-page__hero-inner { grid-template-columns: 1fr; gap: 24px; }
+  .if-set-page__hero-cover { max-width: 240px; }
   .if-set-page__title { font-size: 36px; }
   .if-set-page__meta { gap: 16px; }
 }
 
-/* The embedded cards view inside .if-set-page reuses .view-cards
- * styles from encyclopedia.css — grid + teasers — so no rules
- * needed here beyond toning the outer padding. */
-.if-set-page__cards .view-cards {
-  padding-top: 32px;
+/* ───── Main column ──────────────────────────────────── */
+
+.if-set-page__main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 32px 56px;
+}
+.if-set-page__main > section + section {
+  margin-top: 56px;
+}
+
+.if-set-page__section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.if-set-page__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.if-set-page__h2 {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.if-set-page__chase-counts {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* ───── Chase cards ──────────────────────────────────── */
+
+.if-set-page__chase-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1000px) { .if-set-page__chase-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px)  { .if-set-page__chase-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.if-chase-card {
+  position: relative;
+}
+.if-chase-card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(15, 10, 5, .78);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+.if-chase-card__badge--enchanted {
+  background: linear-gradient(135deg, #F4B042, #A56FCF);
+}
+
+.if-set-page__chase-see-all {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ───── Products tiles ───────────────────────────────── */
+
+.if-set-page__products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .if-set-page__products-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .if-set-page__products-grid { grid-template-columns: 1fr; } }
+
+.if-product-tile {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+}
+.if-product-tile__glyph {
+  height: 130px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+.if-product-tile__glyph--amber    { background: linear-gradient(160deg, #F4B042, #C77A1E); }
+.if-product-tile__glyph--amethyst { background: linear-gradient(160deg, #A56FCF, #4F2A82); }
+.if-product-tile__glyph--sapphire { background: linear-gradient(160deg, #3B7BC4, #1F4880); }
+.if-product-tile__glyph--emerald  { background: linear-gradient(160deg, #3D9F6A, #1E5C3D); }
+.if-product-tile__body { padding: 14px 16px; }
+.if-product-tile__name {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.if-product-tile__sub {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+.if-product-tile__detail {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 6px;
+}
+
+/* ───── Explore-the-set CTA ──────────────────────────── */
+
+.if-set-cta {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  padding: 36px 40px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(70% 100% at 100% 50%, var(--ink-amber-soft) 0%, transparent 60%),
+    radial-gradient(60% 100% at 0% 50%, var(--ink-amethyst-soft) 0%, transparent 60%),
+    var(--surface);
+  text-decoration: none;
+  color: inherit;
+}
+.if-set-cta__body { max-width: 560px; }
+.if-set-cta__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.if-set-cta__bar {
+  width: 18px;
+  height: 2px;
+  background: var(--accent);
+  display: inline-block;
+}
+.if-set-cta__title {
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  margin: 0 0 10px;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.if-set-cta__copy {
+  font-size: 14.5px;
+  color: var(--ink-2);
+  margin: 0 0 22px;
+  line-height: 1.55;
+}
+.if-set-cta__visual {
+  position: relative;
+  width: 280px;
+  height: 240px;
+  flex-shrink: 0;
+}
+.if-set-cta__stack-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  filter: drop-shadow(0 10px 22px rgba(35, 25, 10, .18));
+}
+.if-set-cta__stack-card--1 { transform: translate(calc(-50% - 70px), calc(-50% + 10px)) rotate(-10deg); z-index: 1; }
+.if-set-cta__stack-card--2 { transform: translate(-50%, calc(-50% - 6px)) rotate(4deg);                  z-index: 3; }
+.if-set-cta__stack-card--3 { transform: translate(calc(-50% + 70px), calc(-50% + 16px)) rotate(14deg);   z-index: 2; }
+
+@media (max-width: 900px) {
+  .if-set-cta { grid-template-columns: 1fr; padding: 24px; }
+  .if-set-cta__visual { display: none; }
+  .if-set-cta__title { font-size: 28px; }
 }

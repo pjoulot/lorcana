@@ -1,41 +1,178 @@
 {#
 /**
  * @file
- * Card set — full view mode (the canonical /sets/{code} page).
+ * Card set — full view mode (canonical /sets/{code} page).
  *
- * Hero band (set name + meta) followed by the encyclopedia teaser
- * grid filtered to this set, via the cards view's block_set
- * display. The set's chase cards / products / sourced cover image
- * are polish items deferred to a later pass.
+ * Port of news-sets.jsx::SetPageDesktop. Hero band on top, then
+ * "Chase cards" (up to 5 enchanted+legendary), then a fixed-list
+ * Products section (standard Lorcana product distribution per set),
+ * then an "Explore the set" CTA that drops the visitor into the
+ * encyclopedia pre-filtered by this set.
+ *
+ * What's intentionally NOT rendered yet, with the reason for each:
+ *  - Set description copy — needs a field_description on card_set
+ *    that an admin authors. Section just collapses when empty so
+ *    the visual still breathes.
+ *  - Set cover image — Ravensburger / Disney brand asset; the
+ *    sourcing call is the project owner's per
+ *    specs/01-overview-and-architecture.md#brand-assets-sourcing.
+ *    The hero band's right-hand slot is reserved for it.
+ *
+ * Variables documented in core's node.html.twig, plus cards_total /
+ * enchanted_count / legendary_count / chase_cards injected by
+ * inkfolk_preprocess_node().
  */
 #}
+{% set set_code = node.field_set_code.value %}
+{% set num_padded = set_code matches '/^\\d+$/' ? '%02d'|format(set_code) : set_code %}
+
+{% set products = [
+  { name: 'Booster pack'|t,       sub: '12 cards'|t,           detail: '1 foil · 1 rare+'|t,             tone: 'amber',    glyph: '◫' },
+  { name: 'Booster box'|t,        sub: '24 packs · 288 cards'|t, detail: 'Sealed display'|t,             tone: 'amethyst', glyph: '☷' },
+  { name: 'Starter deck'|t,       sub: '60 cards · pre-built'|t, detail: '2 inks · ready to play'|t,     tone: 'sapphire', glyph: '◧' },
+  { name: 'Illumineer’s Trove'|t, sub: '8 packs + accessories'|t, detail: 'Deck box · sleeves · binder'|t, tone: 'emerald',  glyph: '✦' },
+] %}
+
 <article{{ attributes.addClass('if-set-page') }}>
 
   <header class="if-set-page__hero">
-    <div class="if-set-page__chip">{{ 'Set № '|t }}{{ node.field_set_code.value }}</div>
-    <h1 class="if-set-page__title serif">{{ node.label }}</h1>
-    <dl class="if-set-page__meta">
-      {% if node.field_released_at.value %}
-        <div>
-          <dt>{{ 'Released'|t }}</dt>
-          <dd>{{ node.field_released_at.0.value|date('j F Y') }}</dd>
+    <div class="if-set-page__hero-inner">
+      <div class="if-set-page__hero-text">
+        <div class="if-set-page__chip">
+          <span class="if-set-page__chip-dot" aria-hidden="true"></span>
+          {{ 'Set № '|t }}{{ num_padded }}
+          {% if set_code %} · {{ set_code }}{% endif %}
         </div>
-      {% endif %}
-      {% if node.field_set_code.value %}
-        <div>
-          <dt>{{ 'Code'|t }}</dt>
-          <dd>{{ node.field_set_code.value }}</dd>
-        </div>
-      {% endif %}
-      <div>
-        <dt>{{ 'Browse'|t }}</dt>
-        <dd><a href="/cards?f%5B0%5D=set%3A{{ node.id }}">{{ 'Open in encyclopedia →'|t }}</a></dd>
+        <h1 class="if-set-page__title serif">{{ node.label }}</h1>
+        {% if node.hasField('field_description') and not node.field_description.isEmpty() %}
+          <p class="if-set-page__description">{{ content.field_description }}</p>
+        {% endif %}
+        <dl class="if-set-page__meta">
+          {% if node.field_released_at.value %}
+            <div>
+              <dt>{{ 'Released'|t }}</dt>
+              <dd>{{ node.field_released_at.0.value|date('M Y') }}</dd>
+            </div>
+          {% endif %}
+          {% if cards_total > 0 %}
+            <div>
+              <dt>{{ 'Cards'|t }}</dt>
+              <dd>{{ cards_total }}</dd>
+            </div>
+          {% endif %}
+          {% if enchanted_count > 0 %}
+            <div>
+              <dt>{{ 'Enchanted'|t }}</dt>
+              <dd>{{ enchanted_count }}</dd>
+            </div>
+          {% endif %}
+          <div>
+            <dt>{{ 'Languages'|t }}</dt>
+            <dd>EN</dd>
+          </div>
+        </dl>
       </div>
-    </dl>
+      <div class="if-set-page__hero-cover" aria-hidden="true">
+        {# Slot for the set's cover image; awaiting a sourced asset. #}
+      </div>
+    </div>
   </header>
 
-  <section class="if-set-page__cards">
-    {{ cards_in_set }}
-  </section>
+  <div class="if-set-page__main">
+
+    {% if chase_cards|length > 0 %}
+      <section class="if-set-page__chase">
+        <header class="if-set-page__section-header">
+          <div>
+            <div class="if-set-page__eyebrow">{{ 'Chase cards'|t }}</div>
+            <h2 class="if-set-page__h2 serif">{{ "The pulls everyone's hunting"|t }}</h2>
+          </div>
+          {% if enchanted_count > 0 or legendary_count > 0 %}
+            <div class="if-set-page__chase-counts">
+              {% if enchanted_count > 0 %}
+                {{ enchanted_count }} {{ 'Enchanted'|t }}
+              {% endif %}
+              {% if enchanted_count > 0 and legendary_count > 0 %} · {% endif %}
+              {% if legendary_count > 0 %}
+                {{ legendary_count }} {{ 'Legendary'|t }}
+              {% endif %}
+            </div>
+          {% endif %}
+        </header>
+
+        <div class="if-set-page__chase-grid">
+          {% for chase in chase_cards %}
+            <div class="if-chase-card">
+              <span class="if-chase-card__badge if-chase-card__badge--{{ chase.rarity }}">
+                {{ chase.rarity_label }}
+              </span>
+              {{ chase.render }}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="if-set-page__chase-see-all">
+          <a class="if-btn" href="/cards?f%5B0%5D=set%3A{{ node.id }}">
+            {{ 'See all cards in this set'|t }} →
+          </a>
+        </div>
+      </section>
+    {% endif %}
+
+    <section class="if-set-page__products">
+      <header class="if-set-page__section-header">
+        <div>
+          <div class="if-set-page__eyebrow">{{ 'What you can buy'|t }}</div>
+          <h2 class="if-set-page__h2 serif">{{ 'Products in this set'|t }}</h2>
+        </div>
+      </header>
+      <div class="if-set-page__products-grid">
+        {% for p in products %}
+          <div class="if-product-tile">
+            <div class="if-product-tile__glyph if-product-tile__glyph--{{ p.tone }}" aria-hidden="true">{{ p.glyph }}</div>
+            <div class="if-product-tile__body">
+              <div class="if-product-tile__name serif">{{ p.name }}</div>
+              <div class="if-product-tile__sub">{{ p.sub }}</div>
+              <div class="if-product-tile__detail">{{ p.detail }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="if-set-page__cta">
+      <a class="if-set-cta" href="/cards?f%5B0%5D=set%3A{{ node.id }}">
+        <div class="if-set-cta__body">
+          <div class="if-set-cta__eyebrow">
+            <span class="if-set-cta__bar" aria-hidden="true"></span>
+            {{ 'Explore the set'|t }}
+          </div>
+          <h3 class="if-set-cta__title serif">
+            {% if cards_total > 0 %}
+              {{ 'All %count% cards, one search away.'|t({'%count%': cards_total}) }}
+            {% else %}
+              {{ 'All the cards, one search away.'|t }}
+            {% endif %}
+          </h3>
+          <p class="if-set-cta__copy">
+            {{ 'Jump into the encyclopedia with'|t }}
+            <strong>{{ set_code }}</strong>
+            {{ 'pre-filtered. Layer on ink, cost, keyword — narrow to the cards you actually want.'|t }}
+          </p>
+          <span class="if-btn if-btn--primary">{{ 'Open encyclopedia'|t }} →</span>
+        </div>
+        {% if chase_cards|length >= 3 %}
+          <div class="if-set-cta__visual" aria-hidden="true">
+            {% for chase in chase_cards|slice(0, 3) %}
+              <div class="if-set-cta__stack-card if-set-cta__stack-card--{{ loop.index }}">
+                {{ chase.render }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </a>
+    </section>
+
+  </div>
 
 </article>
