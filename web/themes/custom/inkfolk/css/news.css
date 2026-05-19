@@ -457,7 +457,13 @@
 /* ───── Related articles under news detail ───────────── */
 
 .if-news-related {
-  background: var(--paper-2);
+  /* Sit on the same --paper background as the article body so the
+   * section feels continuous with the article it follows; a hairline
+   * border above marks the rupture from the body, and the footer's
+   * --paper-2 band below provides the separation downward. Using
+   * --paper-2 here too made the related strip + footer blur into a
+   * single grey zone. */
+  background: var(--paper);
   border-top: 1px solid var(--line);
   padding: 48px 32px 56px;
 }
