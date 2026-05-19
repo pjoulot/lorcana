@@ -1,12 +1,17 @@
 {#
 /**
  * @file
- * Card node — teaser view mode (encyclopedia grid + carousel cells).
+ * Card node — teaser view mode (encyclopedia grid + list cells).
  *
  * Renders a single Lorcana card as a clickable, aspect-locked tile
  * wrapping its licensed art. The frame treatment defaults to
  * "subtle" (per design); the encyclopedia or detail page can swap
  * the modifier when needed.
+ *
+ * The text payload (name, ink, type, stats, rarity) is rendered
+ * but hidden in grid mode via CSS. When .view-cards switches into
+ * list mode (data-view-mode="list" on the container), the same
+ * teaser markup reflows to a horizontal row with the text visible.
  *
  * Available variables documented in core's node.html.twig.
  */
@@ -17,11 +22,53 @@
   'if-cardframe--subtle',
   not has_art ? 'if-lcard--no-art',
 ] %}
+{% set version = node.field_version.value %}
+{% set version_suffix = version ? ' — ' ~ version : '' %}
+{% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
+{% set ink_term = node.field_ink.entity %}
+{% set ink_label = ink_term ? ink_term.label : '' %}
+{% set ink_slug = ink_label ? ink_label|lower : '' %}
+{% set rarity_raw = node.field_rarity.value %}
+{% set rarity_letter = rarity_raw == 'common' ? 'C'
+  : (rarity_raw == 'uncommon' ? 'U'
+  : (rarity_raw == 'rare' ? 'R'
+  : (rarity_raw == 'super_rare' ? 'SR'
+  : (rarity_raw == 'legendary' ? 'L'
+  : (rarity_raw == 'enchanted' ? 'E' : '')))))
+%}
+{% set types = [] %}
+{% for t in node.field_card_types %}{% set types = types|merge([t.value|capitalize]) %}{% endfor %}
+{% set is_character = 'Character' in types %}
 
 <a href="{{ url }}"
    {{ attributes.addClass(classes) }}
    aria-label="{{ node.label }}">
   <div class="if-card-image">
     {{ content.field_card_art }}
+  </div>
+  {# List-mode payload: hidden in grid via CSS. #}
+  <div class="if-lcard__row" aria-hidden="true">
+    <div class="if-lcard__row-text">
+      <div class="if-lcard__row-name serif">{{ base_name }}</div>
+      <div class="if-lcard__row-meta">
+        {% if ink_label %}
+          <span class="if-lcard__row-ink">
+            <span class="if-swatch if-swatch--{{ ink_slug }}" aria-hidden="true"></span>
+            {{ ink_label }}
+          </span>
+          <span class="if-lcard__row-sep">·</span>
+        {% endif %}
+        {% if types %}
+          <span>{{ types|join(' · ') }}</span>
+        {% endif %}
+        {% if is_character and node.field_strength.value is not empty %}
+          <span class="if-lcard__row-sep">·</span>
+          <span class="mono if-lcard__row-stats">{{ node.field_strength.value }}/{{ node.field_willpower.value }} · {{ node.field_lore.value }}◆</span>
+        {% endif %}
+      </div>
+    </div>
+    {% if rarity_letter %}
+      <div class="if-lcard__row-rarity if-lcard__row-rarity--{{ rarity_raw|replace({'_': '-'}) }}">{{ rarity_letter }}</div>
+    {% endif %}
   </div>
 </a>

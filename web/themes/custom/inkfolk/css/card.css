@@ -60,3 +60,142 @@
     radial-gradient(120% 80% at 50% 30%, var(--accent-soft), transparent 60%),
     var(--surface-2);
 }
+
+/* List-mode payload — hidden in grid mode (default). Made visible
+ * by the encyclopedia's data-view-mode="list" container. */
+.if-lcard__row { display: none; }
+
+/* ───── List view mode on the encyclopedia ─────────────
+ *
+ * When .view-cards has data-view-mode="list", the grid container
+ * collapses to a single column of horizontal rows. Each row is the
+ * same .if-lcard wrapper but reflowed: 48px thumb + text payload +
+ * rarity badge. The image's aspect-ratio constraint stays valid
+ * because it's on a smaller fixed-width thumb. */
+.view-cards[data-view-mode="list"] .view-content {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  overflow: hidden;
+}
+.view-cards[data-view-mode="list"] .if-encyclopedia__cell { display: block; }
+.view-cards[data-view-mode="list"] .if-lcard {
+  /* Reset grid-cell aspect lock — list rows are not aspect-locked. */
+  aspect-ratio: auto;
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  filter: none;
+}
+.view-cards[data-view-mode="list"] .if-encyclopedia__cell:last-of-type .if-lcard {
+  border-bottom: 0;
+}
+.view-cards[data-view-mode="list"] .if-lcard:hover { background: var(--paper-2); }
+.view-cards[data-view-mode="list"] .if-card-image {
+  position: relative;
+  width: 48px;
+  height: 68px;
+  inset: auto;
+  border-radius: 6px;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+.view-cards[data-view-mode="list"] .if-cardframe--subtle .if-card-image {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .06);
+}
+.view-cards[data-view-mode="list"] .if-lcard__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+.if-lcard__row-text { min-width: 0; }
+.if-lcard__row-name {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.if-lcard__row-meta {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 2px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.if-lcard__row-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.if-lcard__row-sep { color: var(--ink-4); }
+.if-lcard__row-stats { font-weight: 600; color: var(--ink-2); }
+.if-lcard__row-rarity {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--rarity-common);
+}
+.if-lcard__row-rarity--common      { color: var(--rarity-common);      }
+.if-lcard__row-rarity--uncommon    { color: var(--rarity-uncommon);    }
+.if-lcard__row-rarity--rare        { color: var(--rarity-rare);        }
+.if-lcard__row-rarity--super-rare  { color: var(--rarity-super);       }
+.if-lcard__row-rarity--legendary   { color: var(--rarity-legendary);   }
+.if-lcard__row-rarity--enchanted {
+  background: var(--rarity-enchanted);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Grid↔list toggle control injected into the content_top region by
+ * encyclopedia.js. Renders as a small two-button segmented control. */
+.if-view-toggle {
+  display: inline-flex;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 2px;
+  margin-left: auto;
+}
+.if-view-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink-3);
+  font: 500 12px/1 var(--font-ui);
+}
+.if-view-toggle__btn[aria-pressed="true"] {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+.if-view-toggle__btn svg { display: block; }
+
+/* Wrapper that aligns the chip strip + the toggle on one line. */
+.if-main__content-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.if-main__content-top > .block-facets-summary,
+.if-main__content-top > .block-facets-summary-blockcards {
+  flex: 1;
+  min-width: 0;
+}
