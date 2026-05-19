@@ -13,6 +13,7 @@ global:
       css/sets.css: { weight: -12 }
       css/home.css: { weight: -11 }
       css/news.css: { weight: -10 }
+      /libraries/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.css: { weight: -9, minified: true }
   js:
     js/encyclopedia.js: { defer: true }
   dependencies:

@@ -127,6 +127,88 @@
  * checkbox via ::before, so hide the textual indicator. */
 .if-sidebar .facet-item__status { display: none; }
 
+/* ───── Cost slider (facets_range_widget + jquery-ui-slider-pips) ─
+ *
+ * The slider widget renders <div class="facet-slider" id="cost">
+ * which jQuery UI populates client-side with .ui-slider-handle and
+ * .ui-slider-range; jquery-ui-slider-pips adds .ui-slider-pip ticks
+ * beneath. We restyle each piece to match the design's range slider.
+ */
+.if-sidebar .facet-slider,
+.if-sidebar .ui-slider {
+  position: relative;
+  height: 4px;
+  margin: 14px 6px 26px;
+  background: var(--line);
+  border: 0;
+  border-radius: 999px;
+}
+.if-sidebar .ui-slider-range {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  border: 0;
+}
+.if-sidebar .ui-slider-handle {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  cursor: grab;
+  outline: none;
+  z-index: 2;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+}
+.if-sidebar .ui-slider-handle:hover,
+.if-sidebar .ui-slider-handle:focus { box-shadow: 0 0 0 3px var(--accent-soft); }
+.if-sidebar .ui-slider-handle:active { cursor: grabbing; }
+
+/* Pips below the track */
+.if-sidebar .ui-slider-pips .ui-slider-pip {
+  position: absolute;
+  top: 8px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-4);
+  width: 14px;
+  margin-left: -7px;
+  cursor: pointer;
+}
+.if-sidebar .ui-slider-pips .ui-slider-pip .ui-slider-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 4px;
+  margin-left: -.5px;
+  background: var(--line-strong);
+}
+.if-sidebar .ui-slider-pips .ui-slider-pip .ui-slider-label {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.if-sidebar .ui-slider-pips .ui-slider-pip-selected,
+.if-sidebar .ui-slider-pips .ui-slider-pip-inrange { color: var(--ink-2); }
+
+/* Hide the facets module's auto-rendered "min / max" inputs that
+ * sometimes appear above/below the slider — the slider IS the UI. */
+.if-sidebar .facet-slider-readout {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ───── Active-filter chips above the grid ───────────
  *
  * Facets Summary block lives in the content_top region and renders

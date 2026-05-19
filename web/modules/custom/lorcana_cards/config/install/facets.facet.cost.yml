@@ -26,11 +26,18 @@ hierarchy:
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:
-  type: links
+  type: slider
   config:
     show_numbers: true
-    soft_limit: 0
-    show_reset_link: false
+    prefix: ''
+    suffix: ''
+    min_type: computed
+    min_value: 0.0
+    max_type: computed
+    max_value: 10.0
+    step: 1.0
+    animate: fast
+    range: true
 empty_behavior:
   behavior: none
 only_visible_when_facet_source_is_visible: null

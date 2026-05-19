@@ -24,6 +24,10 @@
 /web/themes/contrib/
 /web/profiles/contrib/
 /web/libraries/
+# Vendored third-party JS libraries that don't live in composer.
+# Each gets an explicit exception below so the library survives a
+# fresh clone.
+!/web/libraries/jquery-ui-slider-pips/
 
 # Drupal site config — local-only files
 /web/sites/*/files/
