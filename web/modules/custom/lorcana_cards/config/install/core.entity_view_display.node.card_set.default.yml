@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.card_set.field_card_count
+    - field.field.node.card_set.field_description
     - field.field.node.card_set.field_is_draftable
     - field.field.node.card_set.field_lorcast_id
     - field.field.node.card_set.field_pack_distribution
@@ -12,6 +13,7 @@ dependencies:
     - node.type.card_set
   module:
     - datetime
+    - text
     - user
 id: node.card_set.default
 targetEntityType: node
@@ -26,6 +28,13 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: -3
     region: content
   field_is_draftable:
     type: boolean

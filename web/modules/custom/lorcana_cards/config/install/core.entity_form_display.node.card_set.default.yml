@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.card_set.field_card_count
+    - field.field.node.card_set.field_description
     - field.field.node.card_set.field_is_draftable
     - field.field.node.card_set.field_lorcast_id
     - field.field.node.card_set.field_pack_distribution
@@ -13,6 +14,7 @@ dependencies:
   module:
     - datetime
     - path
+    - text
 id: node.card_set.default
 targetEntityType: node
 bundle: card_set
@@ -30,6 +32,14 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_description:
+    type: text_textarea
+    weight: -3
+    region: content
+    settings:
+      rows: 3
+      placeholder: 'One or two sentences — what this set is about.'
     third_party_settings: {  }
   field_is_draftable:
     type: boolean_checkbox

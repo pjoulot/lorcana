@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - node.type.card_set
+  module:
+    - text
+id: node.card_set.field_description
+field_name: field_description
+entity_type: node
+bundle: card_set
+label: Description
+description: 'Short editorial paragraph shown in the hero of the canonical /sets/{code} page (one or two sentences — what this set is about).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long
