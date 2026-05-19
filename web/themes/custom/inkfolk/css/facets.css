@@ -127,6 +127,95 @@
  * checkbox via ::before, so hide the textual indicator. */
 .if-sidebar .facet-item__status { display: none; }
 
+/* ───── Active-filter chips above the grid ───────────
+ *
+ * Facets Summary block lives in the content_top region and renders
+ * one chip per active facet selection. Matches the prototype's
+ * "Filters: Ink: Ruby × | Cost ≤ 7 × | Clear all" strip.
+ */
+.if-main__content-top {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 32px 0;
+}
+.if-main--with-sidebar .if-main__content-top {
+  padding-left: 32px;
+}
+
+.block-facets-summary-block,
+.block-facets-summary {
+  /* The summary block wrapper — keep transparent so the chip strip
+   * floats on the page background. */
+}
+
+/* Facets Summary emits a <ul.facet-summary> with <li>'s. Items split
+ * into "facet-summary-item--facet" (one per active value) and
+ * "reset-facets" (the "Clear all" link). */
+.facet-summary,
+ul.facet-summary {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.facet-summary-item--facet,
+.facet-summary li {
+  list-style: none;
+}
+.facet-summary-item--facet > a,
+.facet-summary li > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 10px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  line-height: 1;
+}
+.facet-summary-item--facet > a:hover,
+.facet-summary li > a:hover {
+  background: var(--accent);
+}
+/* Facets Summary outputs each chip as text like "Ink: Ruby" plus an
+ * embedded close X. Style the trailing × via a pseudo-element since
+ * the actual markup is just an anchor. */
+.facet-summary-item--facet > a::after {
+  content: '×';
+  margin-left: 4px;
+  font-size: 14px;
+  line-height: 1;
+  opacity: .7;
+}
+.facet-summary-item--facet > a:hover::after { opacity: 1; }
+
+/* Reset-facets link */
+.facet-summary-item--clear-all,
+.facet-summary li.reset-facets {
+  margin-left: 6px;
+}
+.facet-summary-item--clear-all > a,
+.facet-summary li.reset-facets > a {
+  background: transparent;
+  color: var(--ink-3);
+  font-weight: 500;
+  padding: 5px 8px;
+}
+.facet-summary-item--clear-all > a:hover,
+.facet-summary li.reset-facets > a:hover {
+  color: var(--ink);
+  background: var(--paper-2);
+}
+.facet-summary-item--clear-all > a::after,
+.facet-summary li.reset-facets > a::after { content: none; }
+
 /* Value + count layout. */
 .if-sidebar .facet-item__value { flex: 1; }
 .if-sidebar .facet-item__count {

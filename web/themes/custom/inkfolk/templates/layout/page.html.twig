@@ -67,6 +67,9 @@
       </aside>
     {% endif %}
     <div id="main-content" tabindex="-1" class="if-main__content">
+      {% if page.content_top %}
+        <div class="if-main__content-top">{{ page.content_top }}</div>
+      {% endif %}
       {{ page.content }}
     </div>
   </main>
