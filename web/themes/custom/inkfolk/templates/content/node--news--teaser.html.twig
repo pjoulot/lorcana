@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * News article — teaser view mode (the /news listing tile).
+ *
+ * Port of NewsCard from news-sets.jsx. Two visual variants:
+ *  - "feature": first item in a listing, big cover + larger title +
+ *    excerpt + author/date/read meta. Triggered by adding the
+ *    `if-news-card--feature` class via the listing CSS
+ *    (:first-of-type) rather than per-item logic here.
+ *  - "row" (default): compact left-aligned thumb + headline + meta
+ *    rendered as a horizontal row.
+ *
+ * The same markup serves both — CSS toggles between the two looks
+ * based on the first-of-type selector inside .view-news .view-content.
+ */
+#}
+{% set author = node.field_author.value %}
+{% set published = node.field_published_at.0.value %}
+{% set category_label = node.field_category.entity ? node.field_category.entity.label : '' %}
+{% set excerpt = node.body.summary ?: node.body.value|striptags|slice(0, 220) %}
+
+<a href="{{ url }}" {{ attributes.addClass('if-news-card') }} aria-label="{{ node.label }}">
+  <div class="if-news-card__cover">
+    {% if node.field_cover.entity %}
+      {{ content.field_cover }}
+    {% else %}
+      <div class="if-news-card__cover-placeholder if-news-card__cover-placeholder--{{ loop.index0|default(0) % 6 }}" aria-hidden="true"></div>
+    {% endif %}
+    {% if category_label %}
+      <span class="if-news-card__cat">{{ category_label }}</span>
+    {% endif %}
+  </div>
+  <div class="if-news-card__body">
+    <div class="if-news-card__meta">
+      {% if author %}<span>{{ author }}</span>{% endif %}
+      {% if author and published %}<span class="if-news-card__meta-sep">·</span>{% endif %}
+      {% if published %}<span>{{ published|date('M j') }}</span>{% endif %}
+    </div>
+    <h3 class="if-news-card__title serif">{{ node.label }}</h3>
+    {% if excerpt %}
+      <p class="if-news-card__excerpt">{{ excerpt }}</p>
+    {% endif %}
+  </div>
+</a>

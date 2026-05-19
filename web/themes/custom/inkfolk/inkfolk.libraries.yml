@@ -12,6 +12,7 @@ global:
       css/card-detail.css: { weight: -13 }
       css/sets.css: { weight: -12 }
       css/home.css: { weight: -11 }
+      css/news.css: { weight: -10 }
   js:
     js/encyclopedia.js: { defer: true }
   dependencies:

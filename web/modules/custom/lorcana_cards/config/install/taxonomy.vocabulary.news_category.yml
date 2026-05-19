@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'News category'
+vid: news_category
+description: 'Editorial category for news articles — Set Spoilers, Tournaments, Rules, Decks, Community, Site updates.'
+weight: 5
+new_revision: false
+

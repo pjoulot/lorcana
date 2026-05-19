@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * News article — full view mode (canonical /news/<slug> page).
+ *
+ * Single-column editorial layout: optional cover image hero,
+ * category eyebrow + big serif H1, author/date/read meta line,
+ * then the body content. Card-reference token replacement
+ * ([card:set/number] → linked chip with hover popover) is a
+ * separate filter that lands as a follow-up commit.
+ */
+#}
+{% set author = node.field_author.value %}
+{% set published = node.field_published_at.0.value %}
+{% set category_label = node.field_category.entity ? node.field_category.entity.label : '' %}
+
+<article{{ attributes.addClass('if-news-article') }}>
+
+  {% if node.field_cover.entity %}
+    <div class="if-news-article__cover">
+      {{ content.field_cover }}
+    </div>
+  {% endif %}
+
+  <div class="if-news-article__inner">
+
+    <header class="if-news-article__header">
+      {% if category_label %}
+        <div class="if-news-article__eyebrow">{{ category_label }}</div>
+      {% endif %}
+      <h1 class="if-news-article__title serif">{{ node.label }}</h1>
+      <div class="if-news-article__meta">
+        {% if author %}<span>{{ author }}</span>{% endif %}
+        {% if author and published %}<span class="if-news-article__meta-sep">·</span>{% endif %}
+        {% if published %}<span>{{ published|date('j F Y') }}</span>{% endif %}
+      </div>
+    </header>
+
+    <div class="if-news-article__body">
+      {{ content.body }}
+    </div>
+
+  </div>
+
+</article>
