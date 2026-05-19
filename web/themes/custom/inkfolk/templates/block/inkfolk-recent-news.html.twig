@@ -1,0 +1,82 @@
+{#
+/**
+ * @file
+ * Inkfolk homepage "Recent news" strip.
+ *
+ * First article: feature variant (280px cover + content side-by-side
+ * with larger title + excerpt).
+ * Subsequent articles: compact row (80px thumb + content + chev).
+ *
+ * Provided by lorcana_cards_theme():
+ *  - eyebrow, title, see_all_label, see_all_url
+ *  - articles (array of { title, url, author, published, category,
+ *    excerpt, cover (render array or null) })
+ */
+#}
+{% if articles|length > 0 %}
+  <section class="if-home-section if-home-news">
+    <header class="if-home-section__header">
+      <div>
+        {% if eyebrow %}<div class="if-home-section__eyebrow">{{ eyebrow }}</div>{% endif %}
+        <h2 class="if-home-section__title serif">{{ title }}</h2>
+      </div>
+      {% if see_all_label and see_all_url %}
+        <a class="if-home-section__link" href="{{ see_all_url }}">{{ see_all_label }}</a>
+      {% endif %}
+    </header>
+
+    <div class="if-home-news__list">
+      {% for a in articles %}
+        {% if loop.first %}
+          {# Feature variant — 280px cover + content #}
+          <a class="if-home-news__feature" href="{{ a.url }}">
+            <div class="if-home-news__feature-cover">
+              {% if a.cover %}
+                {{ a.cover }}
+              {% else %}
+                <div class="if-news-card__cover-placeholder if-news-card__cover-placeholder--{{ loop.index0 % 6 }}" aria-hidden="true"></div>
+              {% endif %}
+              {% if a.category %}
+                <span class="if-news-card__cat">{{ a.category }}</span>
+              {% endif %}
+            </div>
+            <div class="if-home-news__feature-body">
+              <div class="if-home-news__feature-meta">
+                {% if a.author %}<span>{{ a.author }}</span>{% endif %}
+                {% if a.author and a.published %}<span class="if-news-card__meta-sep">·</span>{% endif %}
+                {% if a.published %}<span>{{ a.published|date('M j') }}</span>{% endif %}
+              </div>
+              <h3 class="if-home-news__feature-title serif">{{ a.title }}</h3>
+              {% if a.excerpt %}
+                <p class="if-home-news__feature-excerpt">{{ a.excerpt }}</p>
+              {% endif %}
+            </div>
+          </a>
+        {% else %}
+          {# Row variant — compact thumb + content + chevron #}
+          <a class="if-home-news__row" href="{{ a.url }}">
+            <div class="if-home-news__row-thumb">
+              {% if a.cover %}
+                {{ a.cover }}
+              {% else %}
+                <div class="if-news-card__cover-placeholder if-news-card__cover-placeholder--{{ loop.index0 % 6 }}" aria-hidden="true"></div>
+              {% endif %}
+            </div>
+            <div class="if-home-news__row-body">
+              {% if a.category %}
+                <div class="if-home-news__row-cat">{{ a.category }}</div>
+              {% endif %}
+              <h4 class="if-home-news__row-title serif">{{ a.title }}</h4>
+              <div class="if-home-news__row-meta">
+                {% if a.author %}{{ a.author }}{% endif %}
+                {% if a.author and a.published %} · {% endif %}
+                {% if a.published %}{{ a.published|date('M j') }}{% endif %}
+              </div>
+            </div>
+            <span class="if-home-news__row-chev" aria-hidden="true">›</span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

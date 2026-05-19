@@ -228,6 +228,138 @@
   overflow: hidden;
 }
 
+/* ───── Home strip: Recent news ───────────────────────
+ *
+ * Used by the InkfolkRecentNewsBlock plugin on the / page. Two
+ * variants: first article = feature (280 / 1fr cover + content),
+ * rest = compact row (80px thumb + content + chev). Section
+ * header shared with the other home strips via .if-home-section.
+ */
+
+.if-home-news__list {
+  display: grid;
+  gap: 20px;
+}
+
+/* Feature variant. */
+.if-home-news__feature {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  padding: 16px;
+  transition: border-color .12s, box-shadow .12s, transform .06s;
+}
+.if-home-news__feature:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+.if-home-news__feature-cover {
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: var(--paper-2);
+}
+.if-home-news__feature-cover img,
+.if-home-news__feature-cover picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.if-home-news__feature-meta {
+  font-size: 12px;
+  color: var(--ink-3);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.if-home-news__feature-title {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0 0 8px;
+  line-height: 1.15;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.if-home-news__feature-excerpt {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Row variant. */
+.if-home-news__row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+.if-home-news__row:hover .if-home-news__row-title { color: var(--accent-ink); }
+.if-home-news__row-thumb {
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  background: var(--paper-2);
+}
+.if-home-news__row-thumb img,
+.if-home-news__row-thumb picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.if-home-news__row-cat {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.if-home-news__row-title {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.if-home-news__row-meta {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.if-home-news__row-chev {
+  color: var(--ink-3);
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .if-home-news__feature { grid-template-columns: 1fr; }
+  .if-home-news__row { grid-template-columns: 64px 1fr auto; }
+  .if-home-news__row-title { font-size: 15px; }
+}
+
 /* ───── /news/<slug> article ─────────────────────────── */
 
 .if-news-article__cover {
