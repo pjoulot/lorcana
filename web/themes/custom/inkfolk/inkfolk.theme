@@ -6,6 +6,20 @@
  */
 
 /**
+ * Implements hook_preprocess_page().
+ *
+ * Mirrors the active encyclopedia query (?search=) back into the topnav
+ * search field, so a submitted search stays visible and editable instead
+ * of the box appearing to clear itself after results load.
+ */
+function inkfolk_preprocess_page(array &$variables): void {
+  $search = \Drupal::request()->query->get('search');
+  $variables['topnav_search'] = is_string($search) ? $search : '';
+  // The topnav renders on every page, so vary it on the search param.
+  $variables['#cache']['contexts'][] = 'url.query_args:search';
+}
+
+/**
  * Implements hook_preprocess_node().
  *
  * Two bundle-specific things:
