@@ -18,3 +18,9 @@ services:
   lorcana_cards.search_syntax:
     class: Drupal\lorcana_cards\Search\CardSearchSyntax
     arguments: ['@entity_type.manager']
+
+  lorcana_cards.search_syntax_redirect:
+    class: Drupal\lorcana_cards\EventSubscriber\SearchSyntaxRedirectSubscriber
+    arguments: ['@lorcana_cards.search_syntax']
+    tags:
+      - { name: event_subscriber }

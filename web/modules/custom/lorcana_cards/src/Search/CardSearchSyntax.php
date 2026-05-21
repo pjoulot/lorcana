@@ -71,6 +71,25 @@ final class CardSearchSyntax {
   private const TOKEN_PATTERN = '/([a-zA-Z]+)(>=|<=|>|<|=|:)("[^"]*"|\S+)/';
 
   /**
+   * Canonical key → facet url alias, for tokens that mirror a facet.
+   */
+  private const FACET_ALIAS = [
+    'ink' => 'ink',
+    'type' => 'type',
+    'rarity' => 'rarity',
+    'keyword' => 'keyword',
+    'class' => 'classification',
+    'set' => 'set',
+    'cost' => 'cost',
+  ];
+
+  /**
+   * Bounds of the cost range-slider facet, for translating comparators.
+   */
+  private const COST_MIN = 1;
+  private const COST_MAX = 10;
+
+  /**
    * Lowercased ink-name → term-id map, built lazily.
    *
    * @var array<string,int>|null
@@ -154,6 +173,96 @@ final class CardSearchSyntax {
     $text = trim(preg_replace('/\s+/', ' ', $remainder ?? ''));
 
     return [$tokens, $text];
+  }
+
+  /**
+   * Splits a search string into facet selections and leftover search text.
+   *
+   * Tokens that mirror a facet (ink, type, rarity, cost, keyword, set, class)
+   * become `alias:value` strings ready for the `f[]` query parameter, so the
+   * encyclopedia can redirect a typed search into the real facet UI. Tokens
+   * with no facet (lore/strength/willpower/cn/lang) and any free text are
+   * re-serialised back into the residual search string. A facet token whose
+   * value can't be resolved (a typo) also falls back to residual text.
+   *
+   * @return array{facets: list<string>, search: string}
+   *   The facet selections and the residual search string.
+   */
+  public function expandToFacets(string $keys): array {
+    [$tokens, $text] = $this->parse($keys);
+
+    $facets = [];
+    $residual = [];
+    foreach ($tokens as $token) {
+      $item = $this->facetItem($token['field'], $token['op'], $token['value']);
+      if ($item !== NULL) {
+        $facets[] = $item;
+      }
+      else {
+        $residual[] = $this->reserialize($token['field'], $token['op'], $token['value']);
+      }
+    }
+
+    $residual[] = $text;
+    $search = trim(preg_replace('/\s+/', ' ', implode(' ', array_filter($residual))));
+
+    return ['facets' => $facets, 'search' => $search];
+  }
+
+  /**
+   * Maps a token to its facet `alias:value` form.
+   *
+   * Returns NULL when the token has no matching facet or its value can't be
+   * resolved (so the caller keeps it as residual search text instead).
+   */
+  private function facetItem(string $field, string $op, string $value): ?string {
+    if (!isset(self::FACET_ALIAS[$field])) {
+      return NULL;
+    }
+    $alias = self::FACET_ALIAS[$field];
+
+    $resolved = match ($field) {
+      'type' => strtolower($value),
+      'rarity' => $this->normalizeRarity($value),
+      'cost' => $this->costRange($op, $value),
+      'ink' => $this->inkMap()[strtolower($value)] ?? NULL,
+      'keyword' => $this->keywordMap()[strtolower($value)] ?? NULL,
+      'class' => $this->classMap()[strtolower($value)] ?? NULL,
+      'set' => $this->setNid($value),
+      default => NULL,
+    };
+
+    return $resolved === NULL ? NULL : $alias . ':' . $resolved;
+  }
+
+  /**
+   * Translates a cost token + operator into the slider facet's range value.
+   *
+   * Returns NULL for a non-numeric or empty range (kept as residual instead).
+   */
+  private function costRange(string $op, string $value): ?string {
+    if (!is_numeric($value)) {
+      return NULL;
+    }
+    $n = (int) $value;
+    [$lo, $hi] = match ($op) {
+      '>' => [$n + 1, self::COST_MAX],
+      '>=' => [$n, self::COST_MAX],
+      '<' => [self::COST_MIN, $n - 1],
+      '<=' => [self::COST_MIN, $n],
+      default => [$n, $n],
+    };
+    $lo = max(self::COST_MIN, min($lo, self::COST_MAX));
+    $hi = max(self::COST_MIN, min($hi, self::COST_MAX));
+
+    return $lo > $hi ? NULL : "(min:$lo,max:$hi)";
+  }
+
+  /**
+   * Rebuilds a token back into its typed text form (for the residual search).
+   */
+  private function reserialize(string $field, string $op, string $value): string {
+    return $field . $op . (str_contains($value, ' ') ? '"' . $value . '"' : $value);
   }
 
   /**
