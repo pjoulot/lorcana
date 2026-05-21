@@ -278,19 +278,35 @@ final class CardSearchSyntax {
   }
 
   /**
-   * Resolves a set code (as typed) to its card_set node id.
+   * Resolves a set token to a card_set node id.
+   *
+   * Matches an exact set code first (e.g. "1", "P1"), then falls back to a
+   * set-name substring so a friendlier "azurite" → "Azurite Sea" works.
    */
-  private function setNid(string $code): ?int {
-    if (array_key_exists($code, $this->setNids)) {
-      return $this->setNids[$code];
+  private function setNid(string $token): ?int {
+    if (array_key_exists($token, $this->setNids)) {
+      return $this->setNids[$token];
     }
-    $ids = $this->entityTypeManager->getStorage('node')->getQuery()
+    $storage = $this->entityTypeManager->getStorage('node');
+
+    $ids = $storage->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', 'card_set')
-      ->condition('field_set_code', $code)
+      ->condition('field_set_code', $token)
       ->range(0, 1)
       ->execute();
-    return $this->setNids[$code] = $ids ? (int) reset($ids) : NULL;
+
+    if (!$ids) {
+      $ids = $storage->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('type', 'card_set')
+        ->condition('title', $token, 'CONTAINS')
+        ->sort('field_set_code')
+        ->range(0, 1)
+        ->execute();
+    }
+
+    return $this->setNids[$token] = $ids ? (int) reset($ids) : NULL;
   }
 
 }

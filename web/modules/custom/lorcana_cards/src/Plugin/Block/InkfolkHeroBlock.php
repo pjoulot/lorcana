@@ -31,7 +31,7 @@ final class InkfolkHeroBlock extends BlockBase {
       'title_accent' => 'at a glance.',
       'copy' => 'A fan-made, ad-free database for searching cards, planning decks, and drafting with friends. EN · FR.',
       'search_placeholder' => 'Search cards, abilities, sets…',
-      'try_examples' => "ink:ruby cost<=3\nkeyword:singer\nt:song rare\nset:azurite ink:sapphire+steel",
+      'try_examples' => "ink:ruby cost<=3\nt:song r:rare\nset:archazia ink:amber\nkw:singer",
       'show_chip' => TRUE,
       'show_spread' => TRUE,
     ] + parent::defaultConfiguration();
