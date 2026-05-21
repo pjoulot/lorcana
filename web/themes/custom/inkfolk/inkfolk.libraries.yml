@@ -16,6 +16,7 @@ global:
       /libraries/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.css: { weight: -9, minified: true }
   js:
     js/encyclopedia.js: { defer: true }
+    js/search-help.js: { defer: true }
   dependencies:
     - core/drupal
     - core/drupalSettings

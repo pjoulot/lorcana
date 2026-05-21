@@ -32,16 +32,40 @@
         {{ page.topnav_nav }}
       </div>
 
-      <form class="if-topnav__search" role="search" action="/cards" method="get">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
-          <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-        <input name="search" type="search"
-               placeholder="{{ 'Search cards, sets, abilities…'|t }}"
-               aria-label="{{ 'Search'|t }}"/>
-        <span class="if-kbd" aria-hidden="true">⌘ K</span>
-      </form>
+      <div class="if-topnav__searchwrap">
+        <form class="if-topnav__search" role="search" action="/cards" method="get">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input name="search" type="search"
+                 placeholder="{{ 'Search cards, sets, abilities…'|t }}"
+                 aria-label="{{ 'Search'|t }}"/>
+          <button type="button" class="if-topnav__search-help"
+                  aria-haspopup="dialog" aria-expanded="false" aria-controls="if-search-syntax"
+                  aria-label="{{ 'Search syntax help'|t }}">
+            <span aria-hidden="true">?</span>
+          </button>
+          <span class="if-kbd" aria-hidden="true">⌘ K</span>
+        </form>
+        <div class="if-search-syntax" id="if-search-syntax" role="dialog"
+             aria-label="{{ 'Search syntax'|t }}" hidden>
+          <p class="if-search-syntax__head">{{ 'Type filters right in the search box — alone or mixed with words.'|t }}</p>
+          <dl class="if-search-syntax__list">
+            <div><dt><code>ink:amber</code></dt><dd>{{ 'Ink — also'|t }} <code>color:</code> <code>c:</code></dd></div>
+            <div><dt><code>cost&gt;=5</code></dt><dd>{{ 'Cost, with'|t }} <code>&gt;</code> <code>&gt;=</code> <code>&lt;</code> <code>&lt;=</code></dd></div>
+            <div><dt><code>lore&gt;=2</code></dt><dd>{{ 'Lore — also'|t }} <code>strength:</code> <code>willpower:</code></dd></div>
+            <div><dt><code>t:character</code></dt><dd>{{ 'Type: character, action, song, item'|t }}</dd></div>
+            <div><dt><code>r:legendary</code></dt><dd>{{ 'Rarity'|t }}</dd></div>
+            <div><dt><code>set:1</code></dt><dd>{{ 'Set number'|t }}</dd></div>
+            <div><dt><code>kw:rush</code></dt><dd>{{ 'Keyword ability'|t }}</dd></div>
+            <div><dt><code>"two words"</code></dt><dd>{{ 'Quote multi-word values'|t }}</dd></div>
+          </dl>
+          <p class="if-search-syntax__foot">
+            {{ 'Combine freely:'|t }} <code>ink:amber t:character cost&lt;=3</code>
+          </p>
+        </div>
+      </div>
 
       <div class="if-topnav__actions">
         <button type="button" class="if-btn" aria-label="{{ 'Language'|t }}">
