@@ -262,19 +262,15 @@
   letter-spacing: -.04em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
   line-height: 1;
+  text-transform: uppercase;
 }
-.if-home-set-tile__code {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: .1em;
-  background: rgba(0, 0, 0, .25);
-  padding: 3px 7px;
-  border-radius: 4px;
+/* Alpha codes (TFC, D23, DIS, P1) are wider — drop a step so they
+ * sit visually alongside single-digit codes without clipping. */
+.if-home-set-tile__numeral:not(:empty) {
+  font-size: 48px;
 }
+.if-home-set-tile__numeral[data-len="2"] { font-size: 44px; }
+.if-home-set-tile__numeral[data-len="3"] { font-size: 36px; }
 .if-home-set-tile__body { padding: 12px 14px; }
 .if-home-set-tile__title {
   font-size: 16px;

@@ -25,8 +25,10 @@
       {% for s in sets %}
         <a class="if-home-set-tile" href="{{ s.url }}">
           <div class="if-home-set-tile__head if-home-set-tile__head--{{ loop.index0 % 6 }}">
-            <div class="if-home-set-tile__numeral serif">№</div>
-            <span class="if-home-set-tile__code">{{ s.code }}</span>
+            {# The set's code IS the visual identifier — numeric codes
+               (1, 2, …) read like the design's circled-digit icons,
+               and alpha codes (TFC, D23) still fit the same slot. #}
+            <div class="if-home-set-tile__numeral serif" data-len="{{ s.code|length }}">{{ s.code }}</div>
           </div>
           <div class="if-home-set-tile__body">
             <div class="if-home-set-tile__title serif">{{ s.title }}</div>
