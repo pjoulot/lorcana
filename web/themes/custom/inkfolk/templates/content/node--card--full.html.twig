@@ -18,8 +18,12 @@
  *  - Save to collection      — requires accounts (M5).
  *  - Where to buy            — requires a price feed (not in M1).
  *  - Variants picker         — requires printing-group model (M2).
- *  - {ink}/{lore}/{exert}    — rules-text token replacement (polish).
- *  - "Mentioned in news"     — requires news content type (M2).
+ *  - {ink}/{lore}/{exert}    — inline icon replacement in rules text
+ *                              (polish; NOT a hover popover — see below).
+ *
+ * Cut from scope by the project owner (not deferred — will not be built):
+ *  - "Mentioned in news"     — reverse news→card index.
+ *  - Reusing the card-preview popover on rules-text tokens.
  *
  * Available variables documented in core's node.html.twig, plus
  * card_prev / card_next / card_position / card_set_total injected by

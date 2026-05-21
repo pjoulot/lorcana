@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Compact card preview — served as an HTML fragment by
+ * CardPreviewController and injected into the popover by card-popover.js.
+ *
+ * Kept self-contained: the art on the left, name + meta + key stats on the
+ * right. Styling lives in css/card-popover.css (loaded with the chip).
+ *
+ * Variables:
+ * - name, url, ink, ink_label, types, rarity, set_label
+ * - image: render array (media thumbnail at the medium image style)
+ * - stats: keyed array of { label, value }
+ */
+#}
+<div class="if-card-preview if-card-preview--ink-{{ ink }}">
+  <div class="if-card-preview__art">{{ image }}</div>
+  <div class="if-card-preview__body">
+    <div class="if-card-preview__name serif">{{ name }}</div>
+    <div class="if-card-preview__meta">
+      {% if ink_label %}
+        <span class="if-card-preview__ink">
+          <span class="if-swatch if-swatch--{{ ink }}" aria-hidden="true"></span>{{ ink_label }}
+        </span>
+      {% endif %}
+      {% if types %}<span>{{ types|join(' · ') }}</span>{% endif %}
+      {% if rarity %}<span>{{ rarity }}</span>{% endif %}
+    </div>
+    {% if stats %}
+      <dl class="if-card-preview__stats mono">
+        {% for key, stat in stats %}
+          <div class="if-card-preview__stat if-card-preview__stat--{{ key }}">
+            <dt>{{ stat.label }}</dt>
+            <dd>{{ stat.value }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+    {% if set_label %}<div class="if-card-preview__set">{{ set_label }}</div>{% endif %}
+  </div>
+</div>

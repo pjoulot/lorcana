@@ -1,0 +1,160 @@
+/**
+ * Inline card-reference chips ([card:...] tokens) and their hover/tap preview
+ * popover. The chip mirrors the CardChip component in the design handoff
+ * (news-sets.jsx); the popover is rendered from inkfolk-card-preview.html.twig.
+ */
+
+/* ── Inline chip ─────────────────────────────────────────── */
+.if-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 8px 1px 5px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: .95em;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+  vertical-align: baseline;
+  transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+}
+
+.if-card-link:hover,
+.if-card-link:focus-visible {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-ink);
+  outline: none;
+}
+
+.if-card-link__dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
+/* Unresolved token: visible but clearly inert, so editors catch typos. */
+.if-card-link--missing {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  color: var(--ink-3);
+  cursor: help;
+}
+
+/* ── Preview popover ─────────────────────────────────────── */
+.if-card-popover {
+  position: absolute;
+  z-index: 1000;
+  width: 320px;
+  max-width: calc(100vw - 16px);
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-2);
+  animation: if-card-popover-in .14s ease both;
+}
+
+@keyframes if-card-popover-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.if-card-popover--below {
+  animation-name: if-card-popover-in-below;
+}
+
+@keyframes if-card-popover-in-below {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .if-card-popover { animation: none; }
+}
+
+.if-card-preview {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.if-card-preview__art {
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-2);
+  line-height: 0;
+}
+
+.if-card-preview__art :is(img) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.if-card-preview__name {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.if-card-preview__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+
+.if-card-preview__ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.if-card-preview__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+
+.if-card-preview__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.if-card-preview__stat dt {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.if-card-preview__stat dd {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.if-card-preview__set {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--ink-3);
+}

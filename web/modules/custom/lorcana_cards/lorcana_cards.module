@@ -51,5 +51,18 @@ function lorcana_cards_theme(array $existing, string $type, string $theme, strin
         'articles' => [],
       ],
     ],
+    'inkfolk_card_preview' => [
+      'variables' => [
+        'name' => '',
+        'url' => '',
+        'image' => NULL,
+        'ink' => '',
+        'ink_label' => '',
+        'types' => [],
+        'rarity' => '',
+        'set_label' => '',
+        'stats' => [],
+      ],
+    ],
   ];
 }

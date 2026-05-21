@@ -1,0 +1,11 @@
+lorcana_cards.card_preview:
+  path: '/card-preview/{node}'
+  defaults:
+    _controller: '\Drupal\lorcana_cards\Controller\CardPreviewController::preview'
+  options:
+    parameters:
+      node:
+        type: 'entity:node'
+  requirements:
+    _entity_access: 'node.view'
+    node: \d+

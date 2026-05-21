@@ -21,6 +21,17 @@ global:
     - core/drupalSettings
     - core/once
 
+card-popover:
+  version: VERSION
+  css:
+    component:
+      css/card-popover.css: { weight: -10 }
+  js:
+    js/card-popover.js: { defer: true }
+  dependencies:
+    - core/drupal
+    - core/once
+
 fonts:
   remote: https://fonts.google.com/
   license:
