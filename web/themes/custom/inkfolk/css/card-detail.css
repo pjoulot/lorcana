@@ -442,3 +442,67 @@ body.if-lightbox-open { overflow: hidden; }
     height: 36px;
   }
 }
+
+/* ───── Other printings strip ───────────────────────────── */
+.if-card-detail__printings {
+  margin-top: 28px;
+}
+.if-printings-strip {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.if-printing {
+  width: 92px;
+  flex: 0 0 auto;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+/* Card-shaped frame, tinted by ink (rainbow for Enchanted). */
+.if-printing__frame {
+  aspect-ratio: 5 / 7;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--line-strong);
+  box-shadow: var(--shadow-1);
+}
+/* No mouse-hover decoration — matches the encyclopedia card tiles, which
+   rely on the pointer cursor alone. Keyboard focus still gets a clear ring. */
+.if-printing:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+.if-printing__frame--amber    { background: var(--ink-amber); }
+.if-printing__frame--amethyst { background: var(--ink-amethyst); }
+.if-printing__frame--emerald  { background: var(--ink-emerald); }
+.if-printing__frame--ruby     { background: var(--ink-ruby); }
+.if-printing__frame--sapphire { background: var(--ink-sapphire); }
+.if-printing__frame--steel    { background: var(--ink-steel); }
+.if-printing--enchanted .if-printing__frame {
+  background: linear-gradient(135deg, var(--ink-amber), var(--ink-amethyst) 45%, var(--ink-sapphire) 75%, var(--ink-emerald));
+}
+.if-printing__art {
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--surface);
+  line-height: 0;
+}
+.if-printing__art :is(img) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.if-printing__rarity {
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -.005em;
+}
+.if-printing__num {
+  font-size: 11px;
+  color: var(--ink-3);
+}

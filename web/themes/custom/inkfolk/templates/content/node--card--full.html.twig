@@ -17,7 +17,6 @@
  * reason for each:
  *  - Save to collection      — requires accounts (M5).
  *  - Where to buy            — requires a price feed (not in M1).
- *  - Variants picker         — requires printing-group model (M2).
  *  - {ink}/{lore}/{exert}    — inline icon replacement in rules text
  *                              (polish; NOT a hover popover — see below).
  *
@@ -207,6 +206,23 @@
         </dl>
       </div>
     </section>
+
+    {% if card_printings is not empty %}
+      <section class="if-card-detail__printings">
+        <div class="if-card-detail__eyebrow">{{ 'Other printings'|t }}</div>
+        <div class="if-printings-strip if-scroll">
+          {% for p in card_printings %}
+            <a class="if-printing{{ p.is_enchanted ? ' if-printing--enchanted' }}" href="{{ p.url }}">
+              <div class="if-printing__frame if-printing__frame--{{ p.ink_slug }}">
+                <div class="if-printing__art">{{ p.image }}</div>
+              </div>
+              {% if p.rarity %}<div class="if-printing__rarity">{{ p.rarity }}</div>{% endif %}
+              {% if p.number %}<div class="if-printing__num mono">{{ p.number }}</div>{% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
 
     {% if set_node %}
       <section class="if-card-detail__from-set">

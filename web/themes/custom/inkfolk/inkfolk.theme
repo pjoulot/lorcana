@@ -151,7 +151,6 @@ function inkfolk_preprocess_node(array &$variables): void {
   }
 
   $set_id = $node->get('field_set')->target_id;
-  $current_number = $node->get('field_collector_number')->value;
   $langcode = $node->language()->getId();
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
@@ -180,6 +179,39 @@ function inkfolk_preprocess_node(array &$variables): void {
   }
   $variables['card_position'] = $position + 1;
   $variables['card_set_total'] = count($sibling_ids);
+
+  // Other printings: the standard / Enchanted / promo variants that share
+  // this card's printing group, in the same language (the current printing is
+  // excluded — the section lists the *others*). See spec 02 printing variants.
+  $variables['card_printings'] = [];
+  $group_id = $node->get('field_printing_group_id')->value;
+  if ($group_id) {
+    $printing_ids = $node_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'card')
+      ->condition('field_printing_group_id', $group_id)
+      ->condition('langcode', $langcode)
+      ->condition('nid', $node->id(), '<>')
+      ->sort('field_collector_number', 'ASC')
+      ->execute();
+    foreach ($node_storage->loadMultiple($printing_ids) as $printing) {
+      $rarity = $printing->get('field_rarity')->value;
+      $ink = $printing->get('field_ink')->entity;
+      $number = $printing->get('field_collector_number')->value;
+      $variables['card_printings'][] = [
+        'url' => $printing->toUrl()->toString(),
+        'rarity' => $rarity ? ucfirst(str_replace('_', ' ', $rarity)) : '',
+        'number' => $number ? '#' . $number : '',
+        'ink_slug' => $ink ? strtolower($ink->label()) : '',
+        'is_enchanted' => $rarity === 'enchanted',
+        'image' => $printing->get('field_card_art')->view([
+          'type' => 'media_thumbnail',
+          'label' => 'hidden',
+          'settings' => ['image_style' => 'medium', 'image_link' => ''],
+        ]),
+      ];
+    }
+  }
 }
 
 /**
