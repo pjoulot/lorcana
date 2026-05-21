@@ -18,6 +18,7 @@ global:
     js/encyclopedia.js: { defer: true }
   dependencies:
     - core/drupal
+    - core/drupalSettings
     - core/once
 
 fonts:

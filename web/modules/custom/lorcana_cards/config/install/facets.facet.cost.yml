@@ -26,9 +26,9 @@ hierarchy:
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:
-  type: slider
+  type: range_slider
   config:
-    show_numbers: true
+    show_numbers: false
     prefix: ''
     suffix: ''
     min_type: computed
@@ -41,7 +41,7 @@ widget:
 empty_behavior:
   behavior: none
 only_visible_when_facet_source_is_visible: null
-show_only_one_result: false
+show_only_one_result: true
 show_title: null
 processor_configs:
   url_processor_handler:
@@ -50,10 +50,11 @@ processor_configs:
       pre_query: -10
       build: -10
     settings: {  }
-  count_widget_order:
-    processor_id: count_widget_order
+  range_slider:
+    processor_id: range_slider
     weights:
-      build: 50
-    settings:
-      sort: DESC
+      pre_query: 60
+      post_query: 60
+      build: 20
+    settings: {  }
 

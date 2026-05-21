@@ -71,6 +71,10 @@
   <aside class="if-card-detail__art">
     <div class="if-lcard if-cardframe--subtle">
       <div class="if-card-image">{{ content.field_card_art }}</div>
+      {# Overlay button — keeps the image markup valid (no block content
+         inside a <button>) while giving keyboard + screen-reader users
+         a focusable trigger that the JS lightbox can hook. #}
+      <button type="button" class="if-card-detail__zoom" aria-label="{{ 'View larger image'|t }}"></button>
     </div>
   </aside>
 

@@ -140,21 +140,17 @@
   font-size: 16px;
 }
 
-/* ───── Loading state on navigation ─────────────────────
+/* ───── Loading state ────────────────────────────────────
  *
- * Facets module's `links` widget doesn't support AJAX views — facet
- * clicks always do a full page reload. Two mechanisms below to make
- * that feel smooth:
+ * Filtering and paging are both AJAX (encyclopedia.js fetches the
+ * target URL and swaps the regions in place — Views' own AJAX is
+ * turned off because it drops the facet `f[]` params when paging).
+ * While a fetch is in flight the script sets `.is-loading` on
+ * .view-cards, which dims the grid and reveals the throbber below.
  *
- *  1. @view-transition (cross-document) — modern Chromium browsers
- *     fade between the outgoing and incoming page automatically.
- *     Zero JS; safely ignored where unsupported.
- *  2. .is-navigating fallback — a tiny inkfolk_encyclopedia.js sets
- *     this on <html> while a same-tab navigation is in flight, so
- *     non-Chromium browsers also get the dim + throbber.
- *
- * Drupal's view AJAX (still enabled on the view's pager + exposed
- * form) also lights up these styles via the .ajax-progress class.
+ * @view-transition still fades genuine cross-document navigations
+ * (e.g. clicking through to a card-detail page) on browsers that
+ * support it; it never fires for the in-page AJAX swaps.
  */
 @view-transition { navigation: auto; }
 
@@ -164,15 +160,14 @@
 .view-cards {
   position: relative;
 }
-html.is-navigating .view-cards .view-content,
 .view-cards.is-loading .view-content {
   opacity: .4;
   pointer-events: none;
 }
 
-/* Centered spinner overlay — shown both during Drupal AJAX
- * (.ajax-progress is injected by Drupal) and during our
- * .is-navigating fallback (we render an .if-loader manually). */
+/* Centered spinner overlay — the .if-loader we inject (shown via
+ * .view-cards.is-loading), plus any Drupal-injected .ajax-progress
+ * as a fallback. */
 .view-cards .ajax-progress--fullscreen,
 .view-cards .ajax-progress,
 .if-loader {
@@ -205,10 +200,12 @@ html.is-navigating .view-cards .view-content,
   background: transparent;
 }
 
-/* The fallback .if-loader is hidden by default; .is-navigating shows
- * it. The Drupal AJAX progress is shown only when Drupal injects it. */
+/* The .if-loader throbber is hidden until .view-cards.is-loading shows
+ * it (set by the fetch shim during a filter/page change). The
+ * .ajax-progress selectors above stay as a fallback for any other
+ * Drupal-AJAX element that might land inside the view. */
 .if-loader { display: none; }
-html.is-navigating .if-loader { display: inline-flex; }
+.view-cards.is-loading .if-loader { display: inline-flex; }
 
 @keyframes if-spin {
   to { transform: rotate(360deg); }
@@ -223,6 +220,7 @@ html.is-navigating .if-loader { display: inline-flex; }
 }
 .view-cards .pager__items {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   justify-content: center;
   align-items: center;

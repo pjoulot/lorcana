@@ -9,10 +9,16 @@
  * here yet.
  */
 
-/* Two-column main-content layout when the sidebar is populated. */
+/* Two-column main-content layout when the sidebar is populated.
+ *
+ * The content track is `minmax(0, 1fr)` rather than plain `1fr` so the
+ * cards-grid below — whose intrinsic min-content is the natural width
+ * of a card image — can't expand the track past the viewport and
+ * trigger a horizontal scroll.
+ */
 .if-main--with-sidebar {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px minmax(0, 1fr);
   gap: 0;
   max-width: 1280px;
   margin: 0 auto;
@@ -68,7 +74,7 @@ body.if-drawer-open .if-sidebar-backdrop { display: block; }
 .if-sidebar-close { display: none; }
 
 @media (max-width: 900px) {
-  .if-main--with-sidebar { grid-template-columns: 1fr; }
+  .if-main--with-sidebar { grid-template-columns: minmax(0, 1fr); }
 
   .if-sidebar-trigger { display: inline-flex; }
 
@@ -82,6 +88,7 @@ body.if-drawer-open .if-sidebar-backdrop { display: block; }
     top: auto;
     max-height: 85vh;
     width: 100%;
+    box-sizing: border-box;
     transform: translateY(100%);
     transition: transform .2s ease;
     z-index: 100;
@@ -209,11 +216,25 @@ body.if-drawer-open .if-sidebar-backdrop { display: block; }
  * .ui-slider-range; jquery-ui-slider-pips adds .ui-slider-pip ticks
  * beneath. We restyle each piece to match the design's range slider.
  */
+
+/* jquery-ui-slider-pips' `float` plugin adds a label bubble above each
+ * handle. The facets_range_widget stylesheet pins it as always-visible
+ * (`visibility: visible; opacity: 1`), which overlaps the "Cost" facet
+ * heading at rest. Override that single declaration so the bubble is
+ * hidden by default — the library's own :hover/:focus/:active rules
+ * still reveal it while the user drags or focuses a handle. */
+.if-sidebar .facet-slider.ui-slider-float .ui-slider-tip {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .if-sidebar .facet-slider,
 .if-sidebar .ui-slider {
   position: relative;
   height: 4px;
-  margin: 14px 6px 26px;
+  /* Extra top margin reserves room for the hover tooltip bubble
+   * (jquery-ui-slider-pips positions it at -30px from the handle). */
+  margin: 36px 6px 26px;
   background: var(--line);
   border: 0;
   border-radius: 999px;
@@ -286,9 +307,12 @@ body.if-drawer-open .if-sidebar-backdrop { display: block; }
 
 /* ───── Active-filter chips above the grid ───────────
  *
- * Facets Summary block lives in the content_top region and renders
- * one chip per active facet selection. Matches the prototype's
- * "Filters: Ink: Ruby × | Cost ≤ 7 × | Clear all" strip.
+ * The Facets Summary block sits in the content_top region. Its real
+ * markup (facets_summary 3.x) is a plain <ul> of <li>s: one
+ * <span.source-summary-item> per active facet summarising that facet's
+ * values ("Ink: Ruby"), then a <li.facet-summary-item--clear> holding
+ * the "Clear all" reset link. The summaries are text spans, not per-
+ * value remove links — so there's no individual ×; Clear all resets.
  */
 .if-main__content-top {
   max-width: 1280px;
@@ -299,17 +323,10 @@ body.if-drawer-open .if-sidebar-backdrop { display: block; }
   padding-left: 32px;
 }
 
-.block-facets-summary-block,
-.block-facets-summary {
-  /* The summary block wrapper — keep transparent so the chip strip
-   * floats on the page background. */
-}
-
-/* Facets Summary emits a <ul.facet-summary> with <li>'s. Items split
- * into "facet-summary-item--facet" (one per active value) and
- * "reset-facets" (the "Clear all" link). */
-.facet-summary,
-ul.facet-summary {
+/* The summary list — strip the default <ul> bullets/indent and lay the
+ * chips out in a wrapping row. (The <ul> carries no class of its own,
+ * so we scope through the block wrapper.) */
+.block-facets-summary ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -318,60 +335,41 @@ ul.facet-summary {
   gap: 6px;
   align-items: center;
 }
-.facet-summary-item--facet,
-.facet-summary li {
+.block-facets-summary li {
   list-style: none;
 }
-.facet-summary-item--facet > a,
-.facet-summary li > a {
+
+/* Each active-facet summary renders as an accent pill. */
+.source-summary-item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 11px;
   background: var(--accent-soft);
   color: var(--accent-ink);
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  text-decoration: none;
-  border: 1px solid transparent;
   line-height: 1;
 }
-.facet-summary-item--facet > a:hover,
-.facet-summary li > a:hover {
-  background: var(--accent);
-}
-/* Facets Summary outputs each chip as text like "Ink: Ruby" plus an
- * embedded close X. Style the trailing × via a pseudo-element since
- * the actual markup is just an anchor. */
-.facet-summary-item--facet > a::after {
-  content: '×';
-  margin-left: 4px;
-  font-size: 14px;
-  line-height: 1;
-  opacity: .7;
-}
-.facet-summary-item--facet > a:hover::after { opacity: 1; }
 
-/* Reset-facets link */
-.facet-summary-item--clear-all,
-.facet-summary li.reset-facets {
-  margin-left: 6px;
-}
-.facet-summary-item--clear-all > a,
-.facet-summary li.reset-facets > a {
+/* "Clear all" — a quiet text button closing out the chip row. */
+.facet-summary-item--clear > a {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  margin-left: 2px;
   background: transparent;
   color: var(--ink-3);
+  font-size: 12px;
   font-weight: 500;
-  padding: 5px 8px;
+  text-decoration: none;
+  border-radius: 999px;
+  line-height: 1;
 }
-.facet-summary-item--clear-all > a:hover,
-.facet-summary li.reset-facets > a:hover {
+.facet-summary-item--clear > a:hover {
   color: var(--ink);
   background: var(--paper-2);
 }
-.facet-summary-item--clear-all > a::after,
-.facet-summary li.reset-facets > a::after { content: none; }
 
 /* Value + count layout. */
 .if-sidebar .facet-item__value { flex: 1; }
