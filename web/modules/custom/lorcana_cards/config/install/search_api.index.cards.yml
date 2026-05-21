@@ -10,8 +10,11 @@ dependencies:
     - field.storage.node.field_franchise
     - field.storage.node.field_ink
     - field.storage.node.field_keywords
+    - field.storage.node.field_lore
     - field.storage.node.field_rarity
     - field.storage.node.field_set
+    - field.storage.node.field_strength
+    - field.storage.node.field_willpower
     - search_api.server.lorcana
   module:
     - node
@@ -92,6 +95,14 @@ field_settings:
     dependencies:
       module:
         - node
+  lore:
+    label: Lore
+    datasource_id: 'entity:node'
+    property_path: field_lore
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_lore
   rarity:
     label: Rarity
     datasource_id: 'entity:node'
@@ -116,6 +127,14 @@ field_settings:
     dependencies:
       module:
         - node
+  strength:
+    label: Strength
+    datasource_id: 'entity:node'
+    property_path: field_strength
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_strength
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -125,6 +144,14 @@ field_settings:
     dependencies:
       module:
         - node
+  willpower:
+    label: Willpower
+    datasource_id: 'entity:node'
+    property_path: field_willpower
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_willpower
 datasource_settings:
   'entity:node':
     bundles:

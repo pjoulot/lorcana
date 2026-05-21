@@ -7,6 +7,19 @@
 
 declare(strict_types=1);
 
+use Drupal\search_api\Query\QueryInterface;
+
+/**
+ * Implements hook_search_api_query_alter().
+ *
+ * Applies the encyclopedia's Scryfall-like search syntax to the cards index.
+ */
+function lorcana_cards_search_api_query_alter(QueryInterface $query): void {
+  if ($query->getIndex()->id() === 'cards') {
+    \Drupal::service('lorcana_cards.search_syntax')->applyTo($query);
+  }
+}
+
 /**
  * Implements hook_theme().
  */
