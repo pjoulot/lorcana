@@ -10,6 +10,7 @@ use Drupal\lorcana_cards\Importer\CardDataImporterManager;
 use Drupal\lorcana_cards\Importer\CardImageImporterInterface;
 use Drupal\lorcana_cards\Importer\CardImageImporterManager;
 use Drupal\lorcana_cards\Importer\CardUpserter;
+use Drupal\lorcana_cards\Plugin\CardDataImporter\LorcanaJsonDataImporter;
 use Drupal\taxonomy\Entity\Term;
 use Drush\Attributes as CLI;
 use Drush\Commands\AutowireTrait;
@@ -17,6 +18,9 @@ use Drush\Commands\DrushCommands;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+/**
+ * Drush commands for importing Lorcana card data, images, and translations.
+ */
 final class LorcanaImportCommands extends DrushCommands {
 
   use AutowireTrait;
@@ -60,14 +64,16 @@ final class LorcanaImportCommands extends DrushCommands {
   #[CLI\Option(name: 'image-source', description: 'Image importer plugin id')]
   #[CLI\Option(name: 'skip-images', description: 'Import card data but not images')]
   #[CLI\Option(name: 'limit', description: 'Cap on cards to upsert (for smoke tests)')]
-  public function importCards(array $options = [
-    'set' => NULL,
-    'lang' => 'en',
-    'source' => 'lorcana_json',
-    'image-source' => 'lorcana_json',
-    'skip-images' => FALSE,
-    'limit' => 0,
-  ]): int {
+  public function importCards(
+    array $options = [
+      'set' => NULL,
+      'lang' => 'en',
+      'source' => 'lorcana_json',
+      'image-source' => 'lorcana_json',
+      'skip-images' => FALSE,
+      'limit' => 0,
+    ],
+  ): int {
     if (empty($options['set'])) {
       $this->io()->error('--set is required (e.g., --set=1).');
       return self::EXIT_FAILURE;
@@ -94,12 +100,14 @@ final class LorcanaImportCommands extends DrushCommands {
   #[CLI\Option(name: 'source', description: 'Data importer plugin id')]
   #[CLI\Option(name: 'image-source', description: 'Image importer plugin id')]
   #[CLI\Option(name: 'skip-images', description: 'Import card data but not images')]
-  public function importAll(array $options = [
-    'langs' => 'en',
-    'source' => 'lorcana_json',
-    'image-source' => 'lorcana_json',
-    'skip-images' => FALSE,
-  ]): int {
+  public function importAll(
+    array $options = [
+      'langs' => 'en',
+      'source' => 'lorcana_json',
+      'image-source' => 'lorcana_json',
+      'skip-images' => FALSE,
+    ],
+  ): int {
     $plugin = $this->loadDataPlugin((string) $options['source']);
     $imagePlugin = $options['skip-images'] ? NULL : $this->loadImagePlugin((string) $options['image-source']);
     $langs = array_filter(array_map('trim', explode(',', (string) $options['langs'])));
@@ -189,18 +197,80 @@ final class LorcanaImportCommands extends DrushCommands {
     return self::EXIT_SUCCESS;
   }
 
+  #[CLI\Command(name: 'lorcana:translate', aliases: ['lci-tr'])]
+  #[CLI\Help(description: 'Translate the shared card vocabularies (ink, classifications, keywords) and set names into another language, sourced from lorcanaJSON.')]
+  #[CLI\Option(name: 'lang', description: 'Target langcode (e.g. fr)')]
+  #[CLI\Option(name: 'source', description: 'Data importer plugin id exposing localized labels')]
+  public function translateTerms(array $options = ['lang' => 'fr', 'source' => 'lorcana_json']): int {
+    $lang = (string) $options['lang'];
+    $plugin = $this->dataManager->createInstance((string) $options['source']);
+    if (!$plugin instanceof LorcanaJsonDataImporter) {
+      $this->io()->error('The selected --source does not provide localized labels.');
+      return self::EXIT_FAILURE;
+    }
+    $labels = $plugin->getLocalizedLabels($lang);
+
+    $termStorage = $this->entityTypeManager->getStorage('taxonomy_term');
+    $terms = 0;
+    foreach (['ink_color', 'card_classification', 'keyword_ability'] as $vid) {
+      foreach ($termStorage->loadByProperties(['vid' => $vid]) as $term) {
+        $name = $labels[$vid][$term->label()] ?? NULL;
+        if ($name === NULL) {
+          continue;
+        }
+        if ($term->hasTranslation($lang)) {
+          $term->getTranslation($lang)->set('name', $name);
+        }
+        else {
+          $term->addTranslation($lang, ['name' => $name]);
+        }
+        $term->save();
+        $terms++;
+      }
+    }
+
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+    $sets = 0;
+    foreach ($nodeStorage->loadByProperties(['type' => 'card_set']) as $set) {
+      $name = $labels['sets'][$set->get('field_set_code')->value] ?? NULL;
+      if ($name === NULL) {
+        continue;
+      }
+      if ($set->hasTranslation($lang)) {
+        $set->getTranslation($lang)->set('title', $name);
+      }
+      else {
+        $set->addTranslation($lang, ['title' => $name]);
+      }
+      $set->save();
+      $sets++;
+    }
+
+    $this->io()->success(sprintf('translated %d terms · %d sets into %s', $terms, $sets, $lang));
+    return self::EXIT_SUCCESS;
+  }
+
+  /**
+   *
+   */
   private function loadDataPlugin(string $id): CardDataImporterInterface {
     /** @var \Drupal\lorcana_cards\Importer\CardDataImporterInterface $plugin */
     $plugin = $this->dataManager->createInstance($id);
     return $plugin;
   }
 
+  /**
+   *
+   */
   private function loadImagePlugin(string $id): CardImageImporterInterface {
     /** @var \Drupal\lorcana_cards\Importer\CardImageImporterInterface $plugin */
     $plugin = $this->imageManager->createInstance($id);
     return $plugin;
   }
 
+  /**
+   *
+   */
   private function summarize(): string {
     $stats = $this->upserter->getStats();
     return sprintf(

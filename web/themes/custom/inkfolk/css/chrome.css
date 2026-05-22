@@ -210,6 +210,28 @@
 .if-topnav__actions .if-btn { padding: 8px 12px; }
 .if-topnav__actions .if-btn--primary { padding: 8px 14px; }
 
+/* Language switcher — globe + the available languages, current one bold. */
+.if-langswitch {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: default;
+}
+.if-langswitch__lang {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.if-langswitch__lang.is-active {
+  color: var(--ink);
+  font-weight: 600;
+}
+.if-langswitch a.if-langswitch__lang:hover {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
 /* Responsive: drop nav + search on small viewports for now. */
 @media (max-width: 900px) {
   .if-topnav__inner { padding: 0 16px; }

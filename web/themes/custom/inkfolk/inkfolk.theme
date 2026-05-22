@@ -17,6 +17,31 @@ function inkfolk_preprocess_page(array &$variables): void {
   $variables['topnav_search'] = is_string($search) ? $search : '';
   // The topnav renders on every page, so vary it on the search param.
   $variables['#cache']['contexts'][] = 'url.query_args:search';
+
+  // Language switcher in the topnav: the current language plus links to the
+  // same page in each other language (URL-prefix negotiation).
+  $language_manager = \Drupal::languageManager();
+  $variables['language_switcher'] = [];
+  if ($language_manager->isMultilingual()) {
+    $current = $language_manager->getCurrentLanguage()->getId();
+    $current_path = \Drupal::service('path.current')->getPath();
+    $query = \Drupal::request()->query->all();
+    foreach ($language_manager->getLanguages() as $langcode => $language) {
+      $url = \Drupal\Core\Url::fromUserInput($current_path, [
+        'language' => $language,
+        'query' => $query,
+      ]);
+      $variables['language_switcher'][] = [
+        'langcode' => $langcode,
+        'label' => strtoupper($langcode),
+        'name' => $language->getName(),
+        'url' => $url->toString(),
+        'active' => $langcode === $current,
+      ];
+    }
+    $variables['#cache']['contexts'][] = 'url.path';
+    $variables['#cache']['contexts'][] = 'languages:' . \Drupal\Core\Language\LanguageInterface::TYPE_URL;
+  }
 }
 
 /**

@@ -69,13 +69,21 @@
       </div>
 
       <div class="if-topnav__actions">
-        <button type="button" class="if-btn" aria-label="{{ 'Language'|t }}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          EN
-        </button>
+        {% if language_switcher %}
+          <div class="if-langswitch if-btn" role="group" aria-label="{{ 'Language'|t }}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            {% for lang in language_switcher %}
+              {%- if lang.active -%}
+                <span class="if-langswitch__lang is-active" aria-current="true" title="{{ lang.name }}">{{ lang.label }}</span>
+              {%- else -%}
+                <a class="if-langswitch__lang" href="{{ lang.url }}" hreflang="{{ lang.langcode }}" title="{{ lang.name }}">{{ lang.label }}</a>
+              {%- endif -%}
+            {% endfor %}
+          </div>
+        {% endif %}
         <a href="/draft" class="if-btn if-btn--primary">{{ 'Start a draft'|t }}</a>
       </div>
     </div>

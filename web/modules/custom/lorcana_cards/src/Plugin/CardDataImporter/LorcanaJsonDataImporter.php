@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Imports card data from lorcanaJSON.org.
  *
- * lorcanaJSON aggregates the official Disney Lorcana app data and serves one
+ * LorcanaJSON aggregates the official Disney Lorcana app data and serves one
  * file per language at /files/current/{lang}/allCards.json — covering every
  * set, with genuine localized text and official Ravensburger image URLs. It is
  * the project's primary source: unlike Lorcast it carries non-English data,
@@ -47,26 +47,43 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
    * Localized card `type` → our field_card_types machine name.
    */
   private const TYPE_MAP = [
-    'character' => 'character', 'personnage' => 'character',
+    'character' => 'character',
+    'personnage' => 'character',
     'action' => 'action',
-    'item' => 'item', 'objet' => 'item',
-    'location' => 'location', 'lieu' => 'location',
-    'song' => 'song', 'chanson' => 'song',
+    'item' => 'item',
+    'objet' => 'item',
+    'location' => 'location',
+    'lieu' => 'location',
+    'song' => 'song',
+    'chanson' => 'song',
   ];
 
   /**
    * Localized `rarity` → our field_rarity machine value.
    */
   private const RARITY_MAP = [
-    'common' => 'common', 'commune' => 'common',
-    'uncommon' => 'uncommon', 'inhabituelle' => 'uncommon',
+    'common' => 'common',
+    'commune' => 'common',
+    'uncommon' => 'uncommon',
+    'inhabituelle' => 'uncommon',
     'rare' => 'rare',
-    'super rare' => 'super_rare', 'très rare' => 'super_rare', 'tres rare' => 'super_rare',
-    'legendary' => 'legendary', 'légendaire' => 'legendary', 'legendaire' => 'legendary',
-    'enchanted' => 'enchanted', 'enchantée' => 'enchanted', 'enchantee' => 'enchanted',
-    'epic' => 'epic', 'épique' => 'epic', 'epique' => 'epic',
-    'iconic' => 'iconic', 'iconique' => 'iconic',
-    'special' => 'special', 'spécial' => 'special', 'speciale' => 'special',
+    'super rare' => 'super_rare',
+    'très rare' => 'super_rare',
+    'tres rare' => 'super_rare',
+    'legendary' => 'legendary',
+    'légendaire' => 'legendary',
+    'legendaire' => 'legendary',
+    'enchanted' => 'enchanted',
+    'enchantée' => 'enchanted',
+    'enchantee' => 'enchanted',
+    'epic' => 'epic',
+    'épique' => 'epic',
+    'epique' => 'epic',
+    'iconic' => 'iconic',
+    'iconique' => 'iconic',
+    'special' => 'special',
+    'spécial' => 'special',
+    'speciale' => 'special',
     'promo' => 'promo',
   ];
 
@@ -74,12 +91,20 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
    * Localized `colors` entry → canonical English ink_color term name.
    */
   private const INK_MAP = [
-    'amber' => 'Amber', 'ambre' => 'Amber',
-    'amethyst' => 'Amethyst', 'améthyste' => 'Amethyst', 'amethyste' => 'Amethyst',
-    'emerald' => 'Emerald', 'émeraude' => 'Emerald', 'emeraude' => 'Emerald',
-    'ruby' => 'Ruby', 'rubis' => 'Ruby',
-    'sapphire' => 'Sapphire', 'saphir' => 'Sapphire',
-    'steel' => 'Steel', 'acier' => 'Steel',
+    'amber' => 'Amber',
+    'ambre' => 'Amber',
+    'amethyst' => 'Amethyst',
+    'améthyste' => 'Amethyst',
+    'amethyste' => 'Amethyst',
+    'emerald' => 'Emerald',
+    'émeraude' => 'Emerald',
+    'emeraude' => 'Emerald',
+    'ruby' => 'Ruby',
+    'rubis' => 'Ruby',
+    'sapphire' => 'Sapphire',
+    'saphir' => 'Sapphire',
+    'steel' => 'Steel',
+    'acier' => 'Steel',
   ];
 
   /**
@@ -94,6 +119,13 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
    */
   private array $datasets = [];
 
+  /**
+   * Localized-label → English-label maps, keyed by langcode (see labelMap()).
+   *
+   * @var array<string,array<string,string>>
+   */
+  private array $labelMaps = [];
+
   public function __construct(
     array $configuration,
     string $plugin_id,
@@ -103,6 +135,9 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static(
       $configuration,
@@ -112,18 +147,30 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getId(): string {
     return $this->pluginId;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getLabel(): string {
     return (string) $this->pluginDefinition['label'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function supportedLanguages(): array {
     return $this->pluginDefinition['supports_languages'] ?? ['en'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function listSets(): array {
     $sets = [];
     foreach ($this->dataset('en')['sets'] as $code => $row) {
@@ -138,6 +185,9 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
     return $sets;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function fetchCardsForSet(string $setCode, string $langcode): \Generator {
     $dataset = $this->dataset($langcode);
     foreach ($dataset['cards'][$setCode] ?? [] as $row) {
@@ -145,12 +195,18 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function supportsPriceRefresh(): bool {
     // lorcanaJSON carries marketplace links but no price values; prices are a
     // separate (M9) concern handled by a price-only refresh source.
     return FALSE;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function fetchPricesForSet(string $setCode): \Generator {
     yield from [];
   }
@@ -212,13 +268,6 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
       }
     }
 
-    $keywords = [];
-    foreach ($row['abilities'] ?? [] as $ability) {
-      if (($ability['type'] ?? '') === 'keyword' && !empty($ability['keyword'])) {
-        $keywords[] = (string) $ability['keyword'];
-      }
-    }
-
     return new CardData(
       sourceId: 'lorcana_json',
       language: $langcode,
@@ -234,14 +283,14 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
       inkable: (bool) ($row['inkwell'] ?? FALSE),
       inks: $inks,
       cardTypes: $cardTypes,
-      classifications: $this->canonicalizeLabels($subtypes, $langcode),
+      classifications: $this->canonicalizeLabels(array_map('strval', $subtypes), $langcode),
       strength: isset($row['strength']) ? (int) $row['strength'] : NULL,
       willpower: isset($row['willpower']) ? (int) $row['willpower'] : NULL,
       lore: isset($row['lore']) ? (int) $row['lore'] : NULL,
       moveCost: isset($row['moveCost']) ? (int) $row['moveCost'] : NULL,
       text: $row['fullText'] ?? NULL,
       flavorText: $row['flavorText'] ?? NULL,
-      keywords: $this->canonicalizeLabels($keywords, $langcode),
+      keywords: $this->canonicalizeLabels($this->keywordNames($row), $langcode),
       rarity: $this->normalize(self::RARITY_MAP, (string) ($row['rarity'] ?? ''), 'common'),
       illustrators: $row['artists'] ?? [],
       imageUris: $this->extractImageUris($row),
@@ -260,12 +309,13 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
   /**
    * Extracts the card's ink colour labels.
    *
-   * lorcanaJSON carries ink in `colors` (array, present only on dual-ink
+   * LorcanaJSON carries ink in `colors` (array, present only on dual-ink
    * cards) and `color` (string, on every card — "Amber-Steel" for dual). Ink
    * names contain no hyphen, so splitting `color` on "-" covers mono- and
    * dual-ink uniformly; we prefer the explicit array when present.
    *
    * @param array<string,mixed> $row
+   *
    * @return string[]
    */
   private function extractColors(array $row): array {
@@ -305,16 +355,151 @@ final class LorcanaJsonDataImporter extends PluginBase implements CardDataImport
   /**
    * Canonicalises localized open-vocabulary labels to their English term.
    *
-   * English is already canonical. Non-English imports resolve labels to their
-   * English equivalent so every language references one shared taxonomy term;
-   * that mapping is wired in the French phase. Until then non-English labels
-   * pass through unchanged.
+   * Classifications (subtypes) and keyword abilities arrive localized. So
+   * every language's cards reference one shared taxonomy term, non-English
+   * labels are resolved to their English equivalent via a map learned by
+   * zipping this language's dataset against the English one (same card by id,
+   * same position in each list). English is already canonical; unmapped labels
+   * (e.g. Storyborn, which lorcanaJSON leaves untranslated) pass through.
    *
    * @param string[] $labels
+   *
    * @return string[]
    */
   private function canonicalizeLabels(array $labels, string $langcode): array {
-    return $labels;
+    if ($langcode === 'en' || $labels === []) {
+      return $labels;
+    }
+    $map = $this->labelMap($langcode);
+    return array_map(static fn(string $l) => $map[mb_strtolower($l)] ?? $l, $labels);
+  }
+
+  /**
+   * Localized display labels for the shared vocabularies + set names.
+   *
+   * Returns, per shared vocabulary, a canonical-English-label → localized-label
+   * map (plus set code → localized name), built by zipping this language's
+   * dataset against English. The term-translation command applies these as
+   * Drupal translations onto the shared terms / set nodes. English returns
+   * empty maps (nothing to translate).
+   *
+   * @return array{ink_color:array<string,string>,card_classification:array<string,string>,keyword_ability:array<string,string>,sets:array<string,string>}
+   */
+  public function getLocalizedLabels(string $langcode): array {
+    $out = ['ink_color' => [], 'card_classification' => [], 'keyword_ability' => [], 'sets' => []];
+    if ($langcode === 'en') {
+      return $out;
+    }
+    $enById = [];
+    foreach ($this->dataset('en')['cards'] as $cards) {
+      foreach ($cards as $card) {
+        $enById[(string) ($card['id'] ?? '')] = $card;
+      }
+    }
+    foreach ($this->dataset($langcode)['cards'] as $cards) {
+      foreach ($cards as $card) {
+        $en = $enById[(string) ($card['id'] ?? '')] ?? NULL;
+        if ($en === NULL) {
+          continue;
+        }
+        $this->zipEnToLocalized($out['ink_color'], $this->extractColors($en), $this->extractColors($card), self::INK_MAP);
+        $this->zipEnToLocalized($out['card_classification'], array_map('strval', $en['subtypes'] ?? []), array_map('strval', $card['subtypes'] ?? []));
+        $this->zipEnToLocalized($out['keyword_ability'], $this->keywordNames($en), $this->keywordNames($card));
+      }
+    }
+    foreach ($this->dataset($langcode)['sets'] as $code => $set) {
+      if (!empty($set['name'])) {
+        $out['sets'][(string) $code] = (string) $set['name'];
+      }
+    }
+    return $out;
+  }
+
+  /**
+   * Records canonical-English-label → localized-label from two aligned lists.
+   *
+   * @param array<string,string> $map
+   * @param string[] $english
+   * @param string[] $localized
+   * @param array<string,string>|null $normalize
+   *   Optional map applied to the English label first (e.g. INK_MAP, so the
+   *   key becomes our canonical term name rather than the raw dataset value).
+   */
+  private function zipEnToLocalized(array &$map, array $english, array $localized, ?array $normalize = NULL): void {
+    foreach ($english as $i => $label) {
+      if (!isset($localized[$i]) || $label === '') {
+        continue;
+      }
+      $key = $normalize === NULL ? $label : ($normalize[mb_strtolower($label)] ?? NULL);
+      if ($key !== NULL && $key !== '') {
+        $map[$key] = $localized[$i];
+      }
+    }
+  }
+
+  /**
+   * Keyword-ability names on a card, in source order.
+   *
+   * @param array<string,mixed> $row
+   *
+   * @return string[]
+   */
+  private function keywordNames(array $row): array {
+    $names = [];
+    foreach ($row['abilities'] ?? [] as $ability) {
+      if (($ability['type'] ?? '') === 'keyword' && !empty($ability['keyword'])) {
+        $names[] = (string) $ability['keyword'];
+      }
+    }
+    return $names;
+  }
+
+  /**
+   * Builds (and memoises) a localized-label → English-label map for a language.
+   *
+   * Pairs each card with its English counterpart by id and zips the subtype
+   * and keyword lists positionally, which lorcanaJSON keeps aligned across
+   * languages.
+   *
+   * @return array<string,string>
+   */
+  private function labelMap(string $langcode): array {
+    if (isset($this->labelMaps[$langcode])) {
+      return $this->labelMaps[$langcode];
+    }
+    $enById = [];
+    foreach ($this->dataset('en')['cards'] as $cards) {
+      foreach ($cards as $card) {
+        $enById[(string) ($card['id'] ?? '')] = $card;
+      }
+    }
+    $map = [];
+    foreach ($this->dataset($langcode)['cards'] as $cards) {
+      foreach ($cards as $card) {
+        $en = $enById[(string) ($card['id'] ?? '')] ?? NULL;
+        if ($en === NULL) {
+          continue;
+        }
+        $this->zipLabels($map, array_map('strval', $card['subtypes'] ?? []), array_map('strval', $en['subtypes'] ?? []));
+        $this->zipLabels($map, $this->keywordNames($card), $this->keywordNames($en));
+      }
+    }
+    return $this->labelMaps[$langcode] = $map;
+  }
+
+  /**
+   * Records localized → English label pairs from two aligned lists.
+   *
+   * @param array<string,string> $map
+   * @param string[] $localized
+   * @param string[] $english
+   */
+  private function zipLabels(array &$map, array $localized, array $english): void {
+    foreach ($localized as $i => $label) {
+      if (isset($english[$i]) && $label !== '') {
+        $map[mb_strtolower($label)] = $english[$i];
+      }
+    }
   }
 
   /**

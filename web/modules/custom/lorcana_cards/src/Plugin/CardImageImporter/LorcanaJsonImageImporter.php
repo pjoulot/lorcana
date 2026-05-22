@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Fetches card art from lorcanaJSON's image URLs.
  *
- * lorcanaJSON points at the official Ravensburger CDN, which already serves
+ * LorcanaJSON points at the official Ravensburger CDN, which already serves
  * per-language JPGs — so unlike the Lorcast pipeline there is no AVIF→JPG
  * conversion step; we download the file as-is.
  */
@@ -39,6 +39,9 @@ final class LorcanaJsonImageImporter extends PluginBase implements CardImageImpo
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static(
       $configuration,
@@ -49,18 +52,30 @@ final class LorcanaJsonImageImporter extends PluginBase implements CardImageImpo
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getId(): string {
     return $this->pluginId;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getLabel(): string {
     return (string) $this->pluginDefinition['label'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function supports(CardData $card): bool {
     return !empty($card->imageUris);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function fetchImage(CardData $card): ?string {
     $url = $card->imageUris['large'] ?? $card->imageUris['normal'] ?? $card->imageUris['small'] ?? NULL;
     if (!$url) {
