@@ -275,6 +275,28 @@ function inkfolk_preprocess_node(array &$variables): void {
       ];
     }
   }
+
+  // Other languages: the same printing in the site's other languages (same set
+  // + collector number, different langcode) — lets a visitor jump between a
+  // card's localized counterparts. See spec 02 language variants.
+  $variables['card_languages'] = [];
+  $languages = \Drupal::languageManager()->getLanguages();
+  $lang_ids = $node_storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('type', 'card')
+    ->condition('field_set', $set_id)
+    ->condition('field_collector_number', $node->get('field_collector_number')->value)
+    ->condition('langcode', $langcode, '<>')
+    ->execute();
+  foreach ($node_storage->loadMultiple($lang_ids) as $sibling) {
+    $sibling_lang = $sibling->language()->getId();
+    $variables['card_languages'][] = [
+      'langcode' => $sibling_lang,
+      'label' => strtoupper($sibling_lang),
+      'name' => isset($languages[$sibling_lang]) ? $languages[$sibling_lang]->getName() : $sibling_lang,
+      'url' => $sibling->toUrl()->toString(),
+    ];
+  }
 }
 
 /**

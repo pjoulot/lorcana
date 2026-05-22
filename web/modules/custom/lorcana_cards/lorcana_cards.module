@@ -7,17 +7,23 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\search_api\Query\QueryInterface;
 
 /**
  * Implements hook_search_api_query_alter().
  *
- * Applies the encyclopedia's Scryfall-like search syntax to the cards index.
+ * On the cards index: restrict results to the visitor's content language (each
+ * language has its own card nodes, so the encyclopedia defaults to one), then
+ * apply the encyclopedia's Scryfall-like search syntax.
  */
 function lorcana_cards_search_api_query_alter(QueryInterface $query): void {
-  if ($query->getIndex()->id() === 'cards') {
-    \Drupal::service('lorcana_cards.search_syntax')->applyTo($query);
+  if ($query->getIndex()->id() !== 'cards') {
+    return;
   }
+  $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+  $query->addCondition('langcode', $langcode);
+  \Drupal::service('lorcana_cards.search_syntax')->applyTo($query);
 }
 
 /**

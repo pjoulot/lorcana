@@ -120,6 +120,12 @@
   background: transparent;
 }
 
+/* Languages row: current language plus links to other-language printings. */
+.if-card-langs__current { font-weight: 600; }
+.if-card-langs__sep { color: var(--ink-4); margin: 0 2px; }
+.if-card-langs__other { color: var(--accent-ink); text-decoration: none; }
+.if-card-langs__other:hover { text-decoration: underline; }
+
 .if-card-detail__title {
   font-size: 52px;
   font-weight: 500;

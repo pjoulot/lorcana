@@ -185,7 +185,13 @@
           {% endif %}
           <div>
             <dt>{{ 'Languages'|t }}</dt>
-            <dd>{{ node.langcode.value|upper }}</dd>
+            <dd class="if-card-langs">
+              <span class="if-card-langs__current">{{ node.langcode.value|upper }}</span>
+              {% for lang in card_languages %}
+                <span class="if-card-langs__sep" aria-hidden="true">·</span>
+                <a class="if-card-langs__other" href="{{ lang.url }}" hreflang="{{ lang.langcode }}" title="{{ lang.name }}">{{ lang.label }}</a>
+              {% endfor %}
+            </dd>
           </div>
         </dl>
       </div>
