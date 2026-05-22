@@ -25,10 +25,6 @@
 {% set version = node.field_version.value %}
 {% set version_suffix = version ? ' — ' ~ version : '' %}
 {% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
-{% set ink_terms = [] %}
-{% for item in node.field_ink %}
-  {% if item.entity %}{% set ink_terms = ink_terms|merge([item.entity]) %}{% endif %}
-{% endfor %}
 {% set rarity_raw = node.field_rarity.value %}
 {% set rarity_letter = rarity_raw == 'common' ? 'C'
   : (rarity_raw == 'uncommon' ? 'U'
@@ -37,9 +33,8 @@
   : (rarity_raw == 'legendary' ? 'L'
   : (rarity_raw == 'enchanted' ? 'E' : '')))))
 %}
-{% set types = [] %}
-{% for t in node.field_card_types %}{% set types = types|merge([t.value|capitalize]) %}{% endfor %}
-{% set is_character = 'Character' in types %}
+{% set is_character = false %}
+{% for t in node.field_card_types %}{% if t.value == 'character' %}{% set is_character = true %}{% endif %}{% endfor %}
 
 <a href="{{ url }}"
    {{ attributes.addClass(classes) }}
@@ -52,21 +47,21 @@
     <div class="if-lcard__row-text">
       <div class="if-lcard__row-name serif">{{ base_name }}</div>
       <div class="if-lcard__row-meta">
-        {% if ink_terms is not empty %}
+        {% if card_ink_chips %}
           <span class="if-lcard__row-ink">
-            {% if ink_terms|length > 1 %}
+            {% if card_ink_chips|length > 1 %}
               <span class="if-swatch if-swatch--split"
-                    style="--ink-a: var(--ink-{{ ink_terms.0.label|lower }}); --ink-b: var(--ink-{{ ink_terms.1.label|lower }});"
+                    style="--ink-a: var(--ink-{{ card_ink_chips.0.slug }}); --ink-b: var(--ink-{{ card_ink_chips.1.slug }});"
                     aria-hidden="true"></span>
             {% else %}
-              <span class="if-swatch if-swatch--{{ ink_terms.0.label|lower }}" aria-hidden="true"></span>
+              <span class="if-swatch if-swatch--{{ card_ink_chips.0.slug }}" aria-hidden="true"></span>
             {% endif %}
-            {{ ink_terms|map(t => t.label)|join(' + ') }}
+            {{ card_ink_chips|map(c => c.label)|join(' + ') }}
           </span>
           <span class="if-lcard__row-sep">·</span>
         {% endif %}
-        {% if types %}
-          <span>{{ types|join(' · ') }}</span>
+        {% if card_type_labels %}
+          <span>{{ card_type_labels|join(' · ') }}</span>
         {% endif %}
         {% if is_character and node.field_strength.value is not empty %}
           <span class="if-lcard__row-sep">·</span>

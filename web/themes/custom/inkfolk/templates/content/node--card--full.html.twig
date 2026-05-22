@@ -33,13 +33,11 @@
 {% set version_suffix = version ? ' — ' ~ version : '' %}
 {% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
 {% set set_node = node.field_set.entity %}
-{% set ink_terms = [] %}
-{% for item in node.field_ink %}
-  {% if item.entity %}{% set ink_terms = ink_terms|merge([item.entity]) %}{% endif %}
-{% endfor %}
-{% set ink_slug = ink_terms is not empty ? ink_terms|first.label|lower : '' %}
+{# Ink slug + rarity slug stay English (CSS swatch classes); the displayed
+   labels (card_ink_chips, rarity) are in the card's language. #}
+{% set ink_slug = card_ink_chips ? card_ink_chips.0.slug : '' %}
 {% set rarity = content.field_rarity|render|striptags|trim %}
-{% set rarity_slug = rarity|lower|replace({' ': '-'}) %}
+{% set rarity_slug = node.field_rarity.value|replace({'_': '-'}) %}
 
 {% set stats = [
   { key: 'cost',      label: 'Cost'|t,      value: node.field_cost.value,      show: node.field_cost.value is not empty },
@@ -53,7 +51,7 @@
     <ol class="if-card-breadcrumb__trail">
       <li><a href="/cards">{{ 'Cards'|t }}</a></li>
       {% if set_node %}
-        <li><a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a></li>
+        <li><a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ card_set_label }}</a></li>
       {% endif %}
       <li>{{ node.label }}</li>
     </ol>
@@ -87,20 +85,20 @@
   <div class="if-card-detail__info">
 
     <div class="if-card-detail__chips">
-      {% if ink_terms is not empty %}
+      {% if card_ink_chips %}
         <span class="if-chip if-chip--ink">
-          {% if ink_terms|length > 1 %}
+          {% if card_ink_chips|length > 1 %}
             <span class="if-swatch if-swatch--split"
-                  style="--ink-a: var(--ink-{{ ink_terms.0.label|lower }}); --ink-b: var(--ink-{{ ink_terms.1.label|lower }});"
+                  style="--ink-a: var(--ink-{{ card_ink_chips.0.slug }}); --ink-b: var(--ink-{{ card_ink_chips.1.slug }});"
                   aria-hidden="true"></span>
           {% else %}
             <span class="if-swatch if-swatch--{{ ink_slug }}" aria-hidden="true"></span>
           {% endif %}
-          {{ ink_terms|map(t => t.label)|join(' + ') }}
+          {{ card_ink_chips|map(c => c.label)|join(' + ') }}
         </span>
       {% endif %}
-      {% for type_item in node.field_card_types %}
-        <span class="if-chip">{{ type_item.value|capitalize }}</span>
+      {% for type_label in card_type_labels %}
+        <span class="if-chip">{{ type_label }}</span>
       {% endfor %}
       {% if rarity %}
         <span class="if-chip if-chip--rarity">
@@ -108,10 +106,8 @@
           {{ rarity }}
         </span>
       {% endif %}
-      {% for cls_item in node.field_classifications %}
-        {% if cls_item.entity %}
-          <span class="if-chip if-chip--ghost">{{ cls_item.entity.label }}</span>
-        {% endif %}
+      {% for cls_label in card_classification_labels %}
+        <span class="if-chip if-chip--ghost">{{ cls_label }}</span>
       {% endfor %}
     </div>
 
@@ -172,7 +168,7 @@
           {% if set_node %}
             <div>
               <dt>{{ 'Set'|t }}</dt>
-              <dd><a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ set_node.label }}</a></dd>
+              <dd><a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}">{{ card_set_label }}</a></dd>
             </div>
           {% endif %}
           {% if node.field_collector_number.value %}
@@ -240,7 +236,7 @@
           <div class="if-from-set__numeral serif" data-len="{{ _set_code|length }}">{{ _set_code }}</div>
           <div class="if-from-set__body">
             <div class="if-from-set__eyebrow">{{ 'From the set'|t }}</div>
-            <h3 class="if-from-set__title serif">{{ set_node.label }}</h3>
+            <h3 class="if-from-set__title serif">{{ card_set_label }}</h3>
             <div class="if-from-set__meta">
               {% if set_node.field_card_count.value %}{{ set_node.field_card_count.value }} {{ 'cards'|t }} · {% endif %}
               {% if set_node.field_released_at.value %}{{ set_node.field_released_at.0.value|date('M Y') }}{% endif %}

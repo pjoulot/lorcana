@@ -55,7 +55,45 @@ function inkfolk_preprocess_page(array &$variables): void {
  */
 function inkfolk_preprocess_node(array &$variables): void {
   $node = $variables['node'] ?? NULL;
-  if (!$node || ($variables['view_mode'] ?? '') !== 'full') {
+  if (!$node) {
+    return;
+  }
+  $view_mode = $variables['view_mode'] ?? '';
+
+  // Language-aware card labels — shared by the detail page (full) and the
+  // encyclopedia tiles (teaser). Card values (name, text) are already in the
+  // node's language, but the shared taxonomy terms and list-field labels
+  // render in their default language unless we resolve the node-language
+  // translation. Ink keeps its English slug for the CSS swatch class while
+  // showing the translated label.
+  if ($node->bundle() === 'card' && in_array($view_mode, ['full', 'teaser'], TRUE)) {
+    $langcode = $node->language()->getId();
+    $variables['card_ink_chips'] = [];
+    foreach ($node->get('field_ink')->referencedEntities() as $term) {
+      $variables['card_ink_chips'][] = [
+        'slug' => mb_strtolower($term->label()),
+        'label' => $term->hasTranslation($langcode) ? $term->getTranslation($langcode)->label() : $term->label(),
+      ];
+    }
+    $variables['card_classification_labels'] = [];
+    foreach ($node->get('field_classifications')->referencedEntities() as $term) {
+      $variables['card_classification_labels'][] = $term->hasTranslation($langcode) ? $term->getTranslation($langcode)->label() : $term->label();
+    }
+    $set_node = $node->get('field_set')->entity;
+    $variables['card_set_label'] = $set_node
+      ? ($set_node->hasTranslation($langcode) ? $set_node->getTranslation($langcode)->label() : $set_node->label())
+      : '';
+    // Card-type labels via the field's allowed values, which honour the active
+    // language's config-translation override (Personnage, Lieu, …).
+    $type_storage = $node->get('field_card_types')->getFieldDefinition()->getFieldStorageDefinition();
+    $type_allowed = options_allowed_values($type_storage, $node);
+    $variables['card_type_labels'] = [];
+    foreach ($node->get('field_card_types') as $item) {
+      $variables['card_type_labels'][] = $type_allowed[$item->value] ?? ucfirst($item->value);
+    }
+  }
+
+  if ($view_mode !== 'full') {
     return;
   }
 
