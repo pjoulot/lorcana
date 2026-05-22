@@ -405,6 +405,12 @@ body.if-drawer-open .if-sidebar-backdrop { display: block; }
 .if-swatch--sapphire { background: var(--ink-sapphire); }
 .if-swatch--steel    { background: var(--ink-steel);    }
 
+/* Dual-ink: diagonal split of the two ink colours (set via inline
+ * --ink-a / --ink-b custom properties on the element). */
+.if-swatch--split {
+  background: linear-gradient(135deg, var(--ink-a) 0 50%, var(--ink-b) 50% 100%);
+}
+
 .if-swatch--common     { background: var(--rarity-common);     }
 .if-swatch--uncommon   { background: var(--rarity-uncommon);   }
 .if-swatch--rare       { background: var(--rarity-rare);       }

@@ -15,6 +15,10 @@ final class CardData {
   /**
    * @param array<string,string> $imageUris
    *   Map of size key → URL: 'small'|'normal'|'large' → AVIF/JPG URL.
+   * @param string[] $inks
+   *   Ink colour labels (Amber, Steel, …). Empty for inkless cards; two
+   *   entries for dual-ink cards (sets 9+). The upserter resolves them to
+   *   ink_color taxonomy terms on the multi-value field_ink.
    * @param string[] $cardTypes
    *   Lowercase machine names from our enum: character, action, item,
    *   location, song.
@@ -41,7 +45,7 @@ final class CardData {
     public readonly string $layout,
     public readonly int $cost,
     public readonly bool $inkable,
-    public readonly ?string $ink,
+    public readonly array $inks,
     public readonly array $cardTypes,
     public readonly array $classifications,
     public readonly ?int $strength,

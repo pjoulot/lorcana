@@ -109,7 +109,7 @@ final class CardUpserter {
       $node->set('field_layout', $card->layout);
       $node->set('field_cost', $card->cost);
       $node->set('field_inkable', $card->inkable);
-      $node->set('field_ink', $this->resolveInkTerm($card->ink));
+      $node->set('field_ink', $this->resolveInkTerms($card->inks));
       $node->set('field_card_types', $card->cardTypes);
       $node->set('field_classifications', $this->resolveClassificationTerms($card->classifications));
       $node->set('field_character', $this->resolveCharacterTerm($card));
@@ -288,12 +288,20 @@ final class CardUpserter {
     return ['target_id' => $term->id()];
   }
 
-  private function resolveInkTerm(?string $inkLabel): ?array {
-    if ($inkLabel === NULL || $inkLabel === '') {
-      return NULL;
+  /**
+   * @param string[] $inkLabels
+   * @return array<int,array{target_id:int}>
+   */
+  private function resolveInkTerms(array $inkLabels): array {
+    $refs = [];
+    foreach ($inkLabels as $label) {
+      if (!is_string($label) || trim($label) === '') {
+        continue;
+      }
+      $term = $this->findOrCreateTerm('ink_color', $label);
+      $refs[] = ['target_id' => $term->id()];
     }
-    $term = $this->findOrCreateTerm('ink_color', $inkLabel);
-    return ['target_id' => $term->id()];
+    return $refs;
   }
 
   /**

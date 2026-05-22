@@ -25,9 +25,10 @@
 {% set version = node.field_version.value %}
 {% set version_suffix = version ? ' — ' ~ version : '' %}
 {% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
-{% set ink_term = node.field_ink.entity %}
-{% set ink_label = ink_term ? ink_term.label : '' %}
-{% set ink_slug = ink_label ? ink_label|lower : '' %}
+{% set ink_terms = [] %}
+{% for item in node.field_ink %}
+  {% if item.entity %}{% set ink_terms = ink_terms|merge([item.entity]) %}{% endif %}
+{% endfor %}
 {% set rarity_raw = node.field_rarity.value %}
 {% set rarity_letter = rarity_raw == 'common' ? 'C'
   : (rarity_raw == 'uncommon' ? 'U'
@@ -51,10 +52,16 @@
     <div class="if-lcard__row-text">
       <div class="if-lcard__row-name serif">{{ base_name }}</div>
       <div class="if-lcard__row-meta">
-        {% if ink_label %}
+        {% if ink_terms is not empty %}
           <span class="if-lcard__row-ink">
-            <span class="if-swatch if-swatch--{{ ink_slug }}" aria-hidden="true"></span>
-            {{ ink_label }}
+            {% if ink_terms|length > 1 %}
+              <span class="if-swatch if-swatch--split"
+                    style="--ink-a: var(--ink-{{ ink_terms.0.label|lower }}); --ink-b: var(--ink-{{ ink_terms.1.label|lower }});"
+                    aria-hidden="true"></span>
+            {% else %}
+              <span class="if-swatch if-swatch--{{ ink_terms.0.label|lower }}" aria-hidden="true"></span>
+            {% endif %}
+            {{ ink_terms|map(t => t.label)|join(' + ') }}
           </span>
           <span class="if-lcard__row-sep">·</span>
         {% endif %}

@@ -137,7 +137,7 @@ final class LorcastDataImporter extends PluginBase implements CardDataImporterIn
       layout: (string) ($row['layout'] ?? 'normal'),
       cost: (int) ($row['cost'] ?? 0),
       inkable: (bool) ($row['inkwell'] ?? FALSE),
-      ink: $row['ink'] ?? NULL,
+      inks: $this->extractInks($row),
       cardTypes: $types,
       classifications: $row['classifications'] ?? [],
       strength: isset($row['strength']) ? (int) $row['strength'] : NULL,
@@ -158,6 +158,22 @@ final class LorcastDataImporter extends PluginBase implements CardDataImporterIn
       printingGroupId: $printingGroupId,
       sourceFields: $row,
     );
+  }
+
+  /**
+   * Normalises Lorcast's ink data to a flat list of labels.
+   *
+   * Lorcast exposes both a singular `ink` (null for dual/inkless) and a plural
+   * `inks` array; prefer the array so dual-ink cards round-trip.
+   *
+   * @param array<string,mixed> $row
+   * @return string[]
+   */
+  private function extractInks(array $row): array {
+    if (!empty($row['inks']) && is_array($row['inks'])) {
+      return array_values(array_filter(array_map('strval', $row['inks'])));
+    }
+    return isset($row['ink']) ? [(string) $row['ink']] : [];
   }
 
   private function buildPrintingGroupId(string $setCode, string $name, ?string $version): string {

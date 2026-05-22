@@ -33,8 +33,11 @@
 {% set version_suffix = version ? ' — ' ~ version : '' %}
 {% set base_name = version ? node.label|replace({(version_suffix): ''}) : node.label %}
 {% set set_node = node.field_set.entity %}
-{% set ink_term = node.field_ink.entity %}
-{% set ink_slug = ink_term ? ink_term.label|lower : '' %}
+{% set ink_terms = [] %}
+{% for item in node.field_ink %}
+  {% if item.entity %}{% set ink_terms = ink_terms|merge([item.entity]) %}{% endif %}
+{% endfor %}
+{% set ink_slug = ink_terms is not empty ? ink_terms|first.label|lower : '' %}
 {% set rarity = content.field_rarity|render|striptags|trim %}
 {% set rarity_slug = rarity|lower|replace({' ': '-'}) %}
 
@@ -84,10 +87,16 @@
   <div class="if-card-detail__info">
 
     <div class="if-card-detail__chips">
-      {% if ink_term %}
+      {% if ink_terms is not empty %}
         <span class="if-chip if-chip--ink">
-          <span class="if-swatch if-swatch--{{ ink_slug }}" aria-hidden="true"></span>
-          {{ ink_term.label }}
+          {% if ink_terms|length > 1 %}
+            <span class="if-swatch if-swatch--split"
+                  style="--ink-a: var(--ink-{{ ink_terms.0.label|lower }}); --ink-b: var(--ink-{{ ink_terms.1.label|lower }});"
+                  aria-hidden="true"></span>
+          {% else %}
+            <span class="if-swatch if-swatch--{{ ink_slug }}" aria-hidden="true"></span>
+          {% endif %}
+          {{ ink_terms|map(t => t.label)|join(' + ') }}
         </span>
       {% endif %}
       {% for type_item in node.field_card_types %}

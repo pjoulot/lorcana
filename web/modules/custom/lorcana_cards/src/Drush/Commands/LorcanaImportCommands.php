@@ -41,7 +41,7 @@ final class LorcanaImportCommands extends DrushCommands {
   #[CLI\Command(name: 'lorcana:import:sets', aliases: ['lci-sets'])]
   #[CLI\Help(description: 'Refresh the list of Lorcana sets from a data importer plugin.')]
   #[CLI\Option(name: 'source', description: 'Data importer plugin id')]
-  public function importSets(array $options = ['source' => 'lorcast']): int {
+  public function importSets(array $options = ['source' => 'lorcana_json']): int {
     $plugin = $this->loadDataPlugin((string) $options['source']);
     $this->upserter->resetStats();
     foreach ($plugin->listSets() as $set) {
@@ -63,8 +63,8 @@ final class LorcanaImportCommands extends DrushCommands {
   public function importCards(array $options = [
     'set' => NULL,
     'lang' => 'en',
-    'source' => 'lorcast',
-    'image-source' => 'lorcast',
+    'source' => 'lorcana_json',
+    'image-source' => 'lorcana_json',
     'skip-images' => FALSE,
     'limit' => 0,
   ]): int {
@@ -96,8 +96,8 @@ final class LorcanaImportCommands extends DrushCommands {
   #[CLI\Option(name: 'skip-images', description: 'Import card data but not images')]
   public function importAll(array $options = [
     'langs' => 'en',
-    'source' => 'lorcast',
-    'image-source' => 'lorcast',
+    'source' => 'lorcana_json',
+    'image-source' => 'lorcana_json',
     'skip-images' => FALSE,
   ]): int {
     $plugin = $this->loadDataPlugin((string) $options['source']);
