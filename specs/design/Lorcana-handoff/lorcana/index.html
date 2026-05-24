@@ -34,6 +34,7 @@
 <script type="text/babel" src="src/card-detail.jsx"></script>
 <script type="text/babel" src="src/news-sets.jsx"></script>
 <script type="text/babel" src="src/product.jsx"></script>
+<script type="text/babel" src="src/about-legal.jsx"></script>
 <script type="text/babel" src="src/reference.jsx"></script>
 
 <script type="text/babel" data-presets="env,react">
@@ -127,6 +128,22 @@ function App() {
           </DCArtboard>
           <DCArtboard id="prod-m" label="Product · Mobile · 375" width={375} height={812}>
             <ProductDetailMobile frame={t.frame}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="about-legal" title="About + Legal"
+                   subtitle="Two editorial pages on the same paper system — the project's story and the IP/privacy fine print.">
+          <DCArtboard id="about-d" label="About · Desktop · 1280" width={1280} height={1600}>
+            <AboutDesktop/>
+          </DCArtboard>
+          <DCArtboard id="about-m" label="About · Mobile · 375" width={375} height={812}>
+            <AboutMobile/>
+          </DCArtboard>
+          <DCArtboard id="legal-d" label="Legal · Desktop · 1280" width={1280} height={1800}>
+            <LegalDesktop/>
+          </DCArtboard>
+          <DCArtboard id="legal-m" label="Legal · Mobile · 375" width={375} height={812}>
+            <LegalMobile/>
           </DCArtboard>
         </DCSection>
 
