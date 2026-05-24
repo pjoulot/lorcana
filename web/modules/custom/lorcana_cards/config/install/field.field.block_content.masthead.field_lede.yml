@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.masthead
+    - field.storage.block_content.field_lede
+id: block_content.masthead.field_lede
+field_name: field_lede
+entity_type: block_content
+bundle: masthead
+label: Lede
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

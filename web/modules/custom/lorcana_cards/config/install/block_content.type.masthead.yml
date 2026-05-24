@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - lorcana_cards
+id: masthead
+label: Masthead
+revision: false
+description: 'Inkfolk editorial — Masthead.'

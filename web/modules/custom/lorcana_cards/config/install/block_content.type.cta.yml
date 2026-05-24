@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - lorcana_cards
+id: cta
+label: 'Call to action'
+revision: false
+description: 'Inkfolk editorial — Call to action.'

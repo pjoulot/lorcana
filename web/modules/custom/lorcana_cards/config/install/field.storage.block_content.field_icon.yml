@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+  enforced:
+    module:
+      - lorcana_cards
+id: block_content.field_icon
+field_name: field_icon
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: badge
+      label: 'Ruby badge'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

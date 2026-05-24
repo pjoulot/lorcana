@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - lorcana_cards
+id: rich_text
+label: 'Rich text'
+revision: false
+description: 'Inkfolk editorial — Rich text.'
