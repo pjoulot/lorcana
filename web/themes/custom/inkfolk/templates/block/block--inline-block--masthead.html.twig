@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Inkfolk editorial "Masthead" inline block — eyebrow + big title + lede.
+ * Variables (from inkfolk_preprocess_block): inkfolk_eyebrow, inkfolk_meta,
+ * inkfolk_title, inkfolk_lede.
+ */
+#}
+<header{{ attributes.addClass('if-masthead') }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div class="if-masthead__inner">
+    {% if inkfolk_eyebrow %}
+      <div class="if-eyebrow">
+        <span class="if-eyebrow__bar" aria-hidden="true"></span>
+        <span class="if-eyebrow__text">{{ inkfolk_eyebrow }}</span>
+        {% if inkfolk_meta %}<span class="if-masthead__meta">· {{ inkfolk_meta }}</span>{% endif %}
+      </div>
+    {% endif %}
+    {% if inkfolk_title %}<h1 class="if-masthead__title serif">{{ inkfolk_title }}</h1>{% endif %}
+    {% if inkfolk_lede %}<p class="if-masthead__lede serif">{{ inkfolk_lede }}</p>{% endif %}
+  </div>
+</header>

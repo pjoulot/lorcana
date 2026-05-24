@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Inkfolk editorial "Call to action" inline block — eyebrow + title + body +
+ * up to two link buttons, with a style treatment (plain / gradient).
+ * Variables: inkfolk_eyebrow, inkfolk_title, inkfolk_style,
+ * inkfolk_primary_link, inkfolk_secondary_link, content.body.
+ */
+#}
+{% set style = inkfolk_style|default('plain') %}
+<section{{ attributes.addClass('if-cta', 'if-cta--' ~ style) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div class="if-cta__text">
+    {% if inkfolk_eyebrow %}<div class="if-cta__eyebrow">{{ inkfolk_eyebrow }}</div>{% endif %}
+    {% if inkfolk_title %}<h2 class="if-cta__title serif">{{ inkfolk_title }}</h2>{% endif %}
+    {% if content.body|render|trim %}<div class="if-cta__body">{{ content.body }}</div>{% endif %}
+  </div>
+  {% if inkfolk_primary_link or inkfolk_secondary_link %}
+    <div class="if-cta__actions">
+      {% if inkfolk_primary_link %}
+        <a href="{{ inkfolk_primary_link.url }}" class="if-btn if-btn--primary">{{ inkfolk_primary_link.title }}</a>
+      {% endif %}
+      {% if inkfolk_secondary_link %}
+        <a href="{{ inkfolk_secondary_link.url }}" class="if-btn">{{ inkfolk_secondary_link.title }}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>

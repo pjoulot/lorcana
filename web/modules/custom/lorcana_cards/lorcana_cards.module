@@ -83,5 +83,28 @@ function lorcana_cards_theme(array $existing, string $type, string $theme, strin
         'stats' => [],
       ],
     ],
+    'inkfolk_toc' => [
+      'variables' => ['heading' => ''],
+    ],
   ];
+}
+
+/**
+ * Implements hook_layout_alter().
+ *
+ * Swaps the core one/two/three-column section layouts for Inkfolk subclasses
+ * that add configurable top/bottom spacing. Existing sections keep their
+ * layout id and just gain the new setting (defaulting to no spacing).
+ */
+function lorcana_cards_layout_alter(array &$definitions): void {
+  $map = [
+    'layout_onecol' => 'Drupal\lorcana_cards\Plugin\Layout\InkfolkOneColumnLayout',
+    'layout_twocol_section' => 'Drupal\lorcana_cards\Plugin\Layout\InkfolkTwoColumnLayout',
+    'layout_threecol_section' => 'Drupal\lorcana_cards\Plugin\Layout\InkfolkThreeColumnLayout',
+  ];
+  foreach ($map as $id => $class) {
+    if (isset($definitions[$id])) {
+      $definitions[$id]->setClass($class);
+    }
+  }
 }
