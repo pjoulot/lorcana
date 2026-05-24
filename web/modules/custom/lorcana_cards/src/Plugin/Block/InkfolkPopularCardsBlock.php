@@ -22,32 +22,47 @@ final class InkfolkPopularCardsBlock extends BlockBase {
 
   public function defaultConfiguration(): array {
     return [
-      'eyebrow' => 'Trending this week',
-      'title' => 'Popular cards',
-      'see_all_label' => 'See all cards →',
+      'eyebrow' => '',
+      'title' => '',
+      'see_all_label' => '',
       'see_all_url' => '/cards',
       'count' => 6,
     ] + parent::defaultConfiguration();
   }
 
+  /**
+   * Translatable default labels, used when the block config leaves them blank.
+   */
+  private function defaultLabels(): array {
+    return [
+      'eyebrow' => $this->t('Trending this week'),
+      'title' => $this->t('Popular cards'),
+      'see_all_label' => $this->t('See all cards →'),
+    ];
+  }
+
   public function blockForm($form, FormStateInterface $form_state): array {
     $cfg = $this->configuration;
+    $defaults = $this->defaultLabels();
     $form['eyebrow'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Eyebrow'),
       '#default_value' => $cfg['eyebrow'],
+      '#placeholder' => $defaults['eyebrow'],
     ];
     $form['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Section title'),
       '#default_value' => $cfg['title'],
-      '#required' => TRUE,
+      '#placeholder' => $defaults['title'],
+      '#description' => $this->t('Leave blank to use the translatable default.'),
     ];
     $form['see_all_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('See-all link label'),
       '#default_value' => $cfg['see_all_label'],
-      '#description' => $this->t('Leave blank to hide the link.'),
+      '#placeholder' => $defaults['see_all_label'],
+      '#description' => $this->t('Leave blank to use the translatable default.'),
     ];
     $form['see_all_url'] = [
       '#type' => 'textfield',
@@ -73,6 +88,7 @@ final class InkfolkPopularCardsBlock extends BlockBase {
 
   public function build(): array {
     $cfg = $this->configuration;
+    $defaults = $this->defaultLabels();
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
 
@@ -92,13 +108,14 @@ final class InkfolkPopularCardsBlock extends BlockBase {
 
     return [
       '#theme' => 'inkfolk_popular',
-      '#eyebrow' => $cfg['eyebrow'],
-      '#title' => $cfg['title'],
-      '#see_all_label' => $cfg['see_all_label'],
+      '#eyebrow' => $cfg['eyebrow'] !== '' ? $cfg['eyebrow'] : $defaults['eyebrow'],
+      '#title' => $cfg['title'] !== '' ? $cfg['title'] : $defaults['title'],
+      '#see_all_label' => $cfg['see_all_label'] !== '' ? $cfg['see_all_label'] : $defaults['see_all_label'],
       '#see_all_url' => $cfg['see_all_url'],
       '#cards' => $cards,
       '#cache' => [
         'tags' => ['node_list:card'],
+        'contexts' => ['languages:language_interface'],
       ],
     ];
   }

@@ -27,41 +27,57 @@ final class InkfolkHeroBlock extends BlockBase {
 
   public function defaultConfiguration(): array {
     return [
-      'title' => 'Every Lorcana card,',
-      'title_accent' => 'at a glance.',
-      'copy' => 'A fan-made, ad-free database for searching cards, planning decks, and drafting with friends. EN · FR.',
-      'search_placeholder' => 'Search cards, abilities, sets…',
+      'title' => '',
+      'title_accent' => '',
+      'copy' => '',
+      'search_placeholder' => '',
       'try_examples' => "ink:ruby cost<=3\nt:song r:rare\nset:archazia ink:amber\nkw:singer",
       'show_chip' => TRUE,
       'show_spread' => TRUE,
     ] + parent::defaultConfiguration();
   }
 
+  /**
+   * Translatable default copy, used when the block config leaves a field blank.
+   */
+  private function defaultLabels(): array {
+    return [
+      'title' => $this->t('Every Lorcana card,'),
+      'title_accent' => $this->t('at a glance.'),
+      'copy' => $this->t('A fan-made, ad-free database for searching cards, planning decks, and drafting with friends. EN · FR.'),
+      'search_placeholder' => $this->t('Search cards, abilities, sets…'),
+    ];
+  }
+
   public function blockForm($form, FormStateInterface $form_state): array {
     $cfg = $this->configuration;
+    $defaults = $this->defaultLabels();
     $form['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title — first clause'),
       '#default_value' => $cfg['title'],
-      '#description' => $this->t('Big serif heading, regular weight.'),
-      '#required' => TRUE,
+      '#placeholder' => $defaults['title'],
+      '#description' => $this->t('Big serif heading, regular weight. Leave blank to use the translatable default.'),
     ];
     $form['title_accent'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title — italic accent'),
       '#default_value' => $cfg['title_accent'],
-      '#description' => $this->t('Italic clause painted in --accent. Leave blank to skip.'),
+      '#placeholder' => $defaults['title_accent'],
+      '#description' => $this->t('Italic clause painted in --accent. Leave blank to use the translatable default.'),
     ];
     $form['copy'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Description'),
       '#default_value' => $cfg['copy'],
+      '#placeholder' => $defaults['copy'],
       '#rows' => 2,
     ];
     $form['search_placeholder'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search placeholder'),
       '#default_value' => $cfg['search_placeholder'],
+      '#placeholder' => $defaults['search_placeholder'],
     ];
     $form['try_examples'] = [
       '#type' => 'textarea',
@@ -94,6 +110,7 @@ final class InkfolkHeroBlock extends BlockBase {
 
   public function build(): array {
     $cfg = $this->configuration;
+    $defaults = $this->defaultLabels();
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
 
@@ -140,10 +157,10 @@ final class InkfolkHeroBlock extends BlockBase {
 
     return [
       '#theme' => 'inkfolk_hero',
-      '#title' => $cfg['title'],
-      '#title_accent' => $cfg['title_accent'],
-      '#copy' => $cfg['copy'],
-      '#search_placeholder' => $cfg['search_placeholder'],
+      '#title' => $cfg['title'] !== '' ? $cfg['title'] : $defaults['title'],
+      '#title_accent' => $cfg['title_accent'] !== '' ? $cfg['title_accent'] : $defaults['title_accent'],
+      '#copy' => $cfg['copy'] !== '' ? $cfg['copy'] : $defaults['copy'],
+      '#search_placeholder' => $cfg['search_placeholder'] !== '' ? $cfg['search_placeholder'] : $defaults['search_placeholder'],
       '#try_examples' => $try,
       '#latest_set' => $latest_set,
       '#latest_set_card_count' => $latest_set_card_count,
