@@ -1,0 +1,262 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Inkfolk custom UI\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# French translations for the Inkfolk theme's custom interface strings.
+# Source of truth — import with: drush locale:import fr <this file> --type=customized --override=all
+# Generic Drupal strings are covered by core's fr translations; only custom Inkfolk UI lives here.
+
+msgid "1 foil · 1 rare+"
+msgstr "1 foil · 1 rare+"
+
+msgid "12 cards"
+msgstr "12 cartes"
+
+msgid "2 inks · ready to play"
+msgstr "2 encres · prêt à jouer"
+
+msgid "24 packs · 288 cards"
+msgstr "24 boosters · 288 cartes"
+
+msgid "60 cards · pre-built"
+msgstr "60 cartes · prédéfini"
+
+msgid "8 packs + accessories"
+msgstr "8 boosters + accessoires"
+
+msgid "A fan project by hobbyists. No ads, no analytics, no paywalls — ever."
+msgstr "Un projet de fans amateurs. Pas de pub, pas de pisteurs, jamais de paywall."
+
+msgid "All %count% cards, one search away."
+msgstr "Toutes les %count% cartes, à une recherche près."
+
+msgid "All the cards, one search away."
+msgstr "Toutes les cartes, à une recherche près."
+
+msgid "Booster box"
+msgstr "Boîte de boosters"
+
+msgid "Booster pack"
+msgstr "Booster"
+
+msgid "Browse set"
+msgstr "Parcourir le set"
+
+msgid "Card breadcrumb"
+msgstr "Fil d'Ariane de la carte"
+
+msgid "Cards"
+msgstr "Cartes"
+
+msgid "cards"
+msgstr "cartes"
+
+msgid "cards indexed"
+msgstr "cartes indexées"
+
+msgid "Chase cards"
+msgstr "Cartes recherchées"
+
+msgid "Collector №"
+msgstr "N° de collection"
+
+msgid "Combine freely:"
+msgstr "Combinez librement :"
+
+msgid "Cost"
+msgstr "Coût"
+
+msgid "Cost, with"
+msgstr "Coût, avec"
+
+msgid "Coverage of the meta, set releases, ruling updates, and the community around the table."
+msgstr "Le suivi du méta, des sorties de sets, des mises à jour de règles et de la communauté autour de la table."
+
+msgid "Credits"
+msgstr "Crédits"
+
+msgid "Deck box · sleeves · binder"
+msgstr "Boîte de deck · protège-cartes · classeur"
+
+msgid "Explore the set"
+msgstr "Explorer le set"
+
+msgid "From the set"
+msgstr "Du set"
+
+msgid "Illumineer’s Trove"
+msgstr "Trésor de l'Illumineur"
+
+msgid "Illustrator"
+msgstr "Illustrateur"
+
+msgid "Ink — also"
+msgstr "Encre — aussi"
+
+msgid "Inkable"
+msgstr "Encrable"
+
+msgid "Inkfolk — home"
+msgstr "Inkfolk — accueil"
+
+msgid "Jump into the encyclopedia with"
+msgstr "Plongez dans l'encyclopédie avec"
+
+msgid "Keep reading"
+msgstr "Lire la suite"
+
+msgid "Keyword ability"
+msgstr "Capacité mot-clé"
+
+msgid "Lore"
+msgstr "Lore"
+
+msgid "Lore — also"
+msgstr "Lore — aussi"
+
+msgid "News, spoilers and tournament reports — written by players."
+msgstr "Actus, spoilers et rapports de tournois — écrits par des joueurs."
+
+msgid "Open encyclopedia"
+msgstr "Ouvrir l'encyclopédie"
+
+msgid "Other printings"
+msgstr "Autres impressions"
+
+msgid "pre-filtered. Layer on ink, cost, keyword — narrow to the cards you actually want."
+msgstr "déjà en filtre. Ajoutez l'encre, le coût, un mot-clé — affinez jusqu'aux cartes que vous voulez vraiment."
+
+msgid "Primary navigation"
+msgstr "Navigation principale"
+
+msgid "Printing details"
+msgstr "Détails d'impression"
+
+msgid "Products in this set"
+msgstr "Produits de ce set"
+
+msgid "Quote multi-word values"
+msgstr "Mettez les valeurs de plusieurs mots entre guillemets"
+
+msgid "Rarity"
+msgstr "Rareté"
+
+msgid "Related articles"
+msgstr "Articles liés"
+
+msgid "Released"
+msgstr "Sortie"
+
+msgid "Rules text"
+msgstr "Texte de règles"
+
+msgid "Sealed display"
+msgstr "Display scellé"
+
+msgid "Search cards, sets, abilities…"
+msgstr "Rechercher cartes, sets, capacités…"
+
+msgid "Search syntax"
+msgstr "Syntaxe de recherche"
+
+msgid "Search syntax help"
+msgstr "Aide sur la syntaxe de recherche"
+
+msgid "See all cards in this set"
+msgstr "Voir toutes les cartes de ce set"
+
+msgid "Set"
+msgstr "Set"
+
+msgid "Set number"
+msgstr "Numéro de set"
+
+msgid "Set № "
+msgstr "Set № "
+
+msgid "Start a draft"
+msgstr "Lancer un draft"
+
+msgid "Starter deck"
+msgstr "Deck de démarrage"
+
+msgid "Strength"
+msgstr "Force"
+
+msgid "The Inkfolk Journal"
+msgstr "Le Journal"
+
+msgid "This site is an unofficial, non-commercial fan project and is not published, endorsed, or specifically approved by Disney or Ravensburger. Card images used under Ravensburger's Community Code Policy."
+msgstr "Ce site est un projet de fans non officiel et non commercial, qui n'est ni publié, ni soutenu, ni spécifiquement approuvé par Disney ou Ravensburger. Images de cartes utilisées dans le cadre de la Community Code Policy de Ravensburger."
+
+msgid "Try"
+msgstr "Essayez"
+
+msgid "Type filters right in the search box — alone or mixed with words."
+msgstr "Tapez des filtres directement dans la barre de recherche — seuls ou mêlés à du texte."
+
+msgid "Type: character, action, song, item"
+msgstr "Type : personnage, action, chanson, objet"
+
+msgid "Unknown card"
+msgstr "Carte inconnue"
+
+msgid "View larger image"
+msgstr "Voir l'image en grand"
+
+msgid "What you can buy"
+msgstr "Ce que vous pouvez acheter"
+
+msgid "Willpower"
+msgstr "Volonté"
+
+# Homepage Layout Builder block defaults (hero + section strips).
+msgid "Every Lorcana card,"
+msgstr "Chaque carte Lorcana,"
+
+msgid "at a glance."
+msgstr "en un coup d'œil."
+
+msgid "A fan-made, ad-free database for searching cards, planning decks, and drafting with friends. EN · FR."
+msgstr "Une base de données amateur et sans pub pour rechercher des cartes, préparer des decks et drafter entre amis. EN · FR."
+
+msgid "Search cards, abilities, sets…"
+msgstr "Rechercher cartes, capacités, sets…"
+
+msgid "Trending this week"
+msgstr "Tendances de la semaine"
+
+msgid "Popular cards"
+msgstr "Cartes populaires"
+
+msgid "See all cards →"
+msgstr "Voir toutes les cartes →"
+
+msgid "By release"
+msgstr "Par date de sortie"
+
+msgid "Browse sets"
+msgstr "Parcourir les sets"
+
+msgid "All sets →"
+msgstr "Tous les sets →"
+
+msgid "From the editors"
+msgstr "De la rédaction"
+
+msgid "Recent news"
+msgstr "Actualités récentes"
+
+msgid "All articles →"
+msgstr "Tous les articles →"
+
+# Facets summary count (facets_summary module, plural).
+msgid "@count result found"
+msgid_plural "@count results found"
+msgstr[0] "@count résultat trouvé"
+msgstr[1] "@count résultats trouvés"
