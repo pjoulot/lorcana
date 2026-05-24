@@ -301,19 +301,34 @@
   padding: 24px;
 }
 .if-from-set__numeral {
-  font-size: 72px;
+  width: 96px;
+  height: 96px;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2.5px solid rgba(255, 255, 255, .85);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+  font-size: 44px;
   font-weight: 500;
   color: #fff;
   text-align: center;
   line-height: 1;
-  letter-spacing: -.04em;
+  letter-spacing: -.02em;
   text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
   text-transform: uppercase;
 }
+/* The serif digits carry no descender, so the empty descender space at the
+ * bottom of the line box makes the glyph sit optically high — nudge it down.
+ * em-based so it scales with the data-len font-size steps below. */
+.if-from-set__numeral > span {
+  display: block;
+  transform: translateY(.06em);
+}
 /* Alpha codes (TFC, D23, DIS, P1) — step the display size down so
- * the 120px column still fits the text without clipping. */
-.if-from-set__numeral[data-len="2"] { font-size: 64px; }
-.if-from-set__numeral[data-len="3"] { font-size: 52px; }
+ * the text still fits inside the circle without clipping. */
+.if-from-set__numeral[data-len="2"] { font-size: 34px; }
+.if-from-set__numeral[data-len="3"] { font-size: 26px; }
 .if-from-set__eyebrow {
   font-size: 11px;
   font-weight: 700;

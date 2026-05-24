@@ -239,7 +239,7 @@
       <section class="if-card-detail__from-set">
         <a href="{{ path('entity.node.canonical', {'node': set_node.id}) }}" class="if-from-set">
           {% set _set_code = set_node.field_set_code.value %}
-          <div class="if-from-set__numeral serif" data-len="{{ _set_code|length }}">{{ _set_code }}</div>
+          <div class="if-from-set__numeral serif" data-len="{{ _set_code|length }}"><span>{{ _set_code }}</span></div>
           <div class="if-from-set__body">
             <div class="if-from-set__eyebrow">{{ 'From the set'|t }}</div>
             <h3 class="if-from-set__title serif">{{ card_set_label }}</h3>
