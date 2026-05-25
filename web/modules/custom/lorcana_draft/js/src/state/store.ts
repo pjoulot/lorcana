@@ -24,6 +24,8 @@ export type DraftAction =
   | { type: 'startPending' }
   | { type: 'startSuccess'; response: SoloResponse; setMeta: SetInfo }
   | { type: 'startError'; message: string }
+  | { type: 'select'; index: number | null }
+  | { type: 'pick' }
   | { type: 'reset' };
 
 export function initialState(sets: SetInfo[], endpoint: string): DraftState {
@@ -69,6 +71,35 @@ export function reducer(state: DraftState, action: DraftAction): DraftState {
         selected: null,
         pool: [],
       };
+    }
+
+    case 'select':
+      return { ...state, selected: action.index };
+
+    case 'pick': {
+      if (state.selected === null || !state.current[state.selected]) {
+        return state;
+      }
+      const card = state.current[state.selected];
+      const pool = [...state.pool, card];
+      const remaining = state.current.filter((_, i) => i !== state.selected);
+
+      // Solo: keep drafting the current pack until it's empty, then open the
+      // next one; when all packs are exhausted the draft is done.
+      if (remaining.length > 0) {
+        return { ...state, pool, current: remaining, selected: null };
+      }
+      const nextIndex = state.packIndex + 1;
+      if (nextIndex < state.packs.length) {
+        return {
+          ...state,
+          pool,
+          packIndex: nextIndex,
+          current: [...state.packs[nextIndex]],
+          selected: null,
+        };
+      }
+      return { ...state, pool, current: [], selected: null, screen: 'end' };
     }
 
     case 'reset':

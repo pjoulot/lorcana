@@ -2,6 +2,7 @@ import type { DraftSettings } from './types';
 import { DraftProvider, useDraft, useDraftReducer } from './state/store';
 import { Landing } from './ui/Landing';
 import { CreateSolo } from './ui/CreateSolo';
+import { ActiveDraft } from './ui/ActiveDraft';
 
 export function DraftApp({ settings }: { settings: DraftSettings }) {
   const store = useDraftReducer(settings.sets, settings.soloEndpoint);
@@ -21,8 +22,9 @@ function Screens() {
     case 'create':
       return <CreateSolo />;
     case 'active':
+      return <ActiveDraft />;
     case 'end':
-      // Replaced by the active-draft and end screens in the next commits.
+      // Replaced by the end screen in the next commit.
       return <Placeholder />;
   }
 }
