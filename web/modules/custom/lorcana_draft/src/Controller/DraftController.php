@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\lorcana_draft\Controller;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\lorcana_draft\Service\PackGenerator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Serves the embedded draft-simulator single-page app.
@@ -25,6 +31,8 @@ final class DraftController implements ContainerInjectionInterface {
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly EntityRepositoryInterface $entityRepository,
+    private readonly LanguageManagerInterface $languageManager,
+    private readonly PackGenerator $packGenerator,
   ) {}
 
   /**
@@ -34,6 +42,8 @@ final class DraftController implements ContainerInjectionInterface {
     return new self(
       $container->get('entity_type.manager'),
       $container->get('entity.repository'),
+      $container->get('language_manager'),
+      $container->get('lorcana_draft.pack_generator'),
     );
   }
 
@@ -85,6 +95,51 @@ final class DraftController implements ContainerInjectionInterface {
     ];
 
     return $build;
+  }
+
+  /**
+   * Generates a solo dry-run draft: all packs for a single player.
+   *
+   * Stateless — nothing is stored server-side. The browser runs the pick
+   * loop over the returned packs (spec 05, phase 3a).
+   */
+  public function solo(Request $request): JsonResponse {
+    $data = Json::decode($request->getContent()) ?: [];
+    $code = (string) ($data['set'] ?? '');
+    $packs = max(1, min(8, (int) ($data['packs'] ?? 4)));
+
+    if ($code === '' || !$this->isDraftable($code)) {
+      return new JsonResponse(['error' => 'unknown_set'], 404);
+    }
+
+    $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    $result = $this->packGenerator->generate($code, $packs, 1, NULL, $langcode);
+
+    if (($result['packs'][0] ?? []) === []) {
+      return new JsonResponse(['error' => 'empty_pool'], 409);
+    }
+
+    return new JsonResponse([
+      'seed' => $result['seed'],
+      'set' => $result['set'],
+      'packs' => $result['packs'][0],
+    ]);
+  }
+
+  /**
+   * Whether a set code maps to a published, draftable set.
+   */
+  private function isDraftable(string $setCode): bool {
+    $ids = $this->entityTypeManager->getStorage('node')->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('type', 'card_set')
+      ->condition('status', 1)
+      ->condition('field_is_draftable', 1)
+      ->condition('field_set_code', $setCode)
+      ->range(0, 1)
+      ->execute();
+
+    return $ids !== [];
   }
 
   /**

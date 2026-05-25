@@ -5,3 +5,11 @@ lorcana_draft.app:
     _title: 'Draft simulator'
   requirements:
     _access: 'TRUE'
+
+lorcana_draft.solo:
+  path: '/api/draft/solo'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\DraftController::solo'
+  methods: [POST]
+  requirements:
+    _access: 'TRUE'

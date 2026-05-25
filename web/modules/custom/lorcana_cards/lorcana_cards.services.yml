@@ -15,6 +15,10 @@ services:
     class: Drupal\lorcana_cards\Importer\CardUpserter
     arguments: ['@entity_type.manager', '@logger.factory', '@file.repository', '@file_system']
 
+  lorcana_cards.pack_pool:
+    class: Drupal\lorcana_cards\Service\PackPoolProvider
+    arguments: ['@entity_type.manager', '@entity.repository']
+
   lorcana_cards.search_syntax:
     class: Drupal\lorcana_cards\Search\CardSearchSyntax
     arguments: ['@entity_type.manager']
