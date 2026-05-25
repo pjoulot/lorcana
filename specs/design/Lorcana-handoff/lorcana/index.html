@@ -33,6 +33,11 @@
 <script type="text/babel" src="src/encyclopedia.jsx"></script>
 <script type="text/babel" src="src/card-detail.jsx"></script>
 <script type="text/babel" src="src/news-sets.jsx"></script>
+<script type="text/babel" src="src/sets-index.jsx"></script>
+<script type="text/babel" src="src/draft-atoms.jsx"></script>
+<script type="text/babel" src="src/draft-flow.jsx"></script>
+<script type="text/babel" src="src/draft-active.jsx"></script>
+<script type="text/babel" src="src/contact.jsx"></script>
 <script type="text/babel" src="src/product.jsx"></script>
 <script type="text/babel" src="src/about-legal.jsx"></script>
 <script type="text/babel" src="src/reference.jsx"></script>
@@ -45,7 +50,8 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
     "color": "#F4B042"
   },
   "frame": "none",
-  "aesthetic": "editorial"
+  "aesthetic": "editorial",
+  "pickTimer": 47
 }/*EDITMODE-END*/;
 
 const ACCENTS = {
@@ -115,6 +121,16 @@ function App() {
           </DCArtboard>
         </DCSection>
 
+        <DCSection id="sets-index" title="Sets index"
+                   subtitle="The archive — every Lorcana expansion in one chronological list, with chase cards and ink palettes.">
+          <DCArtboard id="sets-idx-d" label="Desktop · 1280" width={1280} height={1700}>
+            <SetsIndexDesktop/>
+          </DCArtboard>
+          <DCArtboard id="sets-idx-m" label="Mobile · 375" width={375} height={812}>
+            <SetsIndexMobile/>
+          </DCArtboard>
+        </DCSection>
+
         <DCSection id="set" title="Set page"
                    subtitle="One expansion, organized by rarity, filterable by ink. Each set gets its own colorway.">
           <DCArtboard id="set-d" label="Desktop · 1280" width={1280} height={1900}>
@@ -144,6 +160,107 @@ function App() {
           </DCArtboard>
           <DCArtboard id="legal-m" label="Legal · Mobile · 375" width={375} height={812}>
             <LegalMobile/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="draft-entry" title="Draft · landing & create room"
+                   subtitle="Front door to the draft simulator: explain what it is, then collect a set + player count.">
+          <DCArtboard id="draft-landing-d" label="Landing · Desktop · 1280" width={1280} height={1200}>
+            <DraftLandingDesktop/>
+          </DCArtboard>
+          <DCArtboard id="draft-landing-m" label="Landing · Mobile · 375" width={375} height={812}>
+            <DraftLandingMobile/>
+          </DCArtboard>
+          <DCArtboard id="draft-create-d" label="Create · Single set · Desktop" width={1280} height={1100}>
+            <CreateRoomDesktop setMode="single" packsPerPlayer={4}/>
+          </DCArtboard>
+          <DCArtboard id="draft-create-d-multi" label="Create · Multi-set · Desktop" width={1280} height={1300}>
+            <CreateRoomDesktop setMode="multi" packsPerPlayer={5}/>
+          </DCArtboard>
+          <DCArtboard id="draft-create-d-multi-search" label="Create · Multi-set · searching" width={1280} height={1100}>
+            <CreateRoomDesktop setMode="multi" packsPerPlayer={5} query="rise"/>
+          </DCArtboard>
+          <DCArtboard id="draft-create-m" label="Create · Single set · Mobile" width={375} height={812}>
+            <CreateRoomMobile setMode="single" packsPerPlayer={4}/>
+          </DCArtboard>
+          <DCArtboard id="draft-create-m-multi" label="Create · Multi-set · Mobile" width={375} height={812}>
+            <CreateRoomMobile setMode="multi" packsPerPlayer={5}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="draft-lobby" title="Draft · lobby & countdown"
+                   subtitle="The waiting room (big shareable code, roster filling up) and the 3-second 'get ready' hand-off.">
+          <DCArtboard id="draft-lobby-d" label="Lobby · Desktop · 1280" width={1280} height={900}>
+            <LobbyDesktop/>
+          </DCArtboard>
+          <DCArtboard id="draft-lobby-m" label="Lobby · Mobile · 375" width={375} height={812}>
+            <LobbyMobile/>
+          </DCArtboard>
+          <DCArtboard id="draft-countdown-d" label="Countdown · Desktop · 1280" width={1280} height={800}>
+            <CountdownDesktop n={3}/>
+          </DCArtboard>
+          <DCArtboard id="draft-countdown-m" label="Countdown · Mobile · 375" width={375} height={812}>
+            <CountdownMobile n={3}/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="draft-active" title="Draft · active draft view ⭐"
+                   subtitle="The pick screen — the most important moment in the flow. Two mobile layouts (drawer-up vs side-by-side), both shown light + dark.">
+          <DCArtboard id="draft-active-d-light" label="Active · Desktop · Light · 1280" width={1280} height={800}>
+            <ActiveDraftDesktopLight pickTimer={t.pickTimer}/>
+          </DCArtboard>
+          <DCArtboard id="draft-active-d-dark" label="Active · Desktop · Dark · 1280" width={1280} height={800}>
+            <ActiveDraftDesktopDark pickTimer={t.pickTimer}/>
+          </DCArtboard>
+          <DCArtboard id="draft-active-m-drawer-light" label="Mobile A · Drawer-up · Light" width={375} height={812}>
+            <ActiveDraftMobileDrawerLight pickTimer={t.pickTimer}/>
+          </DCArtboard>
+          <DCArtboard id="draft-active-m-drawer-dark" label="Mobile A · Drawer-up · Dark" width={375} height={812}>
+            <ActiveDraftMobileDrawerDark pickTimer={t.pickTimer}/>
+          </DCArtboard>
+          <DCArtboard id="draft-active-m-split-light" label="Mobile B · Side-by-side · Light" width={375} height={812}>
+            <ActiveDraftMobileSplitLight pickTimer={t.pickTimer}/>
+          </DCArtboard>
+          <DCArtboard id="draft-active-m-split-dark" label="Mobile B · Side-by-side · Dark" width={375} height={812}>
+            <ActiveDraftMobileSplitDark pickTimer={t.pickTimer}/>
+          </DCArtboard>
+          <DCArtboard id="draft-preview-d" label="Card preview · Desktop" width={1280} height={800}>
+            <CardPreviewDesktop/>
+          </DCArtboard>
+          <DCArtboard id="draft-preview-m" label="Card preview · Mobile" width={375} height={812}>
+            <CardPreviewMobile/>
+          </DCArtboard>
+          <DCArtboard id="draft-roster-m" label="Roster overlay · Mobile" width={375} height={812}>
+            <RosterOverlayMobile/>
+          </DCArtboard>
+          <DCArtboard id="draft-motion-d" label="Motion storyboard · Desktop" width={1280} height={1100}>
+            <ToastsAndRotationDesktop/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="draft-end" title="Draft · end of draft & edge states"
+                   subtitle="After the last pick: export your pool (CSV, share link, image). Plus reconnect and the waiting / locked / not-found / abandoned screens.">
+          <DCArtboard id="draft-end-d" label="End · Desktop · 1280" width={1280} height={2600}>
+            <EndOfDraftDesktop/>
+          </DCArtboard>
+          <DCArtboard id="draft-end-m" label="End · Mobile · 375" width={375} height={812}>
+            <EndOfDraftMobile/>
+          </DCArtboard>
+          <DCArtboard id="draft-reconnect-m" label="Reconnecting · Mobile" width={375} height={812}>
+            <ReconnectMobile/>
+          </DCArtboard>
+          <DCArtboard id="draft-states-d" label="Edge states · Desktop" width={1280} height={900}>
+            <ErrorStatesDesktop/>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="contact" title="Contact page"
+                   subtitle="Editorial form with sidebar pointing at the faster channels (Discord, GitHub). Mobile leads with a 3-up channel chooser, then the form.">
+          <DCArtboard id="contact-d" label="Contact · Desktop" width={1280} height={1000}>
+            <ContactDesktop/>
+          </DCArtboard>
+          <DCArtboard id="contact-m" label="Contact · Mobile" width={375} height={812}>
+            <ContactMobile/>
           </DCArtboard>
         </DCSection>
 
@@ -205,6 +322,18 @@ function App() {
               { value: 'rarity', label: 'Rarity' },
             ]}
           />
+        </TweakSection>
+
+        <TweakSection label="Pick timer (active draft)">
+          <TweakSlider
+            value={t.pickTimer}
+            onChange={v => setTweak('pickTimer', v)}
+            min={0} max={90} step={1}
+            suffix="s"
+          />
+          <div style={{ fontSize: 11, color: 'var(--ink-3, #888)', marginTop: 6, lineHeight: 1.4 }}>
+            Scrub to preview the timer states: <strong>green</strong> &gt;30s, <strong>amber</strong> ≤30s, <strong>red</strong> ≤5s.
+          </div>
         </TweakSection>
 
         <TweakSection label="Aesthetic">
