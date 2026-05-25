@@ -8,7 +8,7 @@ dependencies:
 id: card_node
 label: 'Card node'
 type: 'canonical_entities:node'
-pattern: '/cards/[node:field_set:entity:field_set_code]/[node:field_collector_number]'
+pattern: '/cards/[node:field_set:entity:title]/[node:title]-[node:field_collector_number]'
 selection_criteria:
   node_type:
     id: 'entity_bundle:node'
@@ -20,4 +20,3 @@ selection_criteria:
 selection_logic: and
 weight: -10
 relationships: {  }
-
