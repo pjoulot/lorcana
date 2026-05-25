@@ -25,6 +25,7 @@
         "drupal/jquery_ui": "^1.8",
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
+        "drupal/layout_builder_at": "^3.0",
         "drupal/metatag": "^2",
         "drupal/pathauto": "^1.15",
         "drupal/search_api": "^1.40",
