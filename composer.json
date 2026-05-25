@@ -24,8 +24,10 @@
         "drupal/jquery_ui": "^1.8",
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
+        "drupal/metatag": "^2",
         "drupal/pathauto": "^1.15",
         "drupal/search_api": "^1.40",
+        "drupal/simple_sitemap": "^4",
         "drush/drush": "^13"
     },
     "require-dev": {
