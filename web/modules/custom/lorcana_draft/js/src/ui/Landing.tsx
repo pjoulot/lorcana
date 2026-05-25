@@ -1,18 +1,47 @@
-// Draft landing — ported from draft-flow.jsx (DraftLandingDesktop), adapted
-// for the phase-3a solo dry run: the primary CTA starts a solo draft, and the
-// multiplayer "enter a code" card is shown as coming soon.
+// Draft landing — ported from draft-flow.jsx (DraftLandingDesktop). Now that
+// rooms exist (3b), the two cards are live: create a multiplayer room, or
+// join one by code. A solo dry run stays available as a secondary link.
+import { useEffect, useState } from 'react';
+import { joinRoom } from '../api/room';
 import { useDraft } from '../state/store';
 import { Sparkle, Link } from './icons';
 
 const STEPS = [
-  { n: 1, t: 'Pick a set', d: 'Choose a draftable set and how many packs to open.' },
-  { n: 2, t: 'Open & pick', d: 'Packs of 12 open one by one. Take one card, set the rest aside — across four packs, ~48 cards land in your pool.' },
+  { n: 1, t: 'Open a room', d: 'The host picks a set and player count, and a code appears. Share it.' },
+  { n: 2, t: 'Open & pick', d: 'Packs of 12 open in sync. Take one card, pass the rest — across four packs, ~48 cards land in your pool.' },
   { n: 3, t: 'Play in person', d: 'Export your pool as CSV or a shareable link, then sit down with the physical cards.' },
 ];
 
 export function Landing() {
   const { state, dispatch } = useDraft();
   const hasSets = state.sets.length > 0;
+  const [code, setCode] = useState('');
+  const [joining, setJoining] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Honour a shared #join=CODE link by pre-filling the code.
+  useEffect(() => {
+    const m = window.location.hash.match(/join=([A-Za-z]+)/);
+    if (m) {
+      setCode(m[1].toUpperCase());
+    }
+  }, []);
+
+  async function join() {
+    const trimmed = code.trim().toUpperCase();
+    if (trimmed.length < 4) {
+      return;
+    }
+    setJoining(true);
+    setError(null);
+    try {
+      const result = await joinRoom(trimmed, '');
+      dispatch({ type: 'roomJoined', result });
+    } catch {
+      setError("That code didn't match an open room.");
+      setJoining(false);
+    }
+  }
 
   return (
     <div className="if-draft-wrap">
@@ -23,49 +52,46 @@ export function Landing() {
         </div>
         <h1 className="serif if-draft-h1">A booster draft, run from the couch.</h1>
         <p className="if-draft-lede">
-          Open simulated packs and build a pool, then bring the physical cards to the table.
-          Solo dry run today — drafting with friends is coming soon.
+          Open simulated packs with friends — we handle the picking. You bring the physical cards to the
+          table afterwards.
         </p>
       </header>
 
       <div className="if-draft-cards">
-        {/* Primary: start a solo draft */}
         <div className="if-draft-card if-draft-card--accent">
           <div className="if-draft-card-kicker">
             <Sparkle size={18} style={{ color: 'var(--accent)' }} />
-            <span>Solo dry run</span>
+            <span>Host a draft</span>
           </div>
-          <h2 className="serif if-draft-card-title">Start a draft</h2>
+          <h2 className="serif if-draft-card-title">Create a room</h2>
           <p className="if-draft-card-body">
-            Open four packs and draft a full pool on your own — no account, nothing saved.
+            Pick a set, set a player count, and share a 6-letter code with your group.
           </p>
           <button
             className="if-btn if-btn--accent if-draft-card-cta"
             disabled={!hasSets}
-            onClick={() => dispatch({ type: 'goto', screen: 'create' })}
+            onClick={() => dispatch({ type: 'goto', screen: 'createRoom' })}
           >
-            {hasSets ? 'Start a draft →' : 'No draftable sets yet'}
+            {hasSets ? 'Create a room →' : 'No draftable sets yet'}
           </button>
         </div>
 
-        {/* Secondary: multiplayer, coming soon */}
         <div className="if-draft-card if-draft-card--muted">
           <div className="if-draft-card-kicker">
             <Link size={16} style={{ color: 'var(--ink-3)' }} />
-            <span>With friends</span>
-            <span className="if-draft-soon">Soon</span>
+            <span>Joining one?</span>
           </div>
           <h2 className="serif if-draft-card-title">Enter a code</h2>
-          <p className="if-draft-card-body">
-            Room codes arrive with multiplayer drafting. For now, draft solo and export your pool.
-          </p>
+          <p className="if-draft-card-body">Ask the host for the 6-letter room code (it'll look like “WHRTNK”).</p>
           <div style={{ display: 'flex', gap: 10 }}>
             <input
+              value={code}
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
+              onKeyDown={(e) => e.key === 'Enter' && join()}
               placeholder="ABCDEF"
               maxLength={6}
               className="mono"
-              disabled
-              aria-label="Room code (coming soon)"
+              aria-label="Room code"
               style={{
                 flex: 1,
                 padding: '14px 18px',
@@ -77,15 +103,26 @@ export function Landing() {
                 border: '1px solid var(--line-strong)',
                 borderRadius: 12,
                 background: 'var(--surface)',
-                color: 'var(--ink-4)',
+                color: 'var(--ink)',
                 outline: 0,
               }}
             />
-            <button className="if-btn" disabled style={{ fontSize: 14, padding: '12px 20px' }}>
-              Join
+            <button className="if-btn if-btn--primary" onClick={join} disabled={joining || code.trim().length < 4} style={{ fontSize: 14, padding: '12px 20px' }}>
+              {joining ? '…' : 'Join →'}
             </button>
           </div>
+          {error && <div style={{ marginTop: 10, fontSize: 12.5, color: 'var(--ink-ruby)' }}>{error}</div>}
         </div>
+      </div>
+
+      <div style={{ marginTop: 18, fontSize: 13, color: 'var(--ink-3)' }}>
+        Just practising?{' '}
+        <button
+          onClick={() => dispatch({ type: 'goto', screen: 'create' })}
+          style={{ background: 'none', border: 0, padding: 0, cursor: 'pointer', color: 'var(--accent)', fontWeight: 600, fontSize: 13 }}
+        >
+          Start a solo draft →
+        </button>
       </div>
 
       <section className="if-draft-section">

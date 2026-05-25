@@ -13,3 +13,35 @@ lorcana_draft.solo:
   methods: [POST]
   requirements:
     _access: 'TRUE'
+
+lorcana_draft.room_create:
+  path: '/api/draft/room'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\RoomController::createRoom'
+  methods: [POST]
+  requirements:
+    _access: 'TRUE'
+
+lorcana_draft.room_join:
+  path: '/api/draft/room/{code}/join'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\RoomController::joinRoom'
+  methods: [POST]
+  requirements:
+    _access: 'TRUE'
+
+lorcana_draft.room_get:
+  path: '/api/draft/room/{code}'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\RoomController::getRoom'
+  methods: [GET]
+  requirements:
+    _access: 'TRUE'
+
+lorcana_draft.room_start:
+  path: '/api/draft/room/{code}/start'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\RoomController::startRoom'
+  methods: [POST]
+  requirements:
+    _access: 'TRUE'

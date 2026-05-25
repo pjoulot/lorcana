@@ -1,8 +1,9 @@
 import { createContext, useContext, useReducer, type Dispatch } from 'react';
-import type { CardData, SetInfo, SoloResponse } from '../types';
+import type { CardData, PublicRoom, SetInfo, SoloResponse } from '../types';
 import { decodeSharedPool } from '../lib/export';
+import type { RoomCredentials } from '../api/room';
 
-export type Screen = 'landing' | 'create' | 'active' | 'end';
+export type Screen = 'landing' | 'create' | 'createRoom' | 'lobby' | 'active' | 'end';
 
 export interface DraftState {
   screen: Screen;
@@ -18,6 +19,12 @@ export interface DraftState {
   current: CardData[];
   selected: number | null;
   pool: CardData[];
+  // Room (multiplayer) — null in solo mode.
+  mode: 'solo' | 'room';
+  room: PublicRoom | null;
+  playerId: string | null;
+  token: string | null;
+  isHost: boolean;
 }
 
 export type DraftAction =
@@ -27,6 +34,9 @@ export type DraftAction =
   | { type: 'startError'; message: string }
   | { type: 'select'; index: number | null }
   | { type: 'pick' }
+  | { type: 'roomCreated'; result: RoomCredentials & { code: string } }
+  | { type: 'roomJoined'; result: RoomCredentials }
+  | { type: 'roomUpdated'; room: PublicRoom }
   | { type: 'reset' };
 
 export function initialState(sets: SetInfo[], endpoint: string): DraftState {
@@ -43,6 +53,11 @@ export function initialState(sets: SetInfo[], endpoint: string): DraftState {
     current: [],
     selected: null,
     pool: [],
+    mode: 'solo',
+    room: null,
+    playerId: null,
+    token: null,
+    isHost: false,
   };
 }
 
@@ -102,6 +117,31 @@ export function reducer(state: DraftState, action: DraftAction): DraftState {
       }
       return { ...state, pool, current: [], selected: null, screen: 'end' };
     }
+
+    case 'roomCreated':
+      return {
+        ...state,
+        mode: 'room',
+        screen: 'lobby',
+        room: action.result.room,
+        playerId: action.result.playerId,
+        token: action.result.token,
+        isHost: true,
+      };
+
+    case 'roomJoined':
+      return {
+        ...state,
+        mode: 'room',
+        screen: 'lobby',
+        room: action.result.room,
+        playerId: action.result.playerId,
+        token: action.result.token,
+        isHost: false,
+      };
+
+    case 'roomUpdated':
+      return { ...state, room: action.room };
 
     case 'reset':
       return initialState(state.sets, state.endpoint);

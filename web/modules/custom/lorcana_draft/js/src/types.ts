@@ -32,6 +32,25 @@ export interface SoloResponse {
   packs: CardData[][];
 }
 
+/** A player in a room's public roster. */
+export interface RoomPlayer {
+  id: string;
+  pseudonym: string;
+  host: boolean;
+}
+
+/** Token-free room state shared with clients. */
+export interface PublicRoom {
+  code: string;
+  set: string;
+  packs: number;
+  playerCount: number;
+  state: 'lobby' | 'active' | 'done';
+  locked: boolean;
+  hostId: string;
+  players: RoomPlayer[];
+}
+
 /** drupalSettings.lorcanaDraft. */
 export interface DraftSettings {
   sets: SetInfo[];

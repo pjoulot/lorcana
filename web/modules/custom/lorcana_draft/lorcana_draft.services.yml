@@ -5,3 +5,11 @@ services:
   lorcana_draft.pack_generator:
     class: Drupal\lorcana_draft\Service\PackGenerator
     arguments: ['@lorcana_cards.pack_pool', '@lorcana_draft.pack_sampler']
+
+  lorcana_draft.room_store:
+    class: Drupal\lorcana_draft\Room\RoomStore
+    arguments: ['@keyvalue.expirable']
+
+  lorcana_draft.room_manager:
+    class: Drupal\lorcana_draft\Room\RoomManager
+    arguments: ['@lorcana_draft.room_store']

@@ -685,3 +685,57 @@ body.path-draft .block-page-title-block {
     gap: 10px;
   }
 }
+
+/* ── Lobby ─────────────────────────────────────────────── */
+.if-lobby-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+}
+.if-lobby-seat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper-2);
+  min-height: 120px;
+  justify-content: center;
+}
+.if-lobby-seat--empty {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--line-strong);
+  color: var(--ink-3);
+}
+.if-lobby-seat__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.if-lobby-seat__waiting {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.if-lobby-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.if-lobby-badge--you {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.if-lobby-badge--host {
+  background: var(--ink);
+  color: var(--paper);
+}
