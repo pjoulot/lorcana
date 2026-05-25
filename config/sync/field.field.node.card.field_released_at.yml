@@ -1,0 +1,23 @@
+uuid: 14353f1a-0713-464c-82d8-f74c9439b11d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_released_at
+    - node.type.card
+  module:
+    - datetime
+_core:
+  default_config_hash: '-q9BIz2Bh8r6D-nlFyPb6oKm8t8km8A3CPkRYnig5-s'
+id: node.card.field_released_at
+field_name: field_released_at
+entity_type: node
+bundle: card
+label: 'Released at'
+description: 'Denormalized from the parent set for sort/filter performance.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

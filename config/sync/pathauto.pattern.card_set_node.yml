@@ -1,0 +1,23 @@
+uuid: a57c7737-d339-411b-b633-729c395669a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.card_set
+  module:
+    - node
+id: card_set_node
+label: 'Card set node'
+type: 'canonical_entities:node'
+pattern: '/sets/[node:field_set_code]'
+selection_criteria:
+  node_type:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      card_set: card_set
+selection_logic: and
+weight: -9
+relationships: {  }

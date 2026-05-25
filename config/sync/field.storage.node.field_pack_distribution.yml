@@ -1,0 +1,21 @@
+uuid: 3d4b8e46-d9cb-48e9-85f3-4bacf8c980ac
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: BmXE_LiYWG6gOV_ho3zSEkLIJg1IKFN9Lc0Ved467LM
+id: node.field_pack_distribution
+field_name: field_pack_distribution
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: true
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

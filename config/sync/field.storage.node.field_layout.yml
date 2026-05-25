@@ -1,0 +1,29 @@
+uuid: a5c09944-fc9b-413a-9aa6-167bf73eea3d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+_core:
+  default_config_hash: 60ozaGgutZ3lcZb5q9Bd_Zo_FR3X-6SKBPrl1mKTgrg
+id: node.field_layout
+field_name: field_layout
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: normal
+      label: Normal
+    -
+      value: landscape
+      label: Landscape
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,11 @@
+uuid: c9eb6e2c-52e0-4128-b48f-b37bb9728e2c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: jG9JH-__mMVrcpE_5Ugh9EY28y1oSSuWcpJwNWMUJUU
+name: 'Ink color'
+vid: ink_color
+description: 'The six inks of Lorcana (Amber, Amethyst, Emerald, Ruby, Sapphire, Steel). Cards without an ink are not assigned a term.'
+weight: 0
+new_revision: false

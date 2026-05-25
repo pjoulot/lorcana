@@ -1,0 +1,25 @@
+uuid: e74bb50d-f495-4859-88a5-a8fe44050fbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tcgplayer_id
+    - node.type.card
+_core:
+  default_config_hash: 24EeHKNipyFOqEitrs1VmBv9oSrzjKi-IzF4axt02no
+id: node.card.field_tcgplayer_id
+field_name: field_tcgplayer_id
+entity_type: node
+bundle: card
+label: 'TCGPlayer ID'
+description: 'For deep-linking to a price page on TCGPlayer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

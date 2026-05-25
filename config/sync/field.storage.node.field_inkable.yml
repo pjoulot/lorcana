@@ -1,0 +1,20 @@
+uuid: 24ed2952-6e5e-47d0-a1aa-392234aeffdd
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: yQHer_kO6L8NKSu0tXLWrcnZIlxYxlwA1ss2FZPvr64
+id: node.field_inkable
+field_name: field_inkable
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

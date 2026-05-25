@@ -1,0 +1,21 @@
+uuid: 83d76d42-2b1e-4060-92cd-ce4dd6d7917c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_flavor_text
+    - node.type.card
+_core:
+  default_config_hash: n3Nj_ypq0spQaWPcxrUc9Hp0hXGq5KiVPVEExQWMosQ
+id: node.card.field_flavor_text
+field_name: field_flavor_text
+entity_type: node
+bundle: card
+label: 'Flavor text'
+description: 'Italicized flavor below the rules box.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

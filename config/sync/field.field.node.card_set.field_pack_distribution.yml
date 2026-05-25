@@ -1,0 +1,21 @@
+uuid: 818ec245-3a86-4742-8701-862c4e6c2f39
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pack_distribution
+    - node.type.card_set
+_core:
+  default_config_hash: LqND4ojV-ioIyUs3rTyuOMMwOKdLly8xdJ1qseh3dDM
+id: node.card_set.field_pack_distribution
+field_name: field_pack_distribution
+entity_type: node
+bundle: card_set
+label: 'Pack distribution'
+description: 'Booster-pack composition for the draft simulator. JSON-encoded structure: pack_size + slots[] (count, rarities, weights, foil flag). See spec 2 for the schema.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

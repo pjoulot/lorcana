@@ -1,0 +1,25 @@
+uuid: d50fac63-76ef-40ca-90ff-c1fa383e0d76
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cost
+    - node.type.card
+_core:
+  default_config_hash: MjjsGV5OOOl8Mbw4oxz9w2h-87L0PEx5LVp8Hhr_UlU
+id: node.card.field_cost
+field_name: field_cost
+entity_type: node
+bundle: card
+label: Cost
+description: 'Ink cost to play. Range 0–10+.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

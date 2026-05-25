@@ -1,0 +1,4 @@
+processor_configs:
+  reset_facets:
+    settings:
+      link_text: 'Tout effacer'

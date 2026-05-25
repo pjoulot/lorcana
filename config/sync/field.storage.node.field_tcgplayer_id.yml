@@ -1,0 +1,22 @@
+uuid: a0a533be-81c6-4309-88ec-64ab90aeb2b9
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: aHB-YZQ2EsgCFGLdF-ppexLx7f4e4DQ64hma36paUXw
+id: node.field_tcgplayer_id
+field_name: field_tcgplayer_id
+entity_type: node
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

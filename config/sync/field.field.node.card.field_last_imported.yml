@@ -1,0 +1,21 @@
+uuid: 28615ceb-45d0-4316-8d98-512e80f20d5c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_last_imported
+    - node.type.card
+_core:
+  default_config_hash: QbNJ3wxTocwc-1HQ1wNZ4R9-INbuYplh_Mk2Q0Sz410
+id: node.card.field_last_imported
+field_name: field_last_imported
+entity_type: node
+bundle: card
+label: 'Last imported'
+description: 'When this row was last touched by an importer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: timestamp

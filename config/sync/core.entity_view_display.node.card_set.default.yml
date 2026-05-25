@@ -1,0 +1,100 @@
+uuid: ca1b7f0e-2776-4db8-ae8a-7c470f043454
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.card_set.field_card_count
+    - field.field.node.card_set.field_description
+    - field.field.node.card_set.field_is_draftable
+    - field.field.node.card_set.field_lorcast_id
+    - field.field.node.card_set.field_pack_distribution
+    - field.field.node.card_set.field_prereleased_at
+    - field.field.node.card_set.field_released_at
+    - field.field.node.card_set.field_set_code
+    - node.type.card_set
+  module:
+    - datetime
+    - text
+    - user
+_core:
+  default_config_hash: 5k5GrT-2FPo_NKp-xdrgU7vMHhlaSjZVRDYb4wS6IXI
+id: node.card_set.default
+targetEntityType: node
+bundle: card_set
+mode: default
+content:
+  field_card_count:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: -3
+    region: content
+  field_is_draftable:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_lorcast_id:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_pack_distribution:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_prereleased_at:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_released_at:
+    type: datetime_default
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_set_code:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

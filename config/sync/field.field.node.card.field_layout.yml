@@ -1,0 +1,25 @@
+uuid: 86420df3-3522-4298-aa6f-10c66208ae33
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_layout
+    - node.type.card
+  module:
+    - options
+_core:
+  default_config_hash: 1sUMEU_7fgt672j72ogL5D8LY4FacciVkdZ9TVB23zA
+id: node.card.field_layout
+field_name: field_layout
+entity_type: node
+bundle: card
+label: Layout
+description: 'normal for most cards; landscape for Locations.'
+required: true
+translatable: false
+default_value:
+  -
+    value: normal
+default_value_callback: ''
+settings: {  }
+field_type: list_string

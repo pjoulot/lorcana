@@ -1,0 +1,62 @@
+uuid: 2692e116-a302-4a6d-8cca-8adaf0843999
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.keyword_ability.field_machine_name
+    - field.field.taxonomy_term.keyword_ability.field_parameter_kind
+    - field.field.taxonomy_term.keyword_ability.field_parameterized
+    - field.field.taxonomy_term.keyword_ability.field_reminder_text
+    - taxonomy.vocabulary.keyword_ability
+  module:
+    - options
+    - text
+_core:
+  default_config_hash: CDBZQ5oi4nktViSonG1DI02QfMMewUeto-3Dn5IM9ks
+id: taxonomy_term.keyword_ability.default
+targetEntityType: taxonomy_term
+bundle: keyword_ability
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_machine_name:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_parameter_kind:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_parameterized:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_reminder_text:
+    type: basic_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,21 @@
+uuid: ef4cfbf9-2544-418c-b7c4-94f8fec5c891
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image_source
+    - node.type.card
+_core:
+  default_config_hash: iIoE1xbCxyJpPAgfuFyj65BkFgsozzxubXO_gAo-f0s
+id: node.card.field_image_source
+field_name: field_image_source
+entity_type: node
+bundle: card
+label: 'Image source'
+description: 'Which image importer last wrote these images (e.g., lorcast, manual).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

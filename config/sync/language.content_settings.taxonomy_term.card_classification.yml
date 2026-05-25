@@ -1,0 +1,16 @@
+uuid: 464101fa-f76e-4dd8-b651-dd64c0d90b6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.card_classification
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.card_classification
+target_entity_type_id: taxonomy_term
+target_bundle: card_classification
+default_langcode: site_default
+language_alterable: false

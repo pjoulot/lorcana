@@ -1,0 +1,28 @@
+uuid: 03e66790-3639-428c-80e0-29205e534f63
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets_summary.facets_summary.cards
+  module:
+    - facets_summary
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_summary
+theme: inkfolk
+region: content_top
+weight: 0
+provider: null
+plugin: 'facets_summary_block:cards'
+settings:
+  id: 'facets_summary_block:cards'
+  label: 'Active filters'
+  label_display: '0'
+  provider: facets_summary
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

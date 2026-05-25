@@ -1,0 +1,31 @@
+uuid: c3bcd385-31f8-4bf3-8181-8bca3460e6e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_set
+    - node.type.card
+    - node.type.card_set
+_core:
+  default_config_hash: LduDaWehrBifqeLfaoUVmra3spkD_CBWJX9MtZEA0YM
+id: node.card.field_set
+field_name: field_set
+entity_type: node
+bundle: card
+label: Set
+description: 'The card_set this card belongs to.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      card_set: card_set
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

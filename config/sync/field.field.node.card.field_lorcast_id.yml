@@ -1,0 +1,21 @@
+uuid: 1afd82d5-d03e-40c2-b2b7-7103e7f235fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lorcast_id
+    - node.type.card
+_core:
+  default_config_hash: hwbLrFzD7VrR0Wneik2Paw7bW_HVjkPrHhS0E0bkfSA
+id: node.card.field_lorcast_id
+field_name: field_lorcast_id
+entity_type: node
+bundle: card
+label: 'Lorcast ID'
+description: "Lorcast's identifier for this (printing, language) record."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

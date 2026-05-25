@@ -1,0 +1,28 @@
+uuid: 9ae64173-5b30-4c42-837d-883314e0c710
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.rarity
+  module:
+    - facets
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_rarity
+theme: inkfolk
+region: sidebar_first
+weight: 2
+provider: null
+plugin: 'facet_block:rarity'
+settings:
+  id: 'facet_block:rarity'
+  label: Rarity
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

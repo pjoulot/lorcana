@@ -1,0 +1,22 @@
+uuid: c994607c-1c51-401d-911b-54a326aca985
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: VIc90J8hDSGevxf-47dc0w4Dg_mfkfC_sDmBJdnTrrw
+id: node.field_move_cost
+field_name: field_move_cost
+entity_type: node
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

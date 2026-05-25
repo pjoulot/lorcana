@@ -1,0 +1,29 @@
+uuid: ab641675-699c-4454-971a-f6bdc1d1c4e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_character
+    - node.type.card
+    - taxonomy.vocabulary.disney_character
+id: node.card.field_character
+field_name: field_character
+entity_type: node
+bundle: card
+label: Character
+description: 'The Disney character depicted. Auto-populated from card name for Character-type cards.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      disney_character: disney_character
+    sort:
+      field: name
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: disney_character
+field_type: entity_reference

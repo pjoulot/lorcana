@@ -1,0 +1,8 @@
+uuid: ec2ea076-0c35-4af3-9ee9-483e912557b9
+langcode: en
+status: true
+dependencies: {  }
+id: masthead
+label: Masthead
+revision: false
+description: 'Inkfolk editorial — Masthead.'

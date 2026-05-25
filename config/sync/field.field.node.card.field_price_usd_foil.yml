@@ -1,0 +1,25 @@
+uuid: 925c38cc-1caa-453f-8ef3-ae4a3a7bd0f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_price_usd_foil
+    - node.type.card
+_core:
+  default_config_hash: Jfs-Jh6ecNhxP8B0cOzfvaKBv4_TCiNKibWP1nSyc9s
+id: node.card.field_price_usd_foil
+field_name: field_price_usd_foil
+entity_type: node
+bundle: card
+label: 'Foil price (USD)'
+description: 'Foil-variant market price from last import.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: '0'
+  max: ''
+  prefix: $
+  suffix: ''
+field_type: decimal

@@ -1,0 +1,101 @@
+uuid: 22c10ed1-8a26-4c96-acf5-5cb7f82a2c97
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - node.type.card_set
+  module:
+    - datetime
+    - node
+    - user
+id: sets
+label: Sets
+module: views
+description: 'Listing of card_set nodes at /sets; each tile links to the canonical set page.'
+tag: lorcana
+base_table: node_field_data
+base_field: nid
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Sets
+      pager:
+        type: none
+        options:
+          offset: 0
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+      empty: {  }
+      sorts:
+        field_released_at_value:
+          id: field_released_at_value
+          table: node__field_released_at
+          field: field_released_at_value
+          relationship: none
+          plugin_id: date
+          order: DESC
+      filters:
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          plugin_id: bundle
+          value:
+            card_set: card_set
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+      style:
+        type: default
+        options:
+          row_class: if-sets__cell
+          default_row_class: false
+      row:
+        type: 'entity:node'
+        options:
+          view_mode: teaser
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: sets
+      menu:
+        type: none
+        title: ''
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }

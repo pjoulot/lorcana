@@ -1,0 +1,11 @@
+uuid: 112df66a-e8ca-4a82-857c-acb569e28e63
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: G3e-gcz4UR7xKI9JTvYWKIkOPA30N8AHJI-gRSAev1k
+name: 'Keyword ability'
+vid: keyword_ability
+description: 'Game keywords: Bodyguard, Challenger, Evasive, Resist, Shift, Singer, Support, Ward, Rush, etc. Per-term custom fields hold the machine name, parameter kind, and reminder text.'
+weight: 2
+new_revision: false

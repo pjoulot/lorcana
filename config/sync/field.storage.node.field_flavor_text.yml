@@ -1,0 +1,21 @@
+uuid: fcb06219-0778-441d-92e1-f70d36a6ce34
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: gxcQOmdU9XZh2dbzmFmvk2BORX5mpPUAIJ37Mr52C0E
+id: node.field_flavor_text
+field_name: field_flavor_text
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,22 @@
+uuid: 3f1b3f6a-4b69-468c-91f8-ed8edaa8c688
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: xuRHfTVeoapJK_HGK6PLwmKzvxNSTAYQkUNWCUbuPJI
+id: node.field_willpower
+field_name: field_willpower
+entity_type: node
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

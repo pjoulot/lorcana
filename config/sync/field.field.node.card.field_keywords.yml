@@ -1,0 +1,31 @@
+uuid: 969f5279-1300-499e-a37b-73a4f15dd8d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_keywords
+    - node.type.card
+    - taxonomy.vocabulary.keyword_ability
+_core:
+  default_config_hash: d3MHfARiJJcbsOqkvDDZHduw25xlLA7z1Bf26_tBV0o
+id: node.card.field_keywords
+field_name: field_keywords
+entity_type: node
+bundle: card
+label: Keywords
+description: "Keyword references parsed from the card's rules text. v1 stores the keyword references only; parameter values (Challenger +X) will move into a custom field type in a follow-up."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      keyword_ability: keyword_ability
+    sort:
+      field: name
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

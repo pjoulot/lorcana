@@ -1,0 +1,53 @@
+uuid: 9b4e305d-7598-4472-be4d-c3a4e1885177
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+_core:
+  default_config_hash: zgJ1zqKBNSYLnw2or4oqGvHMysoOAF3jAycG1d-30dk
+id: node.field_rarity
+field_name: field_rarity
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: common
+      label: Common
+    -
+      value: uncommon
+      label: Uncommon
+    -
+      value: rare
+      label: Rare
+    -
+      value: super_rare
+      label: 'Super rare'
+    -
+      value: legendary
+      label: Legendary
+    -
+      value: enchanted
+      label: Enchanted
+    -
+      value: promo
+      label: Promo
+    -
+      value: special
+      label: Special
+    -
+      value: epic
+      label: Epic
+    -
+      value: iconic
+      label: Iconic
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

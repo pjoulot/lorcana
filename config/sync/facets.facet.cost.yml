@@ -1,0 +1,60 @@
+uuid: d0a4ee06-16f4-4dce-998b-40fb6950a4de
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.cards
+    - views.view.cards
+  module:
+    - search_api
+id: cost
+name: Cost
+weight: 3
+min_count: 1
+missing: false
+missing_label: others
+url_alias: cost
+facet_source_id: 'search_api:views_page__cards__page_1'
+field_identifier: cost
+query_operator: or
+hard_limit: null
+exclude: false
+use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+widget:
+  type: range_slider
+  config:
+    show_numbers: false
+    prefix: ''
+    suffix: ''
+    min_type: computed
+    min_value: 0.0
+    max_type: computed
+    max_value: 10.0
+    step: 1.0
+    animate: fast
+    range: true
+empty_behavior:
+  behavior: none
+only_visible_when_facet_source_is_visible: null
+show_only_one_result: true
+show_title: null
+processor_configs:
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -10
+    settings: {  }
+  range_slider:
+    processor_id: range_slider
+    weights:
+      pre_query: 60
+      post_query: 60
+      build: 20
+    settings: {  }

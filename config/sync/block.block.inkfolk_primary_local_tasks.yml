@@ -1,0 +1,22 @@
+uuid: 87318766-702c-4a92-8a65-9dd612a2862c
+langcode: en
+status: true
+dependencies:
+  theme:
+    - inkfolk
+_core:
+  default_config_hash: nGE3EoPQQaQCuqTUtZgw0-KIzmrqdKDzdNQf2JyPUt4
+id: inkfolk_primary_local_tasks
+theme: inkfolk
+region: highlighted
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: false
+visibility: {  }

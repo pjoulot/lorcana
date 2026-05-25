@@ -1,0 +1,20 @@
+uuid: e4d8bc1d-a31c-43ba-934d-df01ca59a798
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: Bc_PLQEfzCHMg99Xig8rJAMNJwQ5PC7lA9suvXeqd3E
+id: node.field_is_draftable
+field_name: field_is_draftable
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

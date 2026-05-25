@@ -1,0 +1,21 @@
+uuid: 25734837-ed22-4889-b5ff-35b72677f765
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.rich_text
+    - field.storage.block_content.field_icon
+  module:
+    - options
+id: block_content.rich_text.field_icon
+field_name: field_icon
+entity_type: block_content
+bundle: rich_text
+label: Icon
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

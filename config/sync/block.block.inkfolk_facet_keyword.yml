@@ -1,0 +1,28 @@
+uuid: 9e727f7d-db0a-40e0-aac8-811577acc615
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.keyword
+  module:
+    - facets
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_keyword
+theme: inkfolk
+region: sidebar_first
+weight: 4
+provider: null
+plugin: 'facet_block:keyword'
+settings:
+  id: 'facet_block:keyword'
+  label: Keyword
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

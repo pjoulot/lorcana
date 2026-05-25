@@ -1,0 +1,21 @@
+uuid: f0713d57-7264-48f1-b8a2-ac0b166aea1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_collector_number
+    - node.type.card
+_core:
+  default_config_hash: OXfkFC1qc6dhxJqEdbLVdYSGD7m0egHYd3aW3aICnYI
+id: node.card.field_collector_number
+field_name: field_collector_number
+entity_type: node
+bundle: card
+label: 'Collector number'
+description: 'Collector number within the set. String to accommodate suffixes (e.g., "207a").'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

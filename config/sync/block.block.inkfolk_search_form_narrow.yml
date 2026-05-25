@@ -1,0 +1,23 @@
+uuid: b0705061-b2e1-47f6-861c-4b34288fd0ae
+langcode: en
+status: true
+dependencies:
+  module:
+    - search
+  theme:
+    - inkfolk
+_core:
+  default_config_hash: _nZjxxdypO6xrOAJkCYD81v0L7wh2zbCAVO7_C-UKIc
+id: inkfolk_search_form_narrow
+theme: inkfolk
+region: primary_menu
+weight: -4
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form (narrow)'
+  label_display: '0'
+  provider: search
+  page_id: null
+visibility: {  }

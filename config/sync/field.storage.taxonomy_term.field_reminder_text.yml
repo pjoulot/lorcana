@@ -1,0 +1,21 @@
+uuid: 8700126a-0916-41a5-8924-cbc5e90d31d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+_core:
+  default_config_hash: 23pTjtLAwpR67c4nudEl2K_GAdYLVTFvm5gHzi84anA
+id: taxonomy_term.field_reminder_text
+field_name: field_reminder_text
+entity_type: taxonomy_term
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

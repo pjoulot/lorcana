@@ -1,0 +1,22 @@
+uuid: 044429c9-1d70-49a7-a398-c69c98104c3b
+langcode: en
+status: false
+dependencies:
+  module:
+    - help
+  theme:
+    - inkfolk
+_core:
+  default_config_hash: VfPFqqxfkomud5CO8DUijw85QIl9GIxh_nIxLOYESxg
+id: inkfolk_help
+theme: inkfolk
+region: sidebar_first
+weight: 0
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  label_display: '0'
+  provider: help
+visibility: {  }

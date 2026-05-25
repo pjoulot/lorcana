@@ -1,0 +1,13 @@
+uuid: 44c73cf5-19f5-4015-a0aa-d769d508a151
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: CyGd-LiW-AMRMvFo0FtGorVUO22m3GBI2NXlDjPhCAw
+name: Card
+type: card
+description: 'One Lorcana card printing in one language. Identified by (set_code, collector_number, langcode). Sibling-language nodes share the natural key.'
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false

@@ -1,0 +1,30 @@
+settings:
+  allowed_values:
+    -
+      value: common
+      label: Commune
+    -
+      value: uncommon
+      label: Inhabituelle
+    -
+      value: rare
+    -
+      value: super_rare
+      label: 'Très rare'
+    -
+      value: legendary
+      label: Légendaire
+    -
+      value: enchanted
+      label: Enchantée
+    -
+      value: promo
+    -
+      value: special
+      label: Spécial
+    -
+      value: epic
+      label: Épique
+    -
+      value: iconic
+      label: Iconique

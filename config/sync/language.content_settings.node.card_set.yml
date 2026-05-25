@@ -1,0 +1,16 @@
+uuid: 2ce8d065-e77f-4881-a3f8-e71bf9cdfc94
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.card_set
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: node.card_set
+target_entity_type_id: node
+target_bundle: card_set
+default_langcode: site_default
+language_alterable: false

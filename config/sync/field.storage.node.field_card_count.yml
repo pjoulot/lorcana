@@ -1,0 +1,22 @@
+uuid: d8496889-6d63-43eb-ac62-d47ae10795e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: OiGtbUIJcBVkX2hUCILSPNOw3trQbPYdTPKJI5k9AL8
+id: node.field_card_count
+field_name: field_card_count
+entity_type: node
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

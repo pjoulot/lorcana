@@ -1,0 +1,38 @@
+uuid: 4f708162-61a3-447b-9181-bb5fb4fe9ff4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+_core:
+  default_config_hash: kBGmmHPYjqOTVtonsbtC8bD_-zqr7qMjjpafJOebLXQ
+id: node.field_card_types
+field_name: field_card_types
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: character
+      label: Character
+    -
+      value: action
+      label: Action
+    -
+      value: item
+      label: Item
+    -
+      value: location
+      label: Location
+    -
+      value: song
+      label: Song
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

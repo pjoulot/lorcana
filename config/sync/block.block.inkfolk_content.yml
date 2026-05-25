@@ -1,0 +1,22 @@
+uuid: 43a46e11-3f84-41e2-b5a8-caa01af42563
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - inkfolk
+_core:
+  default_config_hash: erQSEZF2XUjNmgTl0uNRBzmg18ZGXwUcw2FhApoeuHk
+id: inkfolk_content
+theme: inkfolk
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

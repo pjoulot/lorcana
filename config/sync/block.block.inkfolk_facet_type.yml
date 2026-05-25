@@ -1,0 +1,28 @@
+uuid: d021f91f-1869-4839-bd03-1e9de06d8036
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.type
+  module:
+    - facets
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_type
+theme: inkfolk
+region: sidebar_first
+weight: 1
+provider: null
+plugin: 'facet_block:type'
+settings:
+  id: 'facet_block:type'
+  label: Type
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

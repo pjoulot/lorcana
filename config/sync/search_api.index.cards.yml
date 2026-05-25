@@ -1,0 +1,206 @@
+uuid: 3ca77375-b37a-4c55-88d8-56718ac676e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_card_types
+    - field.storage.node.field_character
+    - field.storage.node.field_classifications
+    - field.storage.node.field_collector_number
+    - field.storage.node.field_cost
+    - field.storage.node.field_franchise
+    - field.storage.node.field_ink
+    - field.storage.node.field_keywords
+    - field.storage.node.field_lore
+    - field.storage.node.field_rarity
+    - field.storage.node.field_set
+    - field.storage.node.field_strength
+    - field.storage.node.field_willpower
+    - search_api.server.lorcana
+  module:
+    - node
+id: cards
+name: Cards
+description: 'Encyclopedia index — title fulltext, plus filterable/facetable fields for ink, type, rarity, cost, keywords, set, classifications, franchise, character.'
+read_only: false
+field_settings:
+  card_types:
+    label: 'Card types'
+    datasource_id: 'entity:node'
+    property_path: field_card_types
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_card_types
+  character:
+    label: Character
+    datasource_id: 'entity:node'
+    property_path: field_character
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_character
+  classifications:
+    label: Classifications
+    datasource_id: 'entity:node'
+    property_path: field_classifications
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_classifications
+  collector_number:
+    label: 'Collector number'
+    datasource_id: 'entity:node'
+    property_path: field_collector_number
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_collector_number
+  cost:
+    label: Cost
+    datasource_id: 'entity:node'
+    property_path: field_cost
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_cost
+  franchise:
+    label: Franchise
+    datasource_id: 'entity:node'
+    property_path: field_franchise
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_franchise
+  ink:
+    label: Ink
+    datasource_id: 'entity:node'
+    property_path: field_ink
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_ink
+  keywords:
+    label: Keywords
+    datasource_id: 'entity:node'
+    property_path: field_keywords
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_keywords
+  langcode:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
+  lore:
+    label: Lore
+    datasource_id: 'entity:node'
+    property_path: field_lore
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_lore
+  rarity:
+    label: Rarity
+    datasource_id: 'entity:node'
+    property_path: field_rarity
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_rarity
+  set:
+    label: Set
+    datasource_id: 'entity:node'
+    property_path: field_set
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_set
+  status:
+    label: Published
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    dependencies:
+      module:
+        - node
+  strength:
+    label: Strength
+    datasource_id: 'entity:node'
+    property_path: field_strength
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_strength
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    boost: 5.0
+    dependencies:
+      module:
+        - node
+  willpower:
+    label: Willpower
+    datasource_id: 'entity:node'
+    property_path: field_willpower
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_willpower
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - card
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  custom_value: {  }
+  entity_status: {  }
+  entity_type: {  }
+  html_filter:
+    all_fields: false
+    fields:
+      - title
+    title: true
+    alt: true
+    tags:
+      b: 2.0
+      em: 1.5
+      h1: 5.0
+      h2: 3.0
+      h3: 2.0
+      strong: 2.0
+  ignorecase:
+    all_fields: false
+    fields:
+      - title
+  language_with_fallback: {  }
+  rendered_item: {  }
+  tokenizer:
+    all_fields: false
+    fields:
+      - title
+    spaces: ''
+    ignored: ._-
+    overlap_cjk: 1
+    minimum_word_size: '1'
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 50
+  delete_on_fail: true
+  index_directly: true
+  track_changes_in_references: true
+server: lorcana

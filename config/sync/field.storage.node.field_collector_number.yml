@@ -1,0 +1,25 @@
+uuid: 5c0b887c-44da-4e06-b713-7714eb057f09
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: 0V1R2Tb_eCxrwpSTnIWwzpivr30NG1o_nv_kPxyiAIQ
+id: node.field_collector_number
+field_name: field_collector_number
+entity_type: node
+type: string
+settings:
+  max_length: 16
+  is_ascii: true
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes:
+  value:
+    - value
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,25 @@
+uuid: c188ff3e-2d05-451f-8829-3fbcdaa180a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_price_usd
+    - node.type.card
+_core:
+  default_config_hash: Vym534DPM-RBBA4PHIJAg67zOIIxc3kphOrjct3LVEo
+id: node.card.field_price_usd
+field_name: field_price_usd
+entity_type: node
+bundle: card
+label: 'Price (USD)'
+description: 'Snapshot from last import. Per-language since each printed-language version trades on its own market.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: '0'
+  max: ''
+  prefix: $
+  suffix: ''
+field_type: decimal

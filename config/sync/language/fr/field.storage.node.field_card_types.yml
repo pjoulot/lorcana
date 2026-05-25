@@ -1,0 +1,17 @@
+settings:
+  allowed_values:
+    -
+      value: character
+      label: Personnage
+    -
+      value: action
+      label: Action
+    -
+      value: item
+      label: Objet
+    -
+      value: location
+      label: Lieu
+    -
+      value: song
+      label: Chanson

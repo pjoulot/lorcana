@@ -1,0 +1,32 @@
+uuid: 44426a57-0550-4e8f-bffa-0160f4d1a6cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - taxonomy
+_core:
+  default_config_hash: KyeIAxtTKcCwL41-bvfvgNTrdL9YlO9pH08bVJj7qjs
+id: taxonomy_term.field_parameter_kind
+field_name: field_parameter_kind
+entity_type: taxonomy_term
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: none
+      label: None
+    -
+      value: integer
+      label: Integer
+    -
+      value: card_name
+      label: 'Card name'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

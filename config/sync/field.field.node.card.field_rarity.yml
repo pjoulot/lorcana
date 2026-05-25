@@ -1,0 +1,25 @@
+uuid: 868a181d-2e5b-477e-a809-85f22047c657
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_rarity
+    - node.type.card
+  module:
+    - options
+_core:
+  default_config_hash: Fg_aWPX8PxjWph6dBA5mpgHIO0C9ZwolKNBu34XQ5B8
+id: node.card.field_rarity
+field_name: field_rarity
+entity_type: node
+bundle: card
+label: Rarity
+description: 'common, uncommon, rare, super_rare, legendary, enchanted, promo, special.'
+required: true
+translatable: false
+default_value:
+  -
+    value: common
+default_value_callback: ''
+settings: {  }
+field_type: list_string

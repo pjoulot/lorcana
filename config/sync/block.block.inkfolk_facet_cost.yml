@@ -1,0 +1,28 @@
+uuid: a71c3440-a155-46b0-95b7-1dd81517f4ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.cost
+  module:
+    - facets
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_cost
+theme: inkfolk
+region: sidebar_first
+weight: 3
+provider: null
+plugin: 'facet_block:cost'
+settings:
+  id: 'facet_block:cost'
+  label: Cost
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

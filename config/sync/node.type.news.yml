@@ -1,0 +1,11 @@
+uuid: c4f7b5ee-5bb8-4ae6-ae20-8ea8d1058cc7
+langcode: en
+status: true
+dependencies: {  }
+name: 'News article'
+type: news
+description: 'Editorial article — set spoilers, tournament reports, rules updates, deck guides.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

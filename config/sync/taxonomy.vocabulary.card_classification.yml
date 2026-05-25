@@ -1,0 +1,11 @@
+uuid: d1b52535-7495-4db9-907f-0890b0c5118e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: OnWoBRHIcjtxYIA2MBSh8p8GXDPr7np8U55HiCCOG1o
+name: 'Card classification'
+vid: card_classification
+description: 'Sub-types beyond the primary card type: Hero, Villain, Princess, Floodborn, etc.'
+weight: 1
+new_revision: false

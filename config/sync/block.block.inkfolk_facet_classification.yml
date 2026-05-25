@@ -1,0 +1,28 @@
+uuid: aad5d6d9-8b69-4a48-9ded-d0424e8b64a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.classification
+  module:
+    - facets
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_classification
+theme: inkfolk
+region: sidebar_first
+weight: 6
+provider: null
+plugin: 'facet_block:classification'
+settings:
+  id: 'facet_block:classification'
+  label: Classification
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

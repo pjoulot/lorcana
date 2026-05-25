@@ -1,0 +1,20 @@
+uuid: 56e3e3f7-74e2-4f85-ad4c-400cc641a201
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+_core:
+  default_config_hash: AZP3k1_CBna_yEtyCTNu8MOq5c0GNiil8ANnxYsZRXc
+id: taxonomy_term.field_parameterized
+field_name: field_parameterized
+entity_type: taxonomy_term
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

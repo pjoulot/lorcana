@@ -1,0 +1,96 @@
+uuid: 3ac616ec-971b-4f5f-b8bb-e4d68179be6c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.card.field_card_art
+    - field.field.node.card.field_card_types
+    - field.field.node.card.field_character
+    - field.field.node.card.field_classifications
+    - field.field.node.card.field_collector_number
+    - field.field.node.card.field_cost
+    - field.field.node.card.field_flavor_text
+    - field.field.node.card.field_franchise
+    - field.field.node.card.field_illustrators
+    - field.field.node.card.field_image_source
+    - field.field.node.card.field_import_source
+    - field.field.node.card.field_ink
+    - field.field.node.card.field_inkable
+    - field.field.node.card.field_is_image_manual_override
+    - field.field.node.card.field_is_primary_printing
+    - field.field.node.card.field_keywords
+    - field.field.node.card.field_last_imported
+    - field.field.node.card.field_layout
+    - field.field.node.card.field_legal_core
+    - field.field.node.card.field_lorcast_id
+    - field.field.node.card.field_lore
+    - field.field.node.card.field_move_cost
+    - field.field.node.card.field_price_usd
+    - field.field.node.card.field_price_usd_foil
+    - field.field.node.card.field_printing_group_id
+    - field.field.node.card.field_rarity
+    - field.field.node.card.field_released_at
+    - field.field.node.card.field_set
+    - field.field.node.card.field_strength
+    - field.field.node.card.field_tcgplayer_id
+    - field.field.node.card.field_text
+    - field.field.node.card.field_version
+    - field.field.node.card.field_willpower
+    - image.style.medium
+    - node.type.card
+  module:
+    - media
+    - user
+id: node.card.teaser
+targetEntityType: node
+bundle: card
+mode: teaser
+content:
+  field_card_art:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_card_types: true
+  field_character: true
+  field_classifications: true
+  field_collector_number: true
+  field_cost: true
+  field_flavor_text: true
+  field_franchise: true
+  field_illustrators: true
+  field_image_source: true
+  field_import_source: true
+  field_ink: true
+  field_inkable: true
+  field_is_image_manual_override: true
+  field_is_primary_printing: true
+  field_keywords: true
+  field_last_imported: true
+  field_layout: true
+  field_legal_core: true
+  field_lorcast_id: true
+  field_lore: true
+  field_move_cost: true
+  field_price_usd: true
+  field_price_usd_foil: true
+  field_printing_group_id: true
+  field_rarity: true
+  field_released_at: true
+  field_set: true
+  field_strength: true
+  field_tcgplayer_id: true
+  field_text: true
+  field_version: true
+  field_willpower: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

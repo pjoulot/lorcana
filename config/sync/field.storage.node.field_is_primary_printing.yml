@@ -1,0 +1,20 @@
+uuid: 68e9cc52-9ae3-4d05-aa38-994b769b8c86
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: ZUUmXBfXQ9mSvm6cV2WCapkHiPbWlX9rLZyBBYyjFdg
+id: node.field_is_primary_printing
+field_name: field_is_primary_printing
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

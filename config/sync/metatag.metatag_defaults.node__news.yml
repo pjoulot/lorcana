@@ -1,0 +1,12 @@
+uuid: 2751d2cf-b7d8-45e0-8a6e-665d3cb4ce9a
+langcode: en
+status: true
+dependencies: {  }
+id: node__news
+label: 'News article'
+tags:
+  description: '[node:summary]'
+  og_type: article
+  og_title: '[node:title]'
+  og_description: '[node:summary]'
+  og_image: '[node:field_cover:entity:field_media_image:entity:url]'

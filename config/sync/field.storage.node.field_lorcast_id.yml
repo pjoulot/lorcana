@@ -1,0 +1,25 @@
+uuid: 3d43ada2-0d84-4e6d-a91b-e58d5847f24e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: sW_wvkMdK2P6ExSNSkO8UPUTk-lquW3t00n34hFcU9o
+id: node.field_lorcast_id
+field_name: field_lorcast_id
+entity_type: node
+type: string
+settings:
+  max_length: 64
+  is_ascii: true
+  case_sensitive: true
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes:
+  value:
+    - value
+persist_with_no_fields: false
+custom_storage: false

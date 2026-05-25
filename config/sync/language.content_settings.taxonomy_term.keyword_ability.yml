@@ -1,0 +1,16 @@
+uuid: fff07729-22d1-4770-b8c1-30248612337c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.keyword_ability
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.keyword_ability
+target_entity_type_id: taxonomy_term
+target_bundle: keyword_ability
+default_langcode: site_default
+language_alterable: false

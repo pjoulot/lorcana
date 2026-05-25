@@ -1,0 +1,9 @@
+uuid: 079de493-1ed4-4020-8693-91217108dd2c
+langcode: en
+status: true
+dependencies: {  }
+name: Franchise
+vid: franchise
+description: 'The Disney franchise / film a card is drawn from — Frozen, The Little Mermaid, Bolt, etc. Populated by `drush lorcana:import:franchises` from lorcana-api.com, with manual admin curation as a fallback.'
+weight: 4
+new_revision: false

@@ -1,0 +1,49 @@
+uuid: 1bcc7056-6389-4d02-8bb2-f268b2dbae25
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.masthead
+    - field.field.block_content.masthead.field_eyebrow
+    - field.field.block_content.masthead.field_lede
+    - field.field.block_content.masthead.field_meta
+    - field.field.block_content.masthead.field_title
+id: block_content.masthead.default
+targetEntityType: block_content
+bundle: masthead
+mode: default
+content:
+  field_eyebrow:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_lede:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_meta:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,23 @@
+uuid: fc05112b-e1bd-4e84-a12e-d214c0e23078
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_released_at
+    - node.type.card_set
+  module:
+    - datetime
+_core:
+  default_config_hash: PVrJGnHVMmOQkBQPrcdtjSUy3zlLXEpW-QZcSnWJbgA
+id: node.card_set.field_released_at
+field_name: field_released_at
+entity_type: node
+bundle: card_set
+label: 'Released at'
+description: 'Set release date.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

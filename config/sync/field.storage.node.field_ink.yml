@@ -1,0 +1,22 @@
+uuid: a936d79b-1110-4e70-a72a-02faf982bda6
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+_core:
+  default_config_hash: lWWNPScIAc7ZxEeiqEwWKgqfPK3jPZLJMrBPy9lJtB8
+id: node.field_ink
+field_name: field_ink
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

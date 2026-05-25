@@ -1,0 +1,21 @@
+uuid: 0a9fde81-5994-490b-b113-7f222e52c68b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_version
+    - node.type.card
+_core:
+  default_config_hash: M4A7ZxPLZy-MA2yOuWR1INqRBZDCu0ndNFTx-GyrePQ
+id: node.card.field_version
+field_name: field_version
+entity_type: node
+bundle: card
+label: Version
+description: 'Card subtitle ("Brave Little Tailor", "True Friend"). Per-language via the node''s langcode.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

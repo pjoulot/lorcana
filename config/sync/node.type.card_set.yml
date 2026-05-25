@@ -1,0 +1,13 @@
+uuid: a7f66194-07eb-472c-8af6-a5734fa50295
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: OKmB68I-2Msmxvg3xlMHH5k4Sk95tJQbavBMuVyhyVI
+name: 'Card set'
+type: card_set
+description: 'A Lorcana set (expansion). One node per set across all languages.'
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false

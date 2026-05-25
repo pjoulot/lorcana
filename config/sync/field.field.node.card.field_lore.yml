@@ -1,0 +1,25 @@
+uuid: 9f5e5766-673d-4fa6-a45e-ca13cdcf17a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lore
+    - node.type.card
+_core:
+  default_config_hash: m6jBFuwW-oyXGDYXSFOl7br436KzVNAjs4JlcatN8No
+id: node.card.field_lore
+field_name: field_lore
+entity_type: node
+bundle: card
+label: Lore
+description: 'Characters only.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,25 @@
+uuid: 73b9cebb-0e5d-4b90-a236-22ff8b9c91cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_parameterized
+    - taxonomy.vocabulary.keyword_ability
+_core:
+  default_config_hash: KsZlJbLdIHB8gBY36VnZqsyBLiA6iMqCB2EL6GeZYwg
+id: taxonomy_term.keyword_ability.field_parameterized
+field_name: field_parameterized
+entity_type: taxonomy_term
+bundle: keyword_ability
+label: Parameterized
+description: 'Whether this keyword takes a parameter (Challenger +X, Resist +X, Shift by name).'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

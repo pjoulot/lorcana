@@ -1,0 +1,28 @@
+uuid: f0a8a58c-2341-4867-aa36-b112d042ece5
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.set
+  module:
+    - facets
+    - system
+  theme:
+    - inkfolk
+id: inkfolk_facet_set
+theme: inkfolk
+region: sidebar_first
+weight: 5
+provider: null
+plugin: 'facet_block:set'
+settings:
+  id: 'facet_block:set'
+  label: Set
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cards

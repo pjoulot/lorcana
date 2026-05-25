@@ -1,0 +1,22 @@
+uuid: f1ff8596-154b-4897-8e9d-ae966211dd8e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: 2mRhe83LBYn7NcereaEs7WLHwO0eTN8tJjcv9ehkXFs
+id: node.field_lore
+field_name: field_lore
+entity_type: node
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

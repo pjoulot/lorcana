@@ -1,0 +1,22 @@
+uuid: 4aa9b0fe-fe02-4ea1-92df-e8c495f6b22e
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - inkfolk
+_core:
+  default_config_hash: VhBzWb7lMRtIOg9G7VSw_0uopi-7zXeHq4vXqqV1HFE
+id: inkfolk_breadcrumbs
+theme: inkfolk
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility: {  }

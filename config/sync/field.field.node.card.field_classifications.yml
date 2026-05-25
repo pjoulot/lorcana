@@ -1,0 +1,31 @@
+uuid: efb96dd5-2b8c-4203-bdb2-e77efab3cca1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_classifications
+    - node.type.card
+    - taxonomy.vocabulary.card_classification
+_core:
+  default_config_hash: kcb9mRpXv5iazIzGSo3Vyd2gax2fibtvC5vEoSblarU
+id: node.card.field_classifications
+field_name: field_classifications
+entity_type: node
+bundle: card
+label: Classifications
+description: 'Sub-types: Hero, Villain, Princess, Floodborn, Dreamborn, Storyborn, etc.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      card_classification: card_classification
+    sort:
+      field: name
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: card_classification
+field_type: entity_reference

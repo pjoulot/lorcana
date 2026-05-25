@@ -1,0 +1,21 @@
+uuid: 0f254888-c33a-4721-ac0b-a0cf44e1337d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text
+    - node.type.card
+_core:
+  default_config_hash: 5bV3PqA8VY4oAsc3SCsVZC9MMfIoIRfgAweuSZZH16Q
+id: node.card.field_text
+field_name: field_text
+entity_type: node
+bundle: card
+label: 'Rules text'
+description: 'Plain text. May contain {i}/{e} icon markers — parsed and rendered to inline SVG at display time.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

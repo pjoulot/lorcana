@@ -1,0 +1,21 @@
+uuid: cb5e199c-8ae9-42ba-addf-a4d32421db9c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_illustrators
+    - node.type.card
+_core:
+  default_config_hash: ymKMnb9XlLdyERuKSOQzMf38c3F1sTq22ujYFDrB8w0
+id: node.card.field_illustrators
+field_name: field_illustrators
+entity_type: node
+bundle: card
+label: Illustrators
+description: 'Card artists. Multi-value.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

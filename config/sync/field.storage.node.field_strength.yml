@@ -1,0 +1,22 @@
+uuid: 1496793a-d515-4b73-ac5a-ef5198f4665c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: 8vtL2q2UQkely9QHcKIqdYey0pccUROddT9goBh-Fe0
+id: node.field_strength
+field_name: field_strength
+entity_type: node
+type: integer
+settings:
+  unsigned: true
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

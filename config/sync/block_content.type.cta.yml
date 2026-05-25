@@ -1,0 +1,8 @@
+uuid: 5ef2c4b1-d0de-4e4a-a78a-89bd27355fb1
+langcode: en
+status: true
+dependencies: {  }
+id: cta
+label: 'Call to action'
+revision: false
+description: 'Inkfolk editorial — Call to action.'

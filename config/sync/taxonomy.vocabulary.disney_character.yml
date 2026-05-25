@@ -1,0 +1,9 @@
+uuid: 8022c5c9-caef-4fb2-a165-fb2ed3f94916
+langcode: en
+status: true
+dependencies: {  }
+name: 'Disney character'
+vid: disney_character
+description: "The Disney character depicted on a card — Mickey Mouse, Elsa, Ariel, etc. Auto-populated from Lorcast's card name field for Character-type cards."
+weight: 3
+new_revision: false

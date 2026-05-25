@@ -1,0 +1,25 @@
+uuid: 2ae2037d-3045-4e19-a1a6-844c6df193a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_strength
+    - node.type.card
+_core:
+  default_config_hash: ULLnBnRkXHrkeZo0uh2cuyAV0MHP2JmMfsir8_hySzg
+id: node.card.field_strength
+field_name: field_strength
+entity_type: node
+bundle: card
+label: Strength
+description: 'Characters only.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

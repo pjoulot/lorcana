@@ -1,0 +1,20 @@
+uuid: f0ec3630-d02d-4db1-ad4d-cde58bb2487a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: GccVMTPsiFk15nRdQkBoqukRawyVLoYfYk4y2ckVQX8
+id: node.field_is_image_manual_override
+field_name: field_is_image_manual_override
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

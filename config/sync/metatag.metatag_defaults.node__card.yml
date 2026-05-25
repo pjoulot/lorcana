@@ -1,0 +1,12 @@
+uuid: 7369fad2-93df-47fb-881c-f0e90110b254
+langcode: en
+status: true
+dependencies: {  }
+id: node__card
+label: Card
+tags:
+  description: '[node:field_text]'
+  og_type: website
+  og_title: '[node:title]'
+  og_description: '[node:field_text]'
+  og_image: '[node:field_card_art:entity:field_media_image:entity:url]'

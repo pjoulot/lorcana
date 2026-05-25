@@ -1,0 +1,8 @@
+uuid: 2e28c440-46c2-4cff-9768-e18a4d734d1c
+langcode: en
+status: true
+dependencies: {  }
+id: rich_text
+label: 'Rich text'
+revision: false
+description: 'Inkfolk editorial — Rich text.'

@@ -1,0 +1,25 @@
+uuid: d97580a4-8644-4b38-b7f0-54fc2481ef32
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_move_cost
+    - node.type.card
+_core:
+  default_config_hash: eXOe6Cmp_6OHb5p_pjWI-G8loDaCAnNP4YJzJkdfk7U
+id: node.card.field_move_cost
+field_name: field_move_cost
+entity_type: node
+bundle: card
+label: 'Move cost'
+description: 'Locations only — cost to move a character there.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,21 @@
+uuid: 1099ad3c-7dc9-4e1b-8f6b-1ccf0446d471
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_reminder_text
+    - taxonomy.vocabulary.keyword_ability
+_core:
+  default_config_hash: 1x5MWDYL1eDhX6K52H3Mf_m6lM_-fOJgGGvLYdVv0AY
+id: taxonomy_term.keyword_ability.field_reminder_text
+field_name: field_reminder_text
+entity_type: taxonomy_term
+bundle: keyword_ability
+label: 'Reminder text'
+description: 'Plain-language explanation of the keyword. Shown in tooltips and on the card detail page.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

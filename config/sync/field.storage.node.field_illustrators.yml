@@ -1,0 +1,23 @@
+uuid: 5809a611-7d7d-422c-8415-e5f9c7f83dce
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: Lkz2EWSAwfZGcxaueIJI9wjhKrd5uyNpEuFmEu2MHmk
+id: node.field_illustrators
+field_name: field_illustrators
+entity_type: node
+type: string
+settings:
+  max_length: 128
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

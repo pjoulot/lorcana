@@ -1,0 +1,25 @@
+uuid: a57e1dd2-043f-43e6-9a42-691b3231162b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_primary_printing
+    - node.type.card
+_core:
+  default_config_hash: NwbB389PXctsKCMxsxyxuOeehzSXerMo3OvX1AiTeiU
+id: node.card.field_is_primary_printing
+field_name: field_is_primary_printing
+entity_type: node
+bundle: card
+label: 'Is primary printing'
+description: 'Exactly one printing per group is flagged primary; default listings/search return only primaries.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

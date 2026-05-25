@@ -1,0 +1,25 @@
+uuid: 9f062a07-6836-48f3-883e-f5e06592cff2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_parameter_kind
+    - taxonomy.vocabulary.keyword_ability
+  module:
+    - options
+_core:
+  default_config_hash: Mfkb0Sw0_YBM_4o5Gll6yCRGZ19k7Axl2isP8__iCDc
+id: taxonomy_term.keyword_ability.field_parameter_kind
+field_name: field_parameter_kind
+entity_type: taxonomy_term
+bundle: keyword_ability
+label: 'Parameter kind'
+description: 'Type of parameter the keyword accepts. Drives the importer regex and the renderer.'
+required: true
+translatable: false
+default_value:
+  -
+    value: none
+default_value_callback: ''
+settings: {  }
+field_type: list_string
