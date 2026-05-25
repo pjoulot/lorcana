@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.rss
     - core.entity_view_mode.node.teaser
     - node.type.news
   module:
@@ -86,6 +87,42 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
+  feed_1:
+    id: feed_1
+    display_title: Feed
+    display_plugin: feed
+    position: 2
+    display_options:
+      title: 'Inkfolk — News'
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 20
+      style:
+        type: rss
+        options:
+          grouping: {  }
+          uses_fields: false
+          description: 'News, spoilers and tournament reports from Inkfolk.'
+      row:
+        type: node_rss
+        options:
+          relationship: none
+          view_mode: rss
+      display_extenders: {  }
+      path: news/feed.xml
+      sitename_title: false
+      displays:
+        page_1: page_1
+        default: '0'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
   page_1:
     id: page_1
     display_title: Page
@@ -111,4 +148,3 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-

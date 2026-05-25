@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.rss
+    - field.field.node.news.body
+    - field.field.node.news.field_author
+    - field.field.node.news.field_category
+    - field.field.node.news.field_cover
+    - field.field.node.news.field_published_at
+    - node.type.news
+  module:
+    - text
+id: node.news.rss
+targetEntityType: node
+bundle: news
+mode: rss
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 400
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  changed: true
+  content_translation_outdated: true
+  content_translation_source: true
+  default_langcode: true
+  field_author: true
+  field_category: true
+  field_cover: true
+  field_published_at: true
+  langcode: true
+  links: true
+  nid: true
+  path: true
+  promote: true
+  revision_default: true
+  revision_log: true
+  revision_timestamp: true
+  revision_translation_affected: true
+  revision_uid: true
+  search_api_excerpt: true
+  status: true
+  sticky: true
+  type: true
+  uuid: true
+  vid: true
+  title: true
+  uid: true
+  created: true
