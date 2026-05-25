@@ -14,6 +14,7 @@ global:
       css/home.css: { weight: -11 }
       css/news.css: { weight: -10 }
       css/editorial.css: { weight: -10 }
+      css/forms.css: { weight: -10 }
       /libraries/jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.css: { weight: -9, minified: true }
   js:
     js/encyclopedia.js: { defer: true }

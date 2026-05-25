@@ -1,0 +1,150 @@
+/**
+ * Webform styling — Contact + Report-a-problem.
+ * Ported from contact.jsx: editorial paper, 720px column, uppercase labels.
+ */
+
+/* Webform pages ship their own masthead — hide the duplicate title + crumb. */
+.path-webform .page-title,
+.path-webform .breadcrumb {
+  display: none;
+}
+
+/* Editorial column. */
+.path-webform .region-content {
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 56px 32px 72px;
+  box-sizing: border-box;
+}
+
+/* ───── Masthead (webform_markup) ───────────────────────────── */
+.if-form-head {
+  margin-bottom: 36px;
+}
+.if-form-head .if-eyebrow {
+  margin-bottom: 16px;
+}
+.if-form-head__title {
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 500;
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin: 0 0 14px;
+  text-wrap: balance;
+}
+.if-form-head__lede {
+  font-size: 17px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ───── Fields ──────────────────────────────────────────────── */
+.webform-submission-form .js-form-item,
+.webform-submission-form .form-item {
+  margin: 0 0 22px;
+}
+.webform-submission-form label,
+.webform-submission-form .form-item__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: 6px;
+}
+.webform-submission-form input.form-text,
+.webform-submission-form input.form-email,
+.webform-submission-form select,
+.webform-submission-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font-size: 14.5px;
+  font-family: var(--font-ui);
+  line-height: 1.4;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+}
+.webform-submission-form input:focus,
+.webform-submission-form select:focus,
+.webform-submission-form textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+.webform-submission-form textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+.webform-submission-form .form-required::after {
+  color: var(--accent);
+}
+.webform-submission-form .description,
+.webform-submission-form .form-item__description {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 5px;
+}
+
+/* Custom select chevron. */
+.webform-submission-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23968d83' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+/* Two-column row (name / email). */
+.webform-submission-form .webform-flexbox {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.webform-submission-form .webform-flexbox > .webform-flex {
+  min-width: 0;
+}
+
+/* Submit (mirrors .if-btn--accent). */
+.webform-submission-form .form-actions {
+  margin-top: 8px;
+}
+.webform-submission-form .webform-button--submit {
+  font: 600 14px/1 var(--font-ui);
+  letter-spacing: -.005em;
+  border-radius: 999px;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: var(--accent-ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.webform-submission-form .webform-button--submit:hover {
+  filter: brightness(.96);
+}
+
+@media (max-width: 600px) {
+  .path-webform .region-content { padding: 28px 18px 56px; }
+  .webform-submission-form .webform-flexbox { grid-template-columns: 1fr; }
+}
+
+/* Per-card "Report a problem" link (card detail footer). */
+.if-card-report {
+  margin-top: 22px;
+  font-size: 13px;
+}
+.if-card-report a {
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.if-card-report a:hover { color: var(--accent); }

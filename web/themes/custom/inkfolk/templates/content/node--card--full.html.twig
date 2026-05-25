@@ -253,6 +253,12 @@
       </section>
     {% endif %}
 
+    {% if node.field_set.entity %}
+      <p class="if-card-report">
+        <a href="/report-a-problem?card_set={{ node.field_set.entity.field_set_code.value|url_encode }}&amp;card_number={{ node.field_collector_number.value|url_encode }}&amp;card_url={{ path('entity.node.canonical', {'node': node.id})|url_encode }}">{{ 'Report a problem with this card'|t }}</a>
+      </p>
+    {% endif %}
+
   </div>
 
 </article>
