@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, type Dispatch } from 'react';
 import type { CardData, SetInfo, SoloResponse } from '../types';
+import { decodeSharedPool } from '../lib/export';
 
 export type Screen = 'landing' | 'create' | 'active' | 'end';
 
@@ -117,8 +118,31 @@ interface Store {
 
 const DraftContext = createContext<Store | null>(null);
 
+/**
+ * Builds the starting state, honouring a shared-pool link (#pool=…) so a
+ * shared URL opens straight to a read-only end screen.
+ */
+export function buildInitialState(sets: SetInfo[], endpoint: string): DraftState {
+  const base = initialState(sets, endpoint);
+  const shared = decodeSharedPool();
+  if (!shared) {
+    return base;
+  }
+  return {
+    ...base,
+    screen: 'end',
+    pool: shared.cards,
+    setMeta: sets.find((s) => s.code === shared.set) ?? { code: shared.set, name: shared.setName, cards: 0 },
+    packs: Array.from({ length: shared.packs }, () => []),
+  };
+}
+
 export function useDraftReducer(sets: SetInfo[], endpoint: string): Store {
-  const [state, dispatch] = useReducer(reducer, initialState(sets, endpoint));
+  const [state, dispatch] = useReducer(
+    reducer,
+    { sets, endpoint },
+    (arg) => buildInitialState(arg.sets, arg.endpoint),
+  );
   return { state, dispatch };
 }
 
