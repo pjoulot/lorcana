@@ -3,7 +3,7 @@ import type { CardData, PublicRoom, SetInfo, SoloResponse } from '../types';
 import { decodeSharedPool } from '../lib/export';
 import type { RoomCredentials } from '../api/room';
 
-export type Screen = 'landing' | 'create' | 'createRoom' | 'lobby' | 'active' | 'end';
+export type Screen = 'landing' | 'create' | 'createRoom' | 'lobby' | 'countdown' | 'active' | 'end';
 
 export interface DraftState {
   screen: Screen;
@@ -140,8 +140,12 @@ export function reducer(state: DraftState, action: DraftAction): DraftState {
         isHost: false,
       };
 
-    case 'roomUpdated':
-      return { ...state, room: action.room };
+    case 'roomUpdated': {
+      // Once the host starts, move everyone from the lobby to the countdown
+      // (where the WebRTC mesh forms).
+      const screen = action.room.state === 'active' && state.screen === 'lobby' ? 'countdown' : state.screen;
+      return { ...state, room: action.room, screen };
+    }
 
     case 'reset':
       return initialState(state.sets, state.endpoint);

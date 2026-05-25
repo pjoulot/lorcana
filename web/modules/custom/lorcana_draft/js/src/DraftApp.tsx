@@ -4,6 +4,7 @@ import { Landing } from './ui/Landing';
 import { CreateSolo } from './ui/CreateSolo';
 import { CreateRoom } from './ui/CreateRoom';
 import { Lobby } from './ui/Lobby';
+import { Countdown } from './ui/Countdown';
 import { ActiveDraft } from './ui/ActiveDraft';
 import { EndScreen } from './ui/EndScreen';
 
@@ -28,6 +29,8 @@ function Screens() {
       return <CreateRoom />;
     case 'lobby':
       return <Lobby />;
+    case 'countdown':
+      return <Countdown />;
     case 'active':
       return <ActiveDraft />;
     case 'end':

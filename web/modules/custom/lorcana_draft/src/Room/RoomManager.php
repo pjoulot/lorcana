@@ -136,6 +136,52 @@ final class RoomManager {
   }
 
   /**
+   * Queues a signalling envelope for another peer in the room.
+   *
+   * @param string $code
+   *   The room code.
+   * @param string $fromId
+   *   The sender's player id.
+   * @param string $token
+   *   The sender's token.
+   * @param string $to
+   *   The recipient peer's player id.
+   * @param array<string, mixed> $payload
+   *   The signalling payload (offer / answer / ICE candidate).
+   *
+   * @throws \Drupal\lorcana_draft\Room\RoomException
+   *   When auth fails or the recipient isn't in the room.
+   */
+  public function sendSignal(string $code, string $fromId, string $token, string $to, array $payload): void {
+    $room = $this->requireAuth($code, $fromId, $token);
+    if (!isset($room['players'][$to])) {
+      throw new RoomException('no_peer', 404);
+    }
+    $this->store->pushSignal($code, $to, ['from' => $fromId, 'payload' => $payload]);
+  }
+
+  /**
+   * Drains the signalling envelopes addressed to a player.
+   *
+   * @param string $code
+   *   The room code.
+   * @param string $playerId
+   *   The polling player's id.
+   * @param string $token
+   *   The polling player's token.
+   *
+   * @return array<int, array<string, mixed>>
+   *   Queued envelopes, oldest first.
+   *
+   * @throws \Drupal\lorcana_draft\Room\RoomException
+   *   When auth fails.
+   */
+  public function receiveSignals(string $code, string $playerId, string $token): array {
+    $this->requireAuth($code, $playerId, $token);
+    return $this->store->drainSignals($code, $playerId);
+  }
+
+  /**
    * Loads a room and verifies the caller's credentials.
    *
    * @return array<string, mixed>

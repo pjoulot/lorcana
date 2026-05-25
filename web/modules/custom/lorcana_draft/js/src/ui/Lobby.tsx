@@ -62,7 +62,6 @@ export function Lobby() {
     return null;
   }
 
-  const isActive = room.state === 'active';
   const joinUrl = `${window.location.origin}/draft#join=${code}`;
 
   async function copy(what: 'code' | 'link', text: string) {
@@ -86,20 +85,6 @@ export function Lobby() {
     } catch {
       setStarting(false);
     }
-  }
-
-  if (isActive) {
-    return (
-      <div className="if-draft-wrap if-draft-wrap--narrow" style={{ textAlign: 'center' }}>
-        <div className="if-draft-eyebrow" style={{ justifyContent: 'center' }}>
-          <span className="if-draft-rule" /> Get ready…
-        </div>
-        <h1 className="serif if-draft-h1 if-draft-h1--sm">The draft is starting</h1>
-        <p className="if-draft-lede" style={{ margin: '0 auto' }}>
-          Connecting players and dealing packs. (The live draft lands in the next slice.)
-        </p>
-      </div>
-    );
   }
 
   const seats = [...room.players];

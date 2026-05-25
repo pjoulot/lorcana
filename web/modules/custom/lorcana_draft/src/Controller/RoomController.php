@@ -99,6 +99,43 @@ final class RoomController implements ContainerInjectionInterface {
   }
 
   /**
+   * POST /api/draft/room/{code}/signal — queue an envelope for a peer.
+   */
+  public function signalSend(string $code, Request $request): JsonResponse {
+    $data = $this->body($request);
+    try {
+      $this->rooms->sendSignal(
+        strtoupper($code),
+        (string) ($data['playerId'] ?? ''),
+        (string) ($data['token'] ?? ''),
+        (string) ($data['to'] ?? ''),
+        is_array($data['payload'] ?? NULL) ? $data['payload'] : [],
+      );
+      return new JsonResponse(['ok' => TRUE]);
+    }
+    catch (RoomException $e) {
+      return new JsonResponse(['error' => $e->reason], $e->status);
+    }
+  }
+
+  /**
+   * GET /api/draft/room/{code}/signal — drain envelopes for the caller.
+   */
+  public function signalReceive(string $code, Request $request): JsonResponse {
+    try {
+      $messages = $this->rooms->receiveSignals(
+        strtoupper($code),
+        (string) $request->query->get('playerId', ''),
+        (string) $request->query->get('token', ''),
+      );
+      return new JsonResponse(['messages' => $messages], 200, ['Cache-Control' => 'no-store']);
+    }
+    catch (RoomException $e) {
+      return new JsonResponse(['error' => $e->reason], $e->status);
+    }
+  }
+
+  /**
    * Decodes the JSON request body.
    *
    * @return array<string, mixed>

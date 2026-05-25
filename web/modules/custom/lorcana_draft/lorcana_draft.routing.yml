@@ -45,3 +45,19 @@ lorcana_draft.room_start:
   methods: [POST]
   requirements:
     _access: 'TRUE'
+
+lorcana_draft.signal_send:
+  path: '/api/draft/room/{code}/signal'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\RoomController::signalSend'
+  methods: [POST]
+  requirements:
+    _access: 'TRUE'
+
+lorcana_draft.signal_receive:
+  path: '/api/draft/room/{code}/signal'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\RoomController::signalReceive'
+  methods: [GET]
+  requirements:
+    _access: 'TRUE'
