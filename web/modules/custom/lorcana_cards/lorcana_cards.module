@@ -108,3 +108,119 @@ function lorcana_cards_layout_alter(array &$definitions): void {
     }
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for node entities.
+ *
+ * Attaches schema.org JSON-LD to full card / news pages — Product (with a
+ * TCGPlayer productID) for cards, NewsArticle for articles. Generated in the
+ * node's content language since each is rendered in its own langcode.
+ */
+function lorcana_cards_node_view(array &$build, \Drupal\node\NodeInterface $node, $display, $view_mode): void {
+  if ($view_mode !== 'full') {
+    return;
+  }
+  $data = match ($node->bundle()) {
+    'card' => _lorcana_cards_card_jsonld($node),
+    'news' => _lorcana_cards_news_jsonld($node),
+    default => NULL,
+  };
+  if (!$data) {
+    return;
+  }
+  $build['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#attributes' => ['type' => 'application/ld+json'],
+      '#value' => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+    ],
+    'inkfolk_jsonld',
+  ];
+}
+
+/**
+ * Resolves a media-reference field to an absolute image URL.
+ */
+function _lorcana_cards_media_image_url(\Drupal\node\NodeInterface $node, string $field): ?string {
+  if (!$node->hasField($field) || $node->get($field)->isEmpty()) {
+    return NULL;
+  }
+  $media = $node->get($field)->entity;
+  if (!$media || !$media->hasField('field_media_image') || $media->get('field_media_image')->isEmpty()) {
+    return NULL;
+  }
+  $file = $media->get('field_media_image')->entity;
+  return $file
+    ? \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri())
+    : NULL;
+}
+
+/**
+ * Builds schema.org Product structured data for a card node.
+ */
+function _lorcana_cards_card_jsonld(\Drupal\node\NodeInterface $node): array {
+  // The card title already includes the version (e.g. "Ariel — On Human Legs").
+  $data = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Product',
+    'name' => $node->label(),
+    'url' => $node->toUrl('canonical', ['absolute' => TRUE])->toString(),
+    'category' => 'Disney Lorcana Trading Card Game',
+    'brand' => ['@type' => 'Brand', 'name' => 'Disney Lorcana'],
+  ];
+  foreach (['field_text', 'field_flavor_text'] as $f) {
+    if ($node->hasField($f) && !$node->get($f)->isEmpty()) {
+      $desc = trim(strip_tags((string) $node->get($f)->value));
+      if ($desc !== '') {
+        $data['description'] = $desc;
+        break;
+      }
+    }
+  }
+  if ($img = _lorcana_cards_media_image_url($node, 'field_card_art')) {
+    $data['image'] = $img;
+  }
+  if ($node->hasField('field_tcgplayer_id') && !$node->get('field_tcgplayer_id')->isEmpty()) {
+    $tid = $node->get('field_tcgplayer_id')->value;
+    $data['productID'] = 'tcgplayer:' . $tid;
+    $data['sameAs'] = 'https://www.tcgplayer.com/product/' . $tid;
+  }
+  return $data;
+}
+
+/**
+ * Builds schema.org NewsArticle structured data for a news node.
+ */
+function _lorcana_cards_news_jsonld(\Drupal\node\NodeInterface $node): array {
+  $data = [
+    '@context' => 'https://schema.org',
+    '@type' => 'NewsArticle',
+    'headline' => $node->label(),
+    'mainEntityOfPage' => $node->toUrl('canonical', ['absolute' => TRUE])->toString(),
+    'dateModified' => \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'c'),
+  ];
+  if ($node->hasField('field_published_at') && !$node->get('field_published_at')->isEmpty()) {
+    try {
+      $dt = new \DateTime((string) $node->get('field_published_at')->value, new \DateTimeZone('UTC'));
+      $data['datePublished'] = $dt->format('c');
+    }
+    catch (\Exception $e) {
+      // Leave datePublished unset on a malformed value.
+    }
+  }
+  $author = ($node->hasField('field_author') && !$node->get('field_author')->isEmpty())
+    ? $node->get('field_author')->value
+    : $node->getOwner()->getDisplayName();
+  $data['author'] = ['@type' => 'Person', 'name' => $author];
+  if ($img = _lorcana_cards_media_image_url($node, 'field_cover')) {
+    $data['image'] = $img;
+  }
+  if ($node->hasField('body') && !$node->get('body')->isEmpty()) {
+    $summary = (string) ($node->get('body')->summary ?? '');
+    $desc = $summary !== '' ? $summary : trim(strip_tags((string) $node->get('body')->value));
+    if ($desc !== '') {
+      $data['description'] = mb_substr($desc, 0, 300);
+    }
+  }
+  return $data;
+}
