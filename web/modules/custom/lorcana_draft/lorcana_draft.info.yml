@@ -1,0 +1,8 @@
+name: 'Lorcana Draft'
+type: module
+description: 'Draft simulator for the Lorcana fan site: deterministic pack generation and the embedded React draft app.'
+package: 'Lorcana'
+core_version_requirement: ^11
+dependencies:
+  - drupal:node
+  - lorcana_cards:lorcana_cards

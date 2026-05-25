@@ -1,0 +1,7 @@
+lorcana_draft.app:
+  path: '/draft'
+  defaults:
+    _controller: '\Drupal\lorcana_draft\Controller\DraftController::app'
+    _title: 'Draft simulator'
+  requirements:
+    _access: 'TRUE'

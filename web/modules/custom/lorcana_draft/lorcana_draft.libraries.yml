@@ -1,0 +1,9 @@
+app:
+  version: VERSION
+  js:
+    js/dist/draft.js: { defer: true, minified: true }
+  css:
+    component:
+      js/dist/draft.css: { minified: true }
+  dependencies:
+    - core/drupalSettings
