@@ -21,6 +21,7 @@
         "drupal/facets": "^3.0",
         "drupal/gin": "^5.0",
         "drupal/gin_toolbar": "^3.0",
+        "drupal/honeypot": "^2",
         "drupal/jquery_ui": "^1.8",
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
@@ -28,6 +29,7 @@
         "drupal/pathauto": "^1.15",
         "drupal/search_api": "^1.40",
         "drupal/simple_sitemap": "^4",
+        "drupal/webform": "^6.3@beta",
         "drush/drush": "^13"
     },
     "require-dev": {
